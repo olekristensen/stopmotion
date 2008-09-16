@@ -5,7 +5,7 @@ class gridPoint : public ofSimpleApp{
 public:
 	bool empty;
 	ofxPoint2f loc;
-	ofxPoint2f orig;
+	ofxPoint2f orig;  
 	string url;
 	int id;
 	
@@ -23,9 +23,11 @@ public:
 	void loadXml(ofxXmlSettings &xmlFile);
 	void addPoint();
 	void expandGrid();
-	gridPoint findClosestPoint(ofxPoint2f pos, int rule = GRIDPOINT_ALL);
+	void makeGrid();
+	gridPoint* findClosestPoint(ofxPoint2f pos, int rule = GRIDPOINT_ALL);
 	int numberEmptyPoints();
 	
 	vector<gridPoint> points;//Contains all points
+	int gridSize;
 };
 
