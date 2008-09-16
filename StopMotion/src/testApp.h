@@ -8,7 +8,6 @@
 #define OF_ADDON_USING_OFXVECTORMATH
 #define OF_ADDON_USING_OFXOPENCV
 
-
 #define ASPECTRATIO 3.0/2.0
 
 #include "ofxGui.h"
@@ -18,6 +17,7 @@
 #include "PTP.h"
 #include "grid.h"
 #include "tracker.h"
+#include "videoCamera.h"
 
 
 class testApp : public ofSimpleApp, public ofxGuiListener	{
