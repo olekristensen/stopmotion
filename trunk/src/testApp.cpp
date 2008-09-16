@@ -1,3 +1,6 @@
+float t;
+
+
 #include "testApp.h"
 #define GAMMA 1.801
 bool newImage = false;
@@ -45,8 +48,17 @@ void testApp::setup(){
 }
 //--------------------------------------------------------------
 void testApp::update(){
+
+
 	//Grabber stuff	
 	tracker.update();
+	
+	if(tracker.pointMoved){
+		ofxPoint2f loc = tracker.getCurrentLocation();
+		loadX = (loc.x*1.0);
+		loadY = (loc.y*1.0);
+	}
+	
 	i++;
 	ofBackground(0, 0, 0);
 
@@ -54,11 +66,11 @@ void testApp::update(){
 		images[imageIndex].loadImage("image.jpg");		
 		newImage = false;
 	}*/
-	
 	//Check if we need new image. Has to be done in update, and not mouse moved due bug
 	if(loadedX != loadX || loadedY != loadY){
 		loadImg((loadX),(loadY));
 	}
+
 	
 	//Update fade
 	int totalAlpha = 0;
@@ -78,6 +90,7 @@ void testApp::update(){
 
 //--------------------------------------------------------------
 void testApp::draw(){
+
 	ofSetupScreen();
 	ofEnableAlphaBlending();
 
@@ -126,13 +139,15 @@ void testApp::draw(){
 
 	
 	gui->draw();
-
+	
 }
 
 
 
 void testApp::loadImg(float xin, float yin){
+	
 	gridPoint newP = grid.findClosestPoint(ofxPoint2f(xin, yin), GRIDPOINT_FULL);
+
 	if(newP.id != curId){
 		//Load the image
 		//	printf("loading %s\n", uri); 
@@ -141,11 +156,16 @@ void testApp::loadImg(float xin, float yin){
 		curId = newP.id;
 		imageIndex = nextIndex();
 		imageAlpha[imageIndex] = 0;
+		t = ofGetElapsedTimeMillis();
+
 		images[imageIndex].loadImage(newP.url);
+		cout<<ofGetElapsedTimeMillis()-t<<endl;
+
 		imageId[imageIndex] = curId;
 		loadedX = xin;
 		loadedY = yin;
 	} 
+
 }
 
 
