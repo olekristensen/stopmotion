@@ -60,18 +60,18 @@ void ofxTracker::update(){
 
 void ofxTracker::draw(){
 	glPushMatrix();
-	glTranslated(-10, -10, 0);
-	grayImage.draw(0,0);
+	//glTranslated(-10, -10, 0);
+	colorImg.draw(0,0);
 	contourFinder.draw(0,0);
-	ofEllipse(loc.x, loc.y, 10, 10);
 	glPushMatrix();
-	glRotated(-90, 0, 0, 1);
-	glTranslated(-ofGetWidth(), 0, 0);
+	//glRotated(-90, 0, 0, 1);
+	//glTranslated(-ofGetWidth(), 0, 0);
+	ofEllipse(loc.x, loc.y, 10, 10);
 	font.drawString(ofToString(getCurrentLocation().x, 1)+ " - "+ofToString(getCurrentLocation().y,1), ofGetWidth()-240, 310);
 	glPopMatrix();
 	glPopMatrix();
 }
 
 ofxPoint2f ofxTracker::getCurrentLocation(){
-	return ofxPoint2f((float)loc.x/320, 1-(float)loc.y/240);
+	return ofxPoint2f((float)loc.x/320, (1-(float)loc.y/240)*ASPECTRATIO);
 }

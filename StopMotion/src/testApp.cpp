@@ -19,6 +19,8 @@ void testApp::setup(){
 	if(fileLoaded){
 		grid.loadXml(XML);
 		tracker.threshold = XML.getValue("TRACKER:THRESHOLD", 100);
+		nextPhotoDigit = XML.getValue("IMAG:NEXT", 1);
+
 	} 
 	
 	//Setup font
@@ -49,7 +51,36 @@ void testApp::setup(){
 //--------------------------------------------------------------
 void testApp::update(){
 
+	//Check if the grid should be expanded
+	if(grid.numberEmptyPoints() < 5){
+		grid.expandGrid();
+	}
 
+	//Check if we should capture image
+	if(grid.findClosestPoint(tracker.getCurrentLocation(), GRIDPOINT_EMPTY) != NULL){ //Check if we even got any points
+		if(tracker.getCurrentLocation().distance(grid.findClosestPoint(tracker.getCurrentLocation(), GRIDPOINT_EMPTY)->orig) < 0.1){
+			cout<<"Capture image"<<endl;
+			capturePhoto();
+			gridPoint* p = grid.findClosestPoint(tracker.getCurrentLocation(), GRIDPOINT_EMPTY);
+			string n;
+			if(nextPhotoDigit< 10)
+				n = "000"+ofToString(nextPhotoDigit, 0);
+			else if(nextPhotoDigit < 100)
+				n = "00"+ofToString(nextPhotoDigit, 0);
+			else if(nextPhotoDigit < 1000)
+				n = "0"+ofToString(nextPhotoDigit, 0);
+			else
+				n = ofToString(nextPhotoDigit, 0);
+
+			p->url = "images/StopMotion1_"+n+".JPG";
+			cout<<"Set url: "<<p->url<<endl;
+			p->empty = false;
+			p->id = nextPhotoDigit;
+			//p.loc.x = 1;
+			nextPhotoDigit ++;
+		}
+	}
+	
 	//Grabber stuff	
 	tracker.update();
 	
@@ -95,6 +126,7 @@ void testApp::draw(){
 	ofEnableAlphaBlending();
 
 	glPushMatrix();
+	glPushMatrix();
 	glTranslated(ofGetWidth(), 0, 0);
 	glRotated(90, 0, 0, 1);
 	
@@ -104,6 +136,7 @@ void testApp::draw(){
 	
 		images[i].draw(0,0, ofGetHeight(), ofGetWidth());
 	}	
+	glPopMatrix();
 	//Infobar
 	/*ofSetColor(255, 255, 255);
 	ofRect(0,0,ofGetWidth(), 15);
@@ -113,16 +146,20 @@ void testApp::draw(){
 	//Lets stop the blending!
 		
 	//Draw points if settings says so
+//	cout<<"Number points "<<grid.points.size()<<endl;
 	if(showPoints){
 		for(int i=0; i<grid.points.size(); i++){
-			if(imageId[imageIndex] == grid.points[i].id){
+			if(grid.points[i].empty)
+			   ofNoFill();
+			else
 				ofFill();
+
+			if(imageId[imageIndex] == grid.points[i].id){
 				ofSetColor(255, 0, 0,90);
 			} else {
-				ofNoFill();
-				ofSetColor(255, 255, 255, 30);
+				ofSetColor(0, 0, 255, 90);
 			}
-			ofCircle((float)grid.points[i].loc.x * (float)ofGetHeight(), grid.points[i].loc.y*ofGetWidth()*1.0, 3);
+			ofCircle((float)grid.points[i].loc.x * (float)ofGetWidth(), (float)grid.points[i].loc.y*ofGetWidth(), 3);
 		}
 	}
 	ofDisableAlphaBlending();
@@ -139,33 +176,36 @@ void testApp::draw(){
 
 	
 	gui->draw();
+	ofSetColor(255, 255, 255);
+	ofEllipse(tracker.getCurrentLocation().x*ofGetWidth(), tracker.getCurrentLocation().y*ofGetWidth(), 20, 20);
+
 	
 }
 
 
 
 void testApp::loadImg(float xin, float yin){
-	
-	gridPoint newP = grid.findClosestPoint(ofxPoint2f(xin, yin), GRIDPOINT_FULL);
+	if(grid.findClosestPoint(ofxPoint2f(xin, yin), GRIDPOINT_FULL)!= NULL){
+		gridPoint newP = *grid.findClosestPoint(ofxPoint2f(xin, yin), GRIDPOINT_FULL);
 
-	if(newP.id != curId){
-		//Load the image
-		//	printf("loading %s\n", uri); 
-	//	cout<<"Uri:"<<uri<<endl;
-	//	infoString = uri;
-		curId = newP.id;
-		imageIndex = nextIndex();
-		imageAlpha[imageIndex] = 0;
-		t = ofGetElapsedTimeMillis();
+		if(newP.id != curId){
+			//Load the image
+			//	printf("loading %s\n", uri); 
+		//	cout<<"Uri:"<<uri<<endl;
+		//	infoString = uri;
+			curId = newP.id;
+			imageIndex = nextIndex();
+			imageAlpha[imageIndex] = 0;
+			t = ofGetElapsedTimeMillis();
 
-		images[imageIndex].loadImage(newP.url);
-		cout<<ofGetElapsedTimeMillis()-t<<endl;
+			images[imageIndex].loadImage(newP.url);
+			cout<<ofGetElapsedTimeMillis()-t<<endl;
 
-		imageId[imageIndex] = curId;
-		loadedX = xin;
-		loadedY = yin;
-	} 
-
+			imageId[imageIndex] = curId;
+			loadedX = xin;
+			loadedY = yin;
+		} 
+	}
 }
 
 
@@ -270,8 +310,10 @@ void testApp::keyReleased  (int key){
 void testApp::mouseMoved(int x, int y ){
 //	if(i%1==0)
 //		loadImg((y*1.0)/ofGetHeight(),1-(x*1.0)/ofGetWidth());
-	loadX = (y*1.0)/ofGetHeight();
-	loadY = 1-(x*1.0)/ofGetWidth();
+	loadY = 1-(y*1.0)/ofGetHeight();
+	loadX = (x*1.0)/ofGetWidth();
+	tracker.loc.x = loadX*320;
+	tracker.loc.y=  loadY*240;
 }
 
 //--------------------------------------------------------------
@@ -317,4 +359,8 @@ void testApp::handleGui(int parameterId, int task, void* data, int length){
 
 }
 
+
+void testApp::capturePhoto(){
+	system("osascript -e 'tell application \"RemoteCapture DC\" to activate' -e 'tell application \"System Events\" to tell process \"RemoteCapture DC\"' -e 'keystroke \"r\" using command down' -e 'end tell' ");	
+}
 

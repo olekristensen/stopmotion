@@ -9,6 +9,8 @@
 #define OF_ADDON_USING_OFXOPENCV
 
 
+#define ASPECTRATIO 3.0/2.0
+
 #include "ofxGui.h"
 #include "ofxGuiTypes.h"
 
@@ -46,6 +48,8 @@ class testApp : public ofSimpleApp, public ofxGuiListener	{
 		void loadImg(float xin, float yin);
 		void loadImage(string path);
 	
+		void capturePhoto();
+	
 		int curId;
 
 		
@@ -62,6 +66,8 @@ class testApp : public ofSimpleApp, public ofxGuiListener	{
 		int imageAlpha[numImages];
 		int imageId[numImages];
 		int imageIndex;
+	
+	int nextPhotoDigit;
 	
 		int nextIndex(){
 			int rimageIndex= imageIndex+1;
