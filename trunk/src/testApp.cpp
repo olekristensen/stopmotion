@@ -7,51 +7,46 @@ bool newImage = false;
 //--------------------------------------------------------------
 void testApp::setup(){	 
 	ConnectCameras();
+
+	//Load tracker
+	tracker.setup();
 	
+	//Load XML images
+	bool fileLoaded = XML.loadFile("images.xml");
+	if(fileLoaded){
+		grid.loadXml(XML);
+		tracker.threshold = XML.getValue("TRACKER:THRESHOLD", 100);
+	} 
 	
 	//Setup font
 	font.loadFont("verdana.ttf", 10); 
 	
 	//Setup GUI
 	showPoints = kofxGui_Button_Off;
+	showTracker = kofxGui_Button_Off;
 	
 	gui	= ofxGui::Instance(this);
 
 	ofxGuiPanel* panel1 = gui->addPanel(kParameter_Panel1, "properties", 10, 10, OFXGUI_PANEL_BORDER, OFXGUI_PANEL_SPACING);
-	panel1->addButton(kParameter_ShowPoints, "show Points", OFXGUI_BUTTON_HEIGHT, OFXGUI_BUTTON_HEIGHT, showPoints, kofxGui_Button_Switch);
-	
+	panel1->addButton(kParameter_ShowPoints, "Show Points", OFXGUI_BUTTON_HEIGHT, OFXGUI_BUTTON_HEIGHT, showPoints, kofxGui_Button_Switch);
+	panel1->addButton(kParameter_ShowTracker, "Show Tracker", OFXGUI_BUTTON_HEIGHT, OFXGUI_BUTTON_HEIGHT, showTracker, kofxGui_Button_Switch);
+	panel1->addSlider(kParameter_Threshold, "Threshold", 110, OFXGUI_SLIDER_HEIGHT, 0.0f, 300.0f, tracker.threshold, kofxGui_Display_Float2, 0);
+
 	//	do update while inactive
 	gui->forceUpdate(true);	
 	gui->activate(true);
 
 	
-	//Load XML images
-	bool fileLoaded = XML.loadFile("images.xml");
-	if(fileLoaded){
-		grid.loadXml(XML);
-	} 
+
 	imageIndex = 0;
 	
-	//Load camera
-	vidGrabber.setVerbose(true);
-	vidGrabber.initGrabber(320,240);
 
-	colorImg.allocate(320,240);
-	grayImage.allocate(320,240);
-	grayBg.allocate(320,240);
-	grayDiff.allocate(320,240);
-	
-	bLearnBakground = true;
-	threshold = 80;
-	
+
 }
 //--------------------------------------------------------------
 void testApp::update(){
 	//Grabber stuff	
-	bool bNewFrame = false;
-	vidGrabber.grabFrame();
-	bNewFrame = vidGrabber.isFrameNew();
-	
+	tracker.update();
 	i++;
 	ofBackground(0, 0, 0);
 
@@ -117,7 +112,11 @@ void testApp::draw(){
 			ofCircle((float)grid.points[i].loc.x * (float)ofGetHeight(), grid.points[i].loc.y*ofGetWidth()*1.0, 3);
 		}
 	}
-	ofDisableAlphaBlending();	
+	ofDisableAlphaBlending();
+	
+	if(showTracker){
+		tracker.grayImage.draw(0,0,ofGetHeight(), ofGetWidth());
+	}
 
 	
 	glPopMatrix();
@@ -276,11 +275,23 @@ void testApp::mouseReleased()
 	gui->mouseReleased(mouseX, mouseY, 0);	
 }
 
+//--------------------------------------------------------------
+
 void testApp::handleGui(int parameterId, int task, void* data, int length){
 	switch(parameterId){
 		case kParameter_ShowPoints:
 			if(task == kofxGui_Set_Bool)
 				showPoints = *(bool*)data;
+			break;		
+		case kParameter_ShowTracker:
+			if(task == kofxGui_Set_Bool)
+				showTracker = *(bool*)data;
+			break;		
+		case kParameter_Threshold:
+			if(task == kofxGui_Set_Float)
+				tracker.threshold = *(float*)data;
+				XML.setValue("TRACKER:THRESHOLD", tracker.threshold);
+				XML.saveFile("images.xml");
 			break;		
 	}
 

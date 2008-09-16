@@ -15,6 +15,7 @@
 #include "ofAddons.h"
 #include "PTP.h"
 #include "grid.h"
+#include "tracker.h"
 
 
 class testApp : public ofSimpleApp, public ofxGuiListener	{
@@ -22,6 +23,8 @@ class testApp : public ofSimpleApp, public ofxGuiListener	{
 		kParameter_Panel1,
 		
 		kParameter_ShowPoints,
+		kParameter_ShowTracker,
+		kParameter_Threshold,
 	};
 	public:
 		
@@ -52,6 +55,7 @@ class testApp : public ofSimpleApp, public ofxGuiListener	{
 		string infoString;
 		ofxGui*		gui;	
 		bool showPoints;	
+		bool showTracker;
 		
 		static const int numImages = 20;
 		ofImage images[numImages];
@@ -81,19 +85,7 @@ class testApp : public ofSimpleApp, public ofxGuiListener	{
 		ofxGrid grid;
 	
 		//Tracking
-		ofVideoPlayer 		vidPlayer;
-	
-		ofxCvColorImage		colorImg;
-		
-		ofxCvGrayscaleImage 	grayImage;
-		ofxCvGrayscaleImage 	grayBg;
-		ofxCvGrayscaleImage 	grayDiff;
-		
-		ofxCvContourFinder 	contourFinder;
-		
-		int 				threshold;
-		bool				bLearnBakground;
-
+		ofxTracker tracker;
 };
 
 
