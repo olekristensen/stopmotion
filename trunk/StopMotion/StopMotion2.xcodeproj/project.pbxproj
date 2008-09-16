@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		7F1DB1DF0E80430100CF6336 /* videoCamera.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 7F1DB1DE0E80430100CF6336 /* videoCamera.cpp */; };
+		7F1DB2C80E80608C00CF6336 /* coordWarping.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 7F1DB2C60E80608B00CF6336 /* coordWarping.cpp */; };
 		DD81A5040E60195C006963E2 /* grid.cpp in Sources */ = {isa = PBXBuildFile; fileRef = DD81A5030E60195C006963E2 /* grid.cpp */; };
 		DDA3EFA90E6F133900A1B55C /* ofxGui.cpp in Sources */ = {isa = PBXBuildFile; fileRef = DDA3EF8A0E6F133900A1B55C /* ofxGui.cpp */; };
 		DDA3EFAA0E6F133900A1B55C /* ofxGuiButton.cpp in Sources */ = {isa = PBXBuildFile; fileRef = DDA3EF8C0E6F133900A1B55C /* ofxGuiButton.cpp */; };
@@ -55,6 +57,10 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		7F1DB1D90E803EDC00CF6336 /* videoCamera.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = videoCamera.h; sourceTree = "<group>"; };
+		7F1DB1DE0E80430100CF6336 /* videoCamera.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = videoCamera.cpp; sourceTree = "<group>"; };
+		7F1DB2C60E80608B00CF6336 /* coordWarping.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = coordWarping.cpp; sourceTree = "<group>"; };
+		7F1DB2C70E80608C00CF6336 /* coordWarping.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = coordWarping.h; sourceTree = "<group>"; };
 		DD72798B0E533A190001CE9B /* PTP.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PTP.h; sourceTree = "<group>"; };
 		DD81A5020E60195C006963E2 /* grid.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = grid.h; sourceTree = "<group>"; };
 		DD81A5030E60195C006963E2 /* grid.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = grid.cpp; sourceTree = "<group>"; };
@@ -518,6 +524,8 @@
 		E4B69E1C0A3A1BDC003C02F2 /* src */ = {
 			isa = PBXGroup;
 			children = (
+				7F1DB2C60E80608B00CF6336 /* coordWarping.cpp */,
+				7F1DB2C70E80608C00CF6336 /* coordWarping.h */,
 				DDF2AEEB0E7FEEE600BAECC1 /* tracker.cpp */,
 				DDF2AEEC0E7FEEE600BAECC1 /* tracker.h */,
 				DDE240310E544EB000E3617F /* camera.h */,
@@ -527,6 +535,8 @@
 				E4B69E1F0A3A1BDC003C02F2 /* testApp.h */,
 				DD81A5020E60195C006963E2 /* grid.h */,
 				DD81A5030E60195C006963E2 /* grid.cpp */,
+				7F1DB1D90E803EDC00CF6336 /* videoCamera.h */,
+				7F1DB1DE0E80430100CF6336 /* videoCamera.cpp */,
 			);
 			path = src;
 			sourceTree = SOURCE_ROOT;
@@ -654,6 +664,8 @@
 				DDF2AEE80E7FEEA700BAECC1 /* ofxCvGrayscaleImage.cpp in Sources */,
 				DDF2AEE90E7FEEA700BAECC1 /* ofxCvImage.cpp in Sources */,
 				DDF2AEED0E7FEEE600BAECC1 /* tracker.cpp in Sources */,
+				7F1DB1DF0E80430100CF6336 /* videoCamera.cpp in Sources */,
+				7F1DB2C80E80608C00CF6336 /* coordWarping.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
