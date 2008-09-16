@@ -115,7 +115,7 @@ void testApp::draw(){
 	ofDisableAlphaBlending();
 	
 	if(showTracker){
-		tracker.grayImage.draw(0,0,ofGetHeight(), ofGetWidth());
+		tracker.draw();
 	}
 
 	

@@ -3,8 +3,11 @@ public:
 	
 	void setup();
 	void update();
+	void draw();
 
 	ofxPoint2f getCurrentLocation();
+	
+	ofxPoint2f loc;
 	
 	ofVideoGrabber 		vidGrabber;
 	

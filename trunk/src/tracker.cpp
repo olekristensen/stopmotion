@@ -16,6 +16,8 @@ void ofxTracker::setup(){
 	grayImage.allocate(320,240);
 	
 	threshold = 100;
+	loc.x = 0;
+	loc.y = 0;
 }
 
 void ofxTracker::update(){
@@ -37,6 +39,24 @@ void ofxTracker::update(){
 		
 		// find contours which are between the size of 20 pixels and 1/3 the w*h pixels.
 		// also, find holes is set to true so we will get interior contours as well....
-		contourFinder.findContours(grayDiff, 20, (340*240)/3, 10, false);	// find holes
+		contourFinder.findContours(grayImage, 20, (340*240)/3, 10, false);	// find holes
+		if(contourFinder.nBlobs > 0){
+			ofPoint location = contourFinder.blobs[0].centroid;
+			loc.x = location.x;
+			loc.y = location.y;
+		}
 	}
+}
+
+void ofxTracker::draw(){
+	glPushMatrix();
+	glTranslated(-10, -10, 0);
+	grayImage.draw(0,0);
+	contourFinder.draw(0,0);
+	ofEllipse(loc.x, loc.y, 10, 10);
+	glPopMatrix();
+}
+
+ofxPoint2f ofxTracker::getCurrentLocation(){
+	return loc;
 }
