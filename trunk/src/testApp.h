@@ -1,0 +1,106 @@
+#ifndef _TEST_APP
+#define _TEST_APP
+
+
+#include "ofMain.h"
+
+#define OF_ADDON_USING_OFXXMLSETTINGS
+#define OF_ADDON_USING_OFXVECTORMATH
+#define OF_ADDON_USING_OFXOPENCV
+
+
+#include "ofxGui.h"
+#include "ofxGuiTypes.h"
+
+#include "ofAddons.h"
+#include "PTP.h"
+#include "grid.h"
+
+
+class testApp : public ofSimpleApp, public ofxGuiListener	{
+	enum{
+		kParameter_Panel1,
+		
+		kParameter_ShowPoints,
+	};
+	public:
+		
+		void setup();
+		void update();
+		void draw();
+		
+		void keyPressed(int key);
+		void keyReleased(int key);
+		void mouseMoved(int x, int y );
+		void mouseDragged(int x, int y, int button);
+		void mousePressed(int x, int y, int button);
+		void mouseReleased();
+	
+		//GUI Stuff
+		void handleGui(int parameterId, int task, void* data, int length);
+
+	
+		void loadImg(float xin, float yin);
+		void loadImage(string path);
+	
+		int curId;
+
+		
+		ofxXmlSettings XML;
+		ofTrueTypeFont	font;
+
+		string infoString;
+		ofxGui*		gui;	
+		bool showPoints;	
+		
+		static const int numImages = 20;
+		ofImage images[numImages];
+		int imageAlpha[numImages];
+		int imageId[numImages];
+		int imageIndex;
+	
+		int nextIndex(){
+			int rimageIndex= imageIndex+1;
+			if(rimageIndex>numImages-1){
+				rimageIndex = 0;
+			}
+			return rimageIndex;
+		}
+		int prevIndex(){
+			int rimageIndex= imageIndex-1;
+			if(rimageIndex<0){
+				rimageIndex = numImages-1;
+			}
+			return rimageIndex;
+		}
+	
+		bool imageLoading;
+		int i;
+		double loadX, loadY, loadedX, loadedY;
+	
+		ofxGrid grid;
+	
+		//Tracking
+		ofVideoPlayer 		vidPlayer;
+	
+		ofxCvColorImage		colorImg;
+		
+		ofxCvGrayscaleImage 	grayImage;
+		ofxCvGrayscaleImage 	grayBg;
+		ofxCvGrayscaleImage 	grayDiff;
+		
+		ofxCvContourFinder 	contourFinder;
+		
+		int 				threshold;
+		bool				bLearnBakground;
+
+};
+
+
+
+
+
+
+
+#endif
+	
