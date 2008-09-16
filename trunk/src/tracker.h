@@ -19,5 +19,9 @@ public:
 	
 	ofxCvContourFinder 	contourFinder;
 	
-	int 				threshold;
+	int threshold;
+	bool pointMoved;
+	
+	ofTrueTypeFont	font;
+
 };

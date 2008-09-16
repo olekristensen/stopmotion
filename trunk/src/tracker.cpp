@@ -18,8 +18,11 @@ void ofxTracker::setup(){
 	threshold = 100;
 	loc.x = 0;
 	loc.y = 0;
-}
+	pointMoved = false;
+	
+	font.loadFont("verdana.ttf", 10); 
 
+}
 void ofxTracker::update(){
 	bool bNewFrame = false;
 
@@ -42,10 +45,16 @@ void ofxTracker::update(){
 		contourFinder.findContours(grayImage, 20, (340*240)/3, 10, false);	// find holes
 		if(contourFinder.nBlobs > 0){
 			ofPoint location = contourFinder.blobs[0].centroid;
-			loc.x = location.x;
-			loc.y = location.y;
+			if(loc.x != location.x || loc.y != location.y){
+				loc.x = location.x;
+				loc.y = location.y;
+				pointMoved = true;
+			} else {
+				pointMoved = false;
+			}
 		}
 	}
+	
 }
 
 void ofxTracker::draw(){
@@ -54,9 +63,14 @@ void ofxTracker::draw(){
 	grayImage.draw(0,0);
 	contourFinder.draw(0,0);
 	ofEllipse(loc.x, loc.y, 10, 10);
+	glPushMatrix();
+	glRotated(-90, 0, 0, 1);
+	glTranslated(-ofGetWidth(), 0, 0);
+	font.drawString(ofToString(getCurrentLocation().x, 1)+ " - "+ofToString(getCurrentLocation().y,1), ofGetWidth()-240, 310);
+	glPopMatrix();
 	glPopMatrix();
 }
 
 ofxPoint2f ofxTracker::getCurrentLocation(){
-	return loc;
+	return ofxPoint2f((float)loc.x/320, (float)loc.y/240);
 }
