@@ -3,8 +3,8 @@
  *  StopMotion2
  *
  *  Created by Jonas Jongejan on 16/09/08.
+ *  Modified by Ole Kristensen today
  * 
- *
  */
 #include "testApp.h"
 
