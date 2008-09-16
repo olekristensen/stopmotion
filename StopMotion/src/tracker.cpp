@@ -5,6 +5,7 @@
  *  Created by Jonas Jongejan on 16/09/08.
  *  Modified by Ole Kristensen today
  * 
+ *
  */
 #include "testApp.h"
 
@@ -21,11 +22,11 @@ void ofxTracker::setup(){
 	pointMoved = false;
 	
 	font.loadFont("verdana.ttf", 10); 
-
+	
 }
 void ofxTracker::update(){
 	bool bNewFrame = false;
-
+	
 	vidGrabber.grabFrame();
 	bNewFrame = vidGrabber.isFrameNew();
 	
@@ -34,10 +35,10 @@ void ofxTracker::update(){
 		colorImg.setFromPixels(vidGrabber.getPixels(), 320,240);
 		
         grayImage = colorImg;
-
+		
 		
 		// take the abs value of the difference between background and incoming and then threshold:
-//		grayDiff.absDiff(grayBg, grayImage);
+		//grayDiff.absDiff(grayBg, grayImage);
 		grayImage.threshold(threshold);
 		
 		// find contours which are between the size of 20 pixels and 1/3 the w*h pixels.
@@ -72,5 +73,5 @@ void ofxTracker::draw(){
 }
 
 ofxPoint2f ofxTracker::getCurrentLocation(){
-	return ofxPoint2f((float)loc.x/320, (float)loc.y/240);
+	return ofxPoint2f((float)loc.x/320, 1-(float)loc.y/240);
 }
