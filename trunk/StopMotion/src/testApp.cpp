@@ -47,6 +47,10 @@ void testApp::setup(){
 	//Null init
 	takingPhoto = 0;
 	captureInterrupted = false;
+	
+	captureCornerPoint = false;
+	
+	videoCamera.setup();
 }
 //--------------------------------------------------------------
 void testApp::update(){
@@ -138,7 +142,11 @@ void testApp::update(){
 	imageAlpha[imageIndex] = pow(pow(255,GAMMA)-totalAlpha,0.555);
 	//cout<<totalAlpha+(255-totalAlpha)<<endl;
 
+	videoCamera.update(tracker.getCurrentLocation(), captureCornerPoint);
 	
+	if(captureCornerPoint){
+		captureCornerPoint = false;
+	}
 }
 
 //--------------------------------------------------------------
@@ -203,7 +211,7 @@ void testApp::draw(){
 	glPopMatrix();
 
 	
-	
+	videoCamera.draw(tracker.getCurrentLocation());	
 
 	
 	gui->draw();
@@ -242,8 +250,9 @@ void testApp::loadImg(float xin, float yin){
 void testApp::keyPressed  (int key){ 
 	if(key == 'g') 
 		gui->activate(!gui->mIsActive);
-	
-	else if(key == 'p'){
+	else if(key == 'c'){
+		captureCornerPoint = true;
+	}else if(key == 'p'){
 	OSErr					err = noErr;
 	char					*buf = NULL;
     PTPPassThroughPB 		*passThroughPB;

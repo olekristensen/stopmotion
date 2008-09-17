@@ -108,6 +108,9 @@ class testApp : public ofSimpleApp, public ofxGuiListener	{
 	threadedObject	TO;
 	
 	ofImage marker;
+	
+	ofxVideoCamera videoCamera;
+	bool captureCornerPoint;
 
 };
 

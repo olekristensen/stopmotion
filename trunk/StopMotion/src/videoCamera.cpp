@@ -18,18 +18,18 @@ void ofxVideoCamera::setup(){
 		dstPoints[i].x = -1.0f;
 		dstPoints[i].y = -1.0f;
 	}
-
+	
 	// set srcPoints
 	
 	srcPoints[0].y = ASPECTRATIO;	//North
 	srcPoints[0].x = 1.0f;			//East
-
+	
 	srcPoints[1].y = 0.0f;			//South
 	srcPoints[1].x = 1.0f;			//East
 	
 	srcPoints[2].y = 0.0f;			//South
 	srcPoints[2].x = 0.0f;			//West
-
+	
 	srcPoints[3].y = ASPECTRATIO;	//North
 	srcPoints[3].x = 0.0f;			//West
 	
