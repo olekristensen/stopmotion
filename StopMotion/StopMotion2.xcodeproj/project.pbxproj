@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		7F1DB1DF0E80430100CF6336 /* videoCamera.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 7F1DB1DE0E80430100CF6336 /* videoCamera.cpp */; };
 		7F1DB2C80E80608C00CF6336 /* coordWarping.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 7F1DB2C60E80608B00CF6336 /* coordWarping.cpp */; };
+		DD76CF760E8117150070720F /* ofxThread.cpp in Sources */ = {isa = PBXBuildFile; fileRef = DD76CF700E8117150070720F /* ofxThread.cpp */; };
 		DD81A5040E60195C006963E2 /* grid.cpp in Sources */ = {isa = PBXBuildFile; fileRef = DD81A5030E60195C006963E2 /* grid.cpp */; };
 		DDA3EFA90E6F133900A1B55C /* ofxGui.cpp in Sources */ = {isa = PBXBuildFile; fileRef = DDA3EF8A0E6F133900A1B55C /* ofxGui.cpp */; };
 		DDA3EFAA0E6F133900A1B55C /* ofxGuiButton.cpp in Sources */ = {isa = PBXBuildFile; fileRef = DDA3EF8C0E6F133900A1B55C /* ofxGuiButton.cpp */; };
@@ -62,6 +63,9 @@
 		7F1DB2C60E80608B00CF6336 /* coordWarping.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = coordWarping.cpp; sourceTree = "<group>"; };
 		7F1DB2C70E80608C00CF6336 /* coordWarping.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = coordWarping.h; sourceTree = "<group>"; };
 		DD72798B0E533A190001CE9B /* PTP.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PTP.h; sourceTree = "<group>"; };
+		DD76CF700E8117150070720F /* ofxThread.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ofxThread.cpp; sourceTree = "<group>"; };
+		DD76CF710E8117150070720F /* ofxThread.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ofxThread.h; sourceTree = "<group>"; };
+		DD76CF820E8118690070720F /* threadedObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = threadedObject.h; sourceTree = "<group>"; };
 		DD81A5020E60195C006963E2 /* grid.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = grid.h; sourceTree = "<group>"; };
 		DD81A5030E60195C006963E2 /* grid.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = grid.cpp; sourceTree = "<group>"; };
 		DD81A50C0E601A8A006963E2 /* ofxMatrix3x3.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ofxMatrix3x3.h; sourceTree = "<group>"; };
@@ -195,6 +199,23 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		DD76CF660E8117150070720F /* ofxThread */ = {
+			isa = PBXGroup;
+			children = (
+				DD76CF6F0E8117150070720F /* src */,
+			);
+			path = ofxThread;
+			sourceTree = "<group>";
+		};
+		DD76CF6F0E8117150070720F /* src */ = {
+			isa = PBXGroup;
+			children = (
+				DD76CF700E8117150070720F /* ofxThread.cpp */,
+				DD76CF710E8117150070720F /* ofxThread.h */,
+			);
+			path = src;
+			sourceTree = "<group>";
+		};
 		DD81A5050E601A8A006963E2 /* ofxVectorMath */ = {
 			isa = PBXGroup;
 			children = (
@@ -391,6 +412,7 @@
 		E411BE010CFA279F007A1F4A /* addons */ = {
 			isa = PBXGroup;
 			children = (
+				DD76CF660E8117150070720F /* ofxThread */,
 				DDF2AEA30E7FEEA700BAECC1 /* ofxOpenCv */,
 				DDA3EFC80E6F139900A1B55C /* ofxDirList */,
 				DDA3EF890E6F133900A1B55C /* ofxGui */,
@@ -524,6 +546,7 @@
 		E4B69E1C0A3A1BDC003C02F2 /* src */ = {
 			isa = PBXGroup;
 			children = (
+				DD76CF820E8118690070720F /* threadedObject.h */,
 				7F1DB2C60E80608B00CF6336 /* coordWarping.cpp */,
 				7F1DB2C70E80608C00CF6336 /* coordWarping.h */,
 				DDF2AEEB0E7FEEE600BAECC1 /* tracker.cpp */,
@@ -666,6 +689,7 @@
 				DDF2AEED0E7FEEE600BAECC1 /* tracker.cpp in Sources */,
 				7F1DB1DF0E80430100CF6336 /* videoCamera.cpp in Sources */,
 				7F1DB2C80E80608C00CF6336 /* coordWarping.cpp in Sources */,
+				DD76CF760E8117150070720F /* ofxThread.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

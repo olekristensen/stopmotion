@@ -4,11 +4,18 @@
 
 #include "ofMain.h"
 
+#include "threadedObject.h"
+
+
 #define OF_ADDON_USING_OFXXMLSETTINGS
 #define OF_ADDON_USING_OFXVECTORMATH
 #define OF_ADDON_USING_OFXOPENCV
 
+
 #define ASPECTRATIO 3.0/2.0
+#define GAMMA 1.801
+#define PHOTODELAY 3000
+#define CAPTURERADIUS 0.03
 
 #include "ofxGui.h"
 #include "ofxGuiTypes.h"
@@ -38,7 +45,7 @@ class testApp : public ofSimpleApp, public ofxGuiListener	{
 		void keyReleased(int key);
 		void mouseMoved(int x, int y );
 		void mouseDragged(int x, int y, int button);
-		void mousePressed(int x, int y, int button);
+   		void mousePressed(int x, int y, int button);
 		void mouseReleased();
 	
 		//GUI Stuff
@@ -69,6 +76,8 @@ class testApp : public ofSimpleApp, public ofxGuiListener	{
 	
 	int nextPhotoDigit;
 	
+	int takingPhoto;
+	
 		int nextIndex(){
 			int rimageIndex= imageIndex+1;
 			if(rimageIndex>numImages-1){
@@ -92,6 +101,9 @@ class testApp : public ofSimpleApp, public ofxGuiListener	{
 	
 		//Tracking
 		ofxTracker tracker;
+	
+	threadedObject	TO;
+
 };
 
 

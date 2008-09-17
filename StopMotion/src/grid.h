@@ -8,9 +8,14 @@ public:
 	ofxPoint2f orig;  
 	string url;
 	int id;
-	
+
 	gridPoint();
 	void savePoint(ofxXmlSettings &xmlFile);
+	void draw();
+	
+	float size;
+	float sizeV;
+	float capturePercent;
 };
 
 
