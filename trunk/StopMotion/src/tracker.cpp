@@ -47,8 +47,8 @@ void ofxTracker::update(){
 		if(contourFinder.nBlobs > 0){
 			ofPoint location = contourFinder.blobs[0].centroid;
 			if(loc.x != location.x || loc.y != location.y){
-				loc.x = location.x;
-				loc.y = location.y;
+				loc.y = 320-location.x;
+				loc.x = location.y;
 				pointMoved = true;
 			} else {
 				pointMoved = false;

@@ -21,7 +21,6 @@ void ofxVideoCamera::setup(){
 void ofxVideoCamera::update(ofxPoint2f _currentLocation){
 	if(getTransformedPoint(_currentLocation)==ofxPoint2f(-1.0f,-1.0f)){
 		// der er ikke kalibreret endnu
-		if(setCornerPoint(ofxPoint2f _coordinate);
 	} else {
 		//lav alt Matriceopdateringen...
 	}

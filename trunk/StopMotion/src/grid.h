@@ -11,7 +11,7 @@ public:
 
 	gridPoint();
 	void savePoint(ofxXmlSettings &xmlFile);
-	void draw();
+	void draw(ofxPoint2f tracker);
 	
 	float size;
 	float sizeV;

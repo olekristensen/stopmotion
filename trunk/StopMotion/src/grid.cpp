@@ -42,7 +42,11 @@ void gridPoint::savePoint(ofxXmlSettings &xmlFile){
 	xmlFile.saveFile("images.xml");
 }
 
-void gridPoint::draw(){
+void gridPoint::draw(ofxPoint2f tracker){
+//	glEnable(GL_LINE_SMOOTH);
+    //glHint(GL_LINE_SMOOTH_HINT, GL_DONT_CARE);
+  //  glLineWidth(3);
+
 	if(capturePercent > 0 && capturePercent < 1){
 		sizeV += (CAPTURERADIUS - size)*0.01;
 	} else if(capturePercent >=1  && size > 0){
@@ -57,26 +61,40 @@ void gridPoint::draw(){
 	size += sizeV;
 	
 	if(size >0){
-		ofSetCircleResolution(100);
-		ofNoFill();
+		int resolution = 200;
+		ofSetCircleResolution(resolution);
+	/*	ofNoFill();
 		ofSetColor(255, 255, 255);
 		ofCircle(orig.x*ofGetWidth(), orig.y*ofGetWidth(), size*ofGetWidth());
-		ofSetColor(0, 0, 0);
+		ofSetColor(200,200,200);
 		ofCircle(orig.x*ofGetWidth(), orig.y*ofGetWidth(), size*ofGetWidth()-1);
 		ofCircle(orig.x*ofGetWidth(), orig.y*ofGetWidth(), size*ofGetWidth()+1);
-		
-		int numBricks = round(100.0*capturePercent);
-		double radianStep = (double)TWO_PI/100.0;
-		glColor3f(255, 255, 255);
-		glBegin(GL_LINES);
-		glVertex2f(orig.x*ofGetWidth(), orig.y*ofGetWidth());
+	*/	
+		loc = tracker;
+		int numBricks = round(resolution*capturePercent);
+		double radianStep = (double)TWO_PI/resolution;
+		glColor3f(0, 0, 0);
+		glBegin(GL_TRIANGLES);
+//		glVertex2f(orig.x*ofGetWidth(), orig.y*ofGetWidth());
+		for(int i=-resolution/4;i<numBricks-resolution/4; i++){
+			glVertex2f(loc.x*ofGetWidth(), loc.y*ofGetWidth());
+			glVertex2f(loc.x*ofGetWidth()+(CAPTURERADIUS)*cos(i*radianStep)*ofGetWidth(), loc.y*ofGetWidth()+(CAPTURERADIUS)*sin(i*radianStep)*ofGetWidth());
+			glVertex2f(loc.x*ofGetWidth()+(CAPTURERADIUS)*cos((i-1)*radianStep)*ofGetWidth(), loc.y*ofGetWidth()+(CAPTURERADIUS)*sin((i-1)*radianStep)*ofGetWidth());
+		}
+//		glVertex2f(orig.x*ofGetWidth(), orig.y*ofGetWidth());
+		glEnd();
+		/*
+		glColor3f(100, 100, 100);
+		glBegin(GL_TRIANGLES);
 		for(int i=0;i<numBricks; i++){
-//			glVertex2f(orig.x*ofGetWidth(), orig.y*ofGetWidth());
+			glVertex2f(orig.x*ofGetWidth(), orig.y*ofGetWidth());
 			glVertex2f(orig.x*ofGetWidth()+(CAPTURERADIUS-0.01)*cos(i*radianStep)*ofGetWidth(), orig.y*ofGetWidth()+(CAPTURERADIUS-0.01)*sin(i*radianStep)*ofGetWidth());
 			glVertex2f(orig.x*ofGetWidth()+(CAPTURERADIUS-0.01)*cos((i-1)*radianStep)*ofGetWidth(), orig.y*ofGetWidth()+(CAPTURERADIUS-0.01)*sin((i-1)*radianStep)*ofGetWidth());
 		}
-		glVertex2f(orig.x*ofGetWidth(), orig.y*ofGetWidth());
 		glEnd();
+		*/
+		
+		
 	}
 }
 

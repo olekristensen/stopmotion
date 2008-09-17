@@ -14,7 +14,7 @@
 
 #define ASPECTRATIO 3.0/2.0
 #define GAMMA 1.801
-#define PHOTODELAY 3000
+#define PHOTODELAY 4000
 #define CAPTURERADIUS 0.03
 
 #include "ofxGui.h"
@@ -77,6 +77,7 @@ class testApp : public ofSimpleApp, public ofxGuiListener	{
 	int nextPhotoDigit;
 	
 	int takingPhoto;
+	bool captureInterrupted;
 	
 		int nextIndex(){
 			int rimageIndex= imageIndex+1;
@@ -103,6 +104,8 @@ class testApp : public ofSimpleApp, public ofxGuiListener	{
 		ofxTracker tracker;
 	
 	threadedObject	TO;
+	
+	ofImage marker;
 
 };
 
