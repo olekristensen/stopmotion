@@ -12,44 +12,114 @@
 #include "testApp.h"
 
 void ofxVideoCamera::setup(){
-	cornerNE.set(-1.0f,-1.0f);
-	cornerSE.set(-1.0f,-1.0f);
-	cornerSW.set(-1.0f,-1.0f);
-	cornerNW.set(-1.0f,-1.0f);
+	
+	// set dstPoints unInitialised (-1.0)
+	for (int i = 0; i < 4; i++){
+		dstPoints[i].x = -1.0f;
+		dstPoints[i].y = -1.0f;
+	}
+
+	// set srcPoints
+	
+	srcPoints[0].y = ASPECTRATIO;	//North
+	srcPoints[0].x = 1.0f;			//East
+
+	srcPoints[1].y = 0.0f;			//South
+	srcPoints[1].x = 1.0f;			//East
+	
+	srcPoints[2].y = 0.0f;			//South
+	srcPoints[2].x = 0.0f;			//West
+
+	srcPoints[3].y = ASPECTRATIO;	//North
+	srcPoints[3].x = 0.0f;			//West
+	
 }
 
+<<<<<<< .mine
+void ofxVideoCamera::update(ofxPoint2f _currentLocation, bool captureCornerPoint){
+	
+	// if a corner should be set...
+	if(captureCornerPoint){
+		state=STATE_CALIBRATING;
+		int calibratedCorner = 0;
+		calibratedCorner = setCornerPoint(_currentLocation);
+		if(calibratedCorner > 0){
+			state = calibratedCorner;
+		}
+=======
 void ofxVideoCamera::update(ofxPoint2f _currentLocation){
 	if(getTransformedPoint(_currentLocation)==ofxPoint2f(-1.0f,-1.0f)){
 		// der er ikke kalibreret endnu
 	} else {
 		//lav alt Matriceopdateringen...
+>>>>>>> .r26
+	}
+	
+	if(state != STATE_MATRIX_DONE){
+		// see if all four corners are set yet...
+		if(state != STATE_CALIBRATED_ALL){
+			bool allCornersSet = true;
+			for (int i = 0; i < 4; i++){
+				if(dstPoints[i].x == -1.0f && dstPoints[i].y == -1.0f){
+					allCornersSet = false;
+				}
+			}
+			if (allCornersSet){
+				state = STATE_CALIBRATED_ALL;
+			}
+		}
+		if(state == STATE_CALIBRATED_ALL){
+			coordWarper.calculateMatrix(srcPoints,dstPoints);
+			state = STATE_MATRIX_DONE;
+		}
 	}
 }
 
-void ofxVideoCamera::draw(){
-	if(getTransformedPoint(ofxPoint2f(0.0f,0.0f))==ofxPoint2f(-1.0f,-1.0f)){
-		// der er ikke kalibreret endnu
+void ofxVideoCamera::draw(ofxPoint2f _currentLocation){
+	if(state != STATE_MATRIX_DONE){
+		if(_currentLocation.x > 0.6f && _currentLocation.y > 0.6f*ASPECTRATIO){
+			if(state == STATE_CALIBRATED_NE){
+				ofSetColor(255,255,255);
+			} else {
+				ofSetColor(255,255,0);
+			}
+			ofLine(_currentLocation.x * (float)ofGetWidth(),_currentLocation.y * (float) ofGetHeight(),1.0f * (float)ofGetWidth(),ASPECTRATIO * (float) ofGetHeight());
+		} else if(_currentLocation.x > 0.6f && _currentLocation.y < 0.4f*ASPECTRATIO){
+			if(state == STATE_CALIBRATED_SE){
+				ofSetColor(255,255,255);
+			} else {
+				ofSetColor(255,255,0);
+			}
+			ofLine(_currentLocation.x * (float)ofGetWidth(),_currentLocation.y * (float) ofGetHeight(),1.0f * (float)ofGetWidth(),0.0f * (float) ofGetHeight());
+		} else if(_currentLocation.x < 0.4f && _currentLocation.y < 0.4f*ASPECTRATIO){
+			if(state == STATE_CALIBRATED_SW){
+				ofSetColor(255,255,255);
+			} else {
+				ofSetColor(255,255,0);
+			}
+			ofLine(_currentLocation.x * (float)ofGetWidth(),_currentLocation.y * (float) ofGetHeight(),0.0f * (float)ofGetWidth(),0.0f * (float) ofGetHeight());
+		} else if(_currentLocation.x < 0.4f && _currentLocation.y > 0.6f*ASPECTRATIO){
+			if(state == STATE_CALIBRATED_NW){
+				ofSetColor(255,255,255);
+			} else {
+				ofSetColor(255,255,0);
+			}
+			ofLine(_currentLocation.x * (float)ofGetWidth(),_currentLocation.y * (float) ofGetHeight(),0.0f * (float)ofGetWidth(),ASPECTRATIO * (float) ofGetHeight());
+		} else {
+			ofSetColor(128,128,0);
+			ofLine(_currentLocation.x * (float)ofGetWidth(),_currentLocation.y * (float) ofGetHeight(),1.0f * (float)ofGetWidth(),ASPECTRATIO * (float) ofGetHeight());
+			ofLine(_currentLocation.x * (float)ofGetWidth(),_currentLocation.y * (float) ofGetHeight(),1.0f * (float)ofGetWidth(),0.0f * (float) ofGetHeight());
+			ofLine(_currentLocation.x * (float)ofGetWidth(),_currentLocation.y * (float) ofGetHeight(),0.0f * (float)ofGetWidth(),0.0f * (float) ofGetHeight());
+			ofLine(_currentLocation.x * (float)ofGetWidth(),_currentLocation.y * (float) ofGetHeight(),0.0f * (float)ofGetWidth(),ASPECTRATIO * (float) ofGetHeight());
+		}
 	}
-	// tegn en grafik under kalibreringen ---
 }
 
 ofxPoint2f ofxVideoCamera::getTransformedPoint(ofxPoint2f _coordinate){
-	
-	//check if all corners have been initialised
-	if(cornerNE==ofxPoint2f(-1.0f,-1.0f) || cornerSE==ofxPoint2f(-1.0f,-1.0f) || cornerSW==ofxPoint2f(-1.0f,-1.0f) || cornerNW==ofxPoint2f(-1.0f,-1.0f) ){
-		return ofxPoint2f(-1.0f,-1.0f);
+	if(state == STATE_MATRIX_DONE){
+		return coordWarper.transform(_coordinate.x,_coordinate.y);
 	} else {
-		//lav alt Matriceopslag...
-	}
-}
-
-ofxPoint2f ofxVideoCamera::getUnTransformedPoint(ofxPoint2f _coordinate){
-	
-	//check if all corners have been initialised
-	if(cornerNE==ofxPoint2f(-1.0f,-1.0f) || cornerSE==ofxPoint2f(-1.0f,-1.0f)  || cornerSW==ofxPoint2f(-1.0f,-1.0f) || cornerNW==ofxPoint2f(-1.0f,-1.0f) ){
-		return ofxPoint2f(-1.0f,-1.0f);
-	} else {
-		
+		return _coordinate;
 	}
 }
 
@@ -59,16 +129,16 @@ int ofxVideoCamera::setCornerPoint(ofxPoint2f _coordinate){
 	//else return a -1;
 	
 	if(_coordinate.x > 0.6f && _coordinate.y > 0.6f*ASPECTRATIO){
-		cornerNE.set(_coordinate);
+		dstPoints[0].set(_coordinate);
 		return 1;
 	} else if(_coordinate.x > 0.6f && _coordinate.y < 0.4f*ASPECTRATIO){
-		cornerSE.set(_coordinate);
+		dstPoints[1].set(_coordinate);
 		return 2;
 	} else if(_coordinate.x < 0.4f && _coordinate.y < 0.4f*ASPECTRATIO){
-		cornerSW.set(_coordinate);
+		dstPoints[2].set(_coordinate);
 		return 3;
 	} else if(_coordinate.x < 0.4f && _coordinate.y > 0.6f*ASPECTRATIO){
-		cornerNW.set(_coordinate);
+		dstPoints[3].set(_coordinate);
 		return 4;
 	} else {
 		return -1;
