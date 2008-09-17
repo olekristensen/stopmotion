@@ -35,7 +35,6 @@ void ofxVideoCamera::setup(){
 	
 }
 
-<<<<<<< .mine
 void ofxVideoCamera::update(ofxPoint2f _currentLocation, bool captureCornerPoint){
 	
 	// if a corner should be set...
@@ -46,13 +45,6 @@ void ofxVideoCamera::update(ofxPoint2f _currentLocation, bool captureCornerPoint
 		if(calibratedCorner > 0){
 			state = calibratedCorner;
 		}
-=======
-void ofxVideoCamera::update(ofxPoint2f _currentLocation){
-	if(getTransformedPoint(_currentLocation)==ofxPoint2f(-1.0f,-1.0f)){
-		// der er ikke kalibreret endnu
-	} else {
-		//lav alt Matriceopdateringen...
->>>>>>> .r26
 	}
 	
 	if(state != STATE_MATRIX_DONE){

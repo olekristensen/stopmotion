@@ -15,7 +15,9 @@
 #define ASPECTRATIO 3.0/2.0
 #define GAMMA 1.801
 #define PHOTODELAY 4000
+#define PHOTORELEASEDELAY 3000
 #define CAPTURERADIUS 0.03
+#define MAXSHOWDIST 0.3
 
 #include "ofxGui.h"
 #include "ofxGuiTypes.h"
