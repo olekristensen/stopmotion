@@ -75,34 +75,34 @@ void ofxVideoCamera::draw(ofxPoint2f _currentLocation){
 			} else {
 				ofSetColor(255,255,0);
 			}
-			ofLine(_currentLocation.x * (float)ofGetWidth(),_currentLocation.y * (float) ofGetHeight(),1.0f * (float)ofGetWidth(),ASPECTRATIO * (float) ofGetHeight());
+			ofLine(_currentLocation.x * (float)ofGetWidth(),_currentLocation.y * (float) ofGetWidth(),1.0f * (float)ofGetWidth(),ASPECTRATIO * (float) ofGetWidth());
 		} else if(_currentLocation.x > 0.6f && _currentLocation.y < 0.4f*ASPECTRATIO){
 			if(state == STATE_CALIBRATED_SE){
 				ofSetColor(255,255,255);
 			} else {
 				ofSetColor(255,255,0);
 			}
-			ofLine(_currentLocation.x * (float)ofGetWidth(),_currentLocation.y * (float) ofGetHeight(),1.0f * (float)ofGetWidth(),0.0f * (float) ofGetHeight());
+			ofLine(_currentLocation.x * (float)ofGetWidth(),_currentLocation.y * (float) ofGetWidth(),1.0f * (float)ofGetWidth(),0.0f * (float) ofGetWidth());
 		} else if(_currentLocation.x < 0.4f && _currentLocation.y < 0.4f*ASPECTRATIO){
 			if(state == STATE_CALIBRATED_SW){
 				ofSetColor(255,255,255);
 			} else {
 				ofSetColor(255,255,0);
 			}
-			ofLine(_currentLocation.x * (float)ofGetWidth(),_currentLocation.y * (float) ofGetHeight(),0.0f * (float)ofGetWidth(),0.0f * (float) ofGetHeight());
+			ofLine(_currentLocation.x * (float)ofGetWidth(),_currentLocation.y * (float) ofGetWidth(),0.0f * (float)ofGetWidth(),0.0f * (float) ofGetWidth());
 		} else if(_currentLocation.x < 0.4f && _currentLocation.y > 0.6f*ASPECTRATIO){
 			if(state == STATE_CALIBRATED_NW){
 				ofSetColor(255,255,255);
 			} else {
 				ofSetColor(255,255,0);
 			}
-			ofLine(_currentLocation.x * (float)ofGetWidth(),_currentLocation.y * (float) ofGetHeight(),0.0f * (float)ofGetWidth(),ASPECTRATIO * (float) ofGetHeight());
+			ofLine(_currentLocation.x * (float)ofGetWidth(),_currentLocation.y * (float) ofGetWidth(),0.0f * (float)ofGetWidth(),ASPECTRATIO * (float) ofGetWidth());
 		} else {
 			ofSetColor(128,128,0);
-			ofLine(_currentLocation.x * (float)ofGetWidth(),_currentLocation.y * (float) ofGetHeight(),1.0f * (float)ofGetWidth(),ASPECTRATIO * (float) ofGetHeight());
-			ofLine(_currentLocation.x * (float)ofGetWidth(),_currentLocation.y * (float) ofGetHeight(),1.0f * (float)ofGetWidth(),0.0f * (float) ofGetHeight());
-			ofLine(_currentLocation.x * (float)ofGetWidth(),_currentLocation.y * (float) ofGetHeight(),0.0f * (float)ofGetWidth(),0.0f * (float) ofGetHeight());
-			ofLine(_currentLocation.x * (float)ofGetWidth(),_currentLocation.y * (float) ofGetHeight(),0.0f * (float)ofGetWidth(),ASPECTRATIO * (float) ofGetHeight());
+			ofLine(_currentLocation.x * (float)ofGetWidth(),_currentLocation.y * (float) ofGetWidth(),1.0f * (float)ofGetWidth(),ASPECTRATIO * (float) ofGetWidth());
+			ofLine(_currentLocation.x * (float)ofGetWidth(),_currentLocation.y * (float) ofGetWidth(),1.0f * (float)ofGetWidth(),0.0f * (float) ofGetWidth());
+			ofLine(_currentLocation.x * (float)ofGetWidth(),_currentLocation.y * (float) ofGetWidth(),0.0f * (float)ofGetWidth(),0.0f * (float) ofGetWidth());
+			ofLine(_currentLocation.x * (float)ofGetWidth(),_currentLocation.y * (float) ofGetWidth(),0.0f * (float)ofGetWidth(),ASPECTRATIO * (float) ofGetWidth());
 		}
 	}
 }
