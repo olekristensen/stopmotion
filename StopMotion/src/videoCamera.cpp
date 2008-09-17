@@ -61,7 +61,7 @@ void ofxVideoCamera::update(ofxPoint2f _currentLocation, bool captureCornerPoint
 			}
 		}
 		if(state == STATE_CALIBRATED_ALL){
-			coordWarper.calculateMatrix(srcPoints,dstPoints);
+			coordWarper.calculateMatrix(dstPoints,srcPoints);
 			state = STATE_MATRIX_DONE;
 		}
 	}
