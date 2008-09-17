@@ -21,6 +21,8 @@ public:
 	void update(ofxPoint2f _currentLocation, bool captureCornerPoint);
 	void draw(ofxPoint2f _currentLocation);
 	
+	void loadPoints(ofxPoint2f loadPoints[4]);
+	
 	ofxPoint2f getTransformedPoint(ofxPoint2f coordinate);
 	int setCornerPoint(ofxPoint2f coordinate);
 	

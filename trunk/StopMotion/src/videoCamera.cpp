@@ -35,6 +35,18 @@ void ofxVideoCamera::setup(){
 	
 }
 
+void ofxVideoCamera::loadDstPoints(ofxPoint2f loadPoints[4]){
+	
+	// set dstPoints
+	for (int i = 0; i < 4; i++){
+		dstPoints[i].x = loadPoints[i].x;
+		dstPoints[i].y = loadPoints[i].y;
+	}
+	
+	state = STATE_CALIBRATED_ALL;
+	
+}
+
 void ofxVideoCamera::update(ofxPoint2f _currentLocation, bool captureCornerPoint){
 	
 	// if a corner should be set...
