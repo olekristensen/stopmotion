@@ -9,9 +9,9 @@
 	};
 	7F1DB1DE0E80430100CF6336 /* videoCamera.cpp */ = {
 		uiCtxt = {
-			sepNavIntBoundsRect = "{{0, 0}, {936, 1078}}";
-			sepNavSelRange = "{506, 0}";
-			sepNavVisRange = "{199, 544}";
+			sepNavIntBoundsRect = "{{0, 0}, {1110, 2282}}";
+			sepNavSelRange = "{978, 0}";
+			sepNavVisRange = "{85, 1368}";
 		};
 	};
 	7F1DB2C60E80608B00CF6336 /* coordWarping.cpp */ = {
@@ -91,7 +91,7 @@
 		fRef = DD81A5030E60195C006963E2 /* grid.cpp */;
 		name = 333;
 		rLen = 0;
-		rLoc = 4096;
+		rLoc = 4288;
 		rType = 0;
 		vrLen = 1290;
 		vrLoc = 1216;
@@ -181,7 +181,7 @@
 		fRef = DD81A5030E60195C006963E2 /* grid.cpp */;
 		name = "grid.cpp: 64";
 		rLen = 0;
-		rLoc = 3574;
+		rLoc = 3766;
 		rType = 0;
 		vrLen = 1488;
 		vrLoc = 417;
@@ -191,7 +191,7 @@
 		fRef = DD81A5030E60195C006963E2 /* grid.cpp */;
 		name = "grid.cpp: 64";
 		rLen = 0;
-		rLoc = 3574;
+		rLoc = 3766;
 		rType = 0;
 		vrLen = 1484;
 		vrLoc = 421;
@@ -211,7 +211,7 @@
 		fRef = DD81A5030E60195C006963E2 /* grid.cpp */;
 		name = "grid.cpp: 70";
 		rLen = 0;
-		rLoc = 3739;
+		rLoc = 3931;
 		rType = 0;
 		vrLen = 1535;
 		vrLoc = 260;
@@ -241,7 +241,7 @@
 		fRef = DD81A5030E60195C006963E2 /* grid.cpp */;
 		name = "grid.cpp: 70";
 		rLen = 0;
-		rLoc = 3739;
+		rLoc = 3931;
 		rType = 0;
 		vrLen = 1524;
 		vrLoc = 0;
@@ -261,7 +261,7 @@
 		fRef = DD81A5030E60195C006963E2 /* grid.cpp */;
 		name = "grid.cpp: 46";
 		rLen = 0;
-		rLoc = 2936;
+		rLoc = 3128;
 		rType = 0;
 		vrLen = 1379;
 		vrLoc = 0;
@@ -281,7 +281,7 @@
 		fRef = DD81A5030E60195C006963E2 /* grid.cpp */;
 		name = "grid.cpp: 45";
 		rLen = 0;
-		rLoc = 2935;
+		rLoc = 3127;
 		rType = 0;
 		vrLen = 1379;
 		vrLoc = 0;
@@ -331,7 +331,7 @@
 		fRef = DD81A5030E60195C006963E2 /* grid.cpp */;
 		name = "grid.cpp: 49";
 		rLen = 0;
-		rLoc = 1416;
+		rLoc = 1608;
 		rType = 0;
 		vrLen = 1425;
 		vrLoc = 0;
@@ -351,7 +351,7 @@
 		fRef = DD81A5030E60195C006963E2 /* grid.cpp */;
 		name = "grid.cpp: 49";
 		rLen = 0;
-		rLoc = 2935;
+		rLoc = 3127;
 		rType = 0;
 		vrLen = 1368;
 		vrLoc = 0;
@@ -371,7 +371,7 @@
 		fRef = E4B69E1F0A3A1BDC003C02F2 /* testApp.h */;
 		name = "testApp.h: 36";
 		rLen = 1;
-		rLoc = 647;
+		rLoc = 702;
 		rType = 0;
 		vrLen = 1161;
 		vrLoc = 485;
@@ -391,7 +391,7 @@
 		fRef = DD81A5030E60195C006963E2 /* grid.cpp */;
 		name = "grid.cpp: 45";
 		rLen = 0;
-		rLoc = 1116;
+		rLoc = 1308;
 		rType = 0;
 		vrLen = 1453;
 		vrLoc = 0;
@@ -421,7 +421,7 @@
 		fRef = E4B69E1F0A3A1BDC003C02F2 /* testApp.h */;
 		name = "testApp.h: 36";
 		rLen = 1;
-		rLoc = 647;
+		rLoc = 702;
 		rType = 0;
 		vrLen = 1161;
 		vrLoc = 485;
@@ -441,7 +441,7 @@
 		fRef = E4B69E1F0A3A1BDC003C02F2 /* testApp.h */;
 		name = "testApp.h: 36";
 		rLen = 1;
-		rLoc = 647;
+		rLoc = 702;
 		rType = 0;
 		vrLen = 1224;
 		vrLoc = 418;
@@ -461,7 +461,7 @@
 		fRef = E4B69E1F0A3A1BDC003C02F2 /* testApp.h */;
 		name = "testApp.h: 36";
 		rLen = 1;
-		rLoc = 647;
+		rLoc = 702;
 		rType = 0;
 		vrLen = 1165;
 		vrLoc = 418;
@@ -481,7 +481,7 @@
 		fRef = E4B69E1F0A3A1BDC003C02F2 /* testApp.h */;
 		name = "testApp.h: 36";
 		rLen = 1;
-		rLoc = 647;
+		rLoc = 702;
 		rType = 0;
 		vrLen = 1197;
 		vrLoc = 417;
@@ -518,7 +518,7 @@
 		fRef = E4B69E1F0A3A1BDC003C02F2 /* testApp.h */;
 		name = "testApp.h: 46";
 		rLen = 0;
-		rLoc = 824;
+		rLoc = 879;
 		rType = 0;
 		vrLen = 1145;
 		vrLoc = 0;
@@ -538,7 +538,7 @@
 		fRef = E4B69E1F0A3A1BDC003C02F2 /* testApp.h */;
 		name = "testApp.h: 106";
 		rLen = 0;
-		rLoc = 1876;
+		rLoc = 1931;
 		rType = 0;
 		vrLen = 944;
 		vrLoc = 896;
@@ -608,7 +608,7 @@
 		fRef = E4B69E1F0A3A1BDC003C02F2 /* testApp.h */;
 		name = "testApp.h: 106";
 		rLen = 0;
-		rLoc = 1876;
+		rLoc = 1931;
 		rType = 0;
 		vrLen = 1147;
 		vrLoc = 565;
@@ -628,7 +628,7 @@
 		fRef = E4B69E1F0A3A1BDC003C02F2 /* testApp.h */;
 		name = "testApp.h: 18";
 		rLen = 13;
-		rLoc = 279;
+		rLoc = 310;
 		rType = 0;
 		vrLen = 1162;
 		vrLoc = 197;
@@ -648,7 +648,7 @@
 		fRef = E4B69E1F0A3A1BDC003C02F2 /* testApp.h */;
 		name = "testApp.h: 18";
 		rLen = 13;
-		rLoc = 279;
+		rLoc = 310;
 		rType = 0;
 		vrLen = 1199;
 		vrLoc = 449;
@@ -668,7 +668,7 @@
 		fRef = E4B69E1F0A3A1BDC003C02F2 /* testApp.h */;
 		name = "testApp.h: 70";
 		rLen = 0;
-		rLoc = 1222;
+		rLoc = 1277;
 		rType = 0;
 		vrLen = 1169;
 		vrLoc = 449;
@@ -718,7 +718,7 @@
 		fRef = DD81A5030E60195C006963E2 /* grid.cpp */;
 		name = "grid.cpp: 77";
 		rLen = 0;
-		rLoc = 1933;
+		rLoc = 2125;
 		rType = 0;
 		vrLen = 2188;
 		vrLoc = 1230;
@@ -738,7 +738,7 @@
 		fRef = 7F1DB1DE0E80430100CF6336 /* videoCamera.cpp */;
 		name = "videoCamera.cpp: 33";
 		rLen = 0;
-		rLoc = 722;
+		rLoc = 708;
 		rType = 0;
 		vrLen = 1801;
 		vrLoc = 23;
@@ -748,7 +748,7 @@
 		fRef = 7F1DB1DE0E80430100CF6336 /* videoCamera.cpp */;
 		name = "videoCamera.cpp: 33";
 		rLen = 0;
-		rLoc = 722;
+		rLoc = 708;
 		rType = 0;
 		vrLen = 1801;
 		vrLoc = 23;
@@ -798,7 +798,7 @@
 		fRef = E4B69E1F0A3A1BDC003C02F2 /* testApp.h */;
 		name = "testApp.h: 80";
 		rLen = 18;
-		rLoc = 1409;
+		rLoc = 1464;
 		rType = 0;
 		vrLen = 1168;
 		vrLoc = 632;
@@ -818,7 +818,7 @@
 		fRef = E4B69E1F0A3A1BDC003C02F2 /* testApp.h */;
 		name = "testApp.h: 29";
 		rLen = 0;
-		rLoc = 449;
+		rLoc = 504;
 		rType = 0;
 		vrLen = 1118;
 		vrLoc = 0;
@@ -838,7 +838,7 @@
 		fRef = E4B69E1F0A3A1BDC003C02F2 /* testApp.h */;
 		name = "testApp.h: 108";
 		rLen = 0;
-		rLoc = 1875;
+		rLoc = 1930;
 		rType = 0;
 		vrLen = 973;
 		vrLoc = 911;
@@ -898,7 +898,7 @@
 		fRef = E4B69E1F0A3A1BDC003C02F2 /* testApp.h */;
 		name = "testApp.h: 108";
 		rLen = 0;
-		rLoc = 1875;
+		rLoc = 1930;
 		rType = 0;
 		vrLen = 987;
 		vrLoc = 897;
@@ -928,7 +928,7 @@
 		fRef = DD81A5030E60195C006963E2 /* grid.cpp */;
 		name = "grid.cpp: 81";
 		rLen = 0;
-		rLoc = 2202;
+		rLoc = 2394;
 		rType = 0;
 		vrLen = 2165;
 		vrLoc = 756;
@@ -948,7 +948,7 @@
 		fRef = DD81A5030E60195C006963E2 /* grid.cpp */;
 		name = "grid.cpp: 81";
 		rLen = 0;
-		rLoc = 2202;
+		rLoc = 2394;
 		rType = 0;
 		vrLen = 2165;
 		vrLoc = 756;
@@ -1008,7 +1008,7 @@
 		fRef = DD81A5030E60195C006963E2 /* grid.cpp */;
 		name = "grid.cpp: 52";
 		rLen = 0;
-		rLoc = 1196;
+		rLoc = 1388;
 		rType = 0;
 		vrLen = 2106;
 		vrLoc = 852;
@@ -1018,7 +1018,7 @@
 		fRef = E4B69E1F0A3A1BDC003C02F2 /* testApp.h */;
 		name = "testApp.h: 108";
 		rLen = 0;
-		rLoc = 1875;
+		rLoc = 1930;
 		rType = 0;
 		vrLen = 986;
 		vrLoc = 897;
@@ -1028,7 +1028,7 @@
 		fRef = DD81A5030E60195C006963E2 /* grid.cpp */;
 		name = "grid.cpp: 52";
 		rLen = 0;
-		rLoc = 1196;
+		rLoc = 1388;
 		rType = 0;
 		vrLen = 2106;
 		vrLoc = 852;
@@ -1038,7 +1038,7 @@
 		fRef = E4B69E1F0A3A1BDC003C02F2 /* testApp.h */;
 		name = "testApp.h: 45";
 		rLen = 0;
-		rLoc = 739;
+		rLoc = 794;
 		rType = 0;
 		vrLen = 1164;
 		vrLoc = 566;
@@ -1053,9 +1053,9 @@
 	};
 	DD81A5030E60195C006963E2 /* grid.cpp */ = {
 		uiCtxt = {
-			sepNavIntBoundsRect = "{{0, 0}, {1110, 2772}}";
-			sepNavSelRange = "{1196, 0}";
-			sepNavVisRange = "{852, 2106}";
+			sepNavIntBoundsRect = "{{0, 0}, {1110, 2968}}";
+			sepNavSelRange = "{991, 0}";
+			sepNavVisRange = "{657, 2021}";
 			sepNavWindowFrame = "{{63, 158}, {709, 734}}";
 		};
 	};
@@ -1212,7 +1212,7 @@
 		fRef = E4B69E1F0A3A1BDC003C02F2 /* testApp.h */;
 		name = "testApp.h: 45";
 		rLen = 0;
-		rLoc = 739;
+		rLoc = 794;
 		rType = 0;
 		vrLen = 1164;
 		vrLoc = 566;
@@ -1232,7 +1232,7 @@
 		fRef = E4B69E1F0A3A1BDC003C02F2 /* testApp.h */;
 		name = "testApp.h: 45";
 		rLen = 0;
-		rLoc = 739;
+		rLoc = 794;
 		rType = 0;
 		vrLen = 1164;
 		vrLoc = 566;
@@ -1246,6 +1246,194 @@
 		rType = 0;
 		vrLen = 409;
 		vrLoc = 0;
+	};
+	DDC19C8B0E81320500575370 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = DDF2AEEC0E7FEEE600BAECC1 /* tracker.h */;
+		name = "tracker.h: 8";
+		rLen = 1;
+		rLoc = 129;
+		rType = 0;
+		vrLen = 409;
+		vrLoc = 0;
+	};
+	DDC19C8C0E81320500575370 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = 7F1DB1DE0E80430100CF6336 /* videoCamera.cpp */;
+		name = "videoCamera.cpp: 33";
+		rLen = 0;
+		rLoc = 708;
+		rType = 0;
+		vrLen = 1789;
+		vrLoc = 23;
+	};
+	DDC19C8D0E81320500575370 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = DD81A5030E60195C006963E2 /* grid.cpp */;
+		name = "grid.cpp: 52";
+		rLen = 0;
+		rLoc = 1388;
+		rType = 0;
+		vrLen = 2106;
+		vrLoc = 852;
+	};
+	DDC19C8E0E81320500575370 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = E4B69E1F0A3A1BDC003C02F2 /* testApp.h */;
+		name = "testApp.h: 45";
+		rLen = 0;
+		rLoc = 794;
+		rType = 0;
+		vrLen = 1164;
+		vrLoc = 566;
+	};
+	DDC19C8F0E81320500575370 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = DDF2AEEC0E7FEEE600BAECC1 /* tracker.h */;
+		name = "tracker.h: 8";
+		rLen = 1;
+		rLoc = 129;
+		rType = 0;
+		vrLen = 409;
+		vrLoc = 0;
+	};
+	DDC19C900E81320500575370 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = 7F1DB1DE0E80430100CF6336 /* videoCamera.cpp */;
+		name = "videoCamera.cpp: 33";
+		rLen = 0;
+		rLoc = 708;
+		rType = 0;
+		vrLen = 1789;
+		vrLoc = 23;
+	};
+	DDC19C910E81320500575370 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = DD81A5030E60195C006963E2 /* grid.cpp */;
+		name = "grid.cpp: 52";
+		rLen = 0;
+		rLoc = 1388;
+		rType = 0;
+		vrLen = 2106;
+		vrLoc = 852;
+	};
+	DDC19C920E81320500575370 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = E4B69E1F0A3A1BDC003C02F2 /* testApp.h */;
+		name = "testApp.h: 18";
+		rLen = 17;
+		rLoc = 279;
+		rType = 0;
+		vrLen = 1127;
+		vrLoc = 0;
+	};
+	DDC19C950E81337D00575370 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = E4B69E1E0A3A1BDC003C02F2 /* testApp.cpp */;
+		name = "testApp.cpp: 80";
+		rLen = 129;
+		rLoc = 2244;
+		rType = 0;
+		vrLen = 2122;
+		vrLoc = 1401;
+	};
+	DDC19C960E81337D00575370 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = E4B69E1F0A3A1BDC003C02F2 /* testApp.h */;
+		name = "testApp.h: 20";
+		rLen = 11;
+		rLoc = 337;
+		rType = 0;
+		vrLen = 1148;
+		vrLoc = 0;
+	};
+	DDC19C970E81337D00575370 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = DD81A5030E60195C006963E2 /* grid.cpp */;
+		name = "grid.cpp: 47";
+		rLen = 0;
+		rLoc = 1160;
+		rType = 0;
+		vrLen = 2320;
+		vrLoc = 657;
+	};
+	DDC19C980E81337D00575370 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = E4B69E1F0A3A1BDC003C02F2 /* testApp.h */;
+		name = "testApp.h: 18";
+		rLen = 17;
+		rLoc = 279;
+		rType = 0;
+		vrLen = 1174;
+		vrLoc = 479;
+	};
+	DDC19C990E81337D00575370 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = DD81A5030E60195C006963E2 /* grid.cpp */;
+		name = "grid.cpp: 47";
+		rLen = 0;
+		rLoc = 1160;
+		rType = 0;
+		vrLen = 2320;
+		vrLoc = 657;
+	};
+	DDC19C9A0E81337D00575370 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = E4B69E1F0A3A1BDC003C02F2 /* testApp.h */;
+		name = "testApp.h: 20";
+		rLen = 11;
+		rLoc = 337;
+		rType = 0;
+		vrLen = 1148;
+		vrLoc = 0;
+	};
+	DDC19C9B0E81337D00575370 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = DD81A5030E60195C006963E2 /* grid.cpp */;
+		name = "grid.cpp: 49";
+		rLen = 0;
+		rLoc = 1099;
+		rType = 0;
+		vrLen = 2015;
+		vrLoc = 657;
+	};
+	DDC19CA10E81346900575370 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = DD81A5030E60195C006963E2 /* grid.cpp */;
+		name = "grid.cpp: 46";
+		rLen = 0;
+		rLoc = 991;
+		rType = 0;
+		vrLen = 2021;
+		vrLoc = 657;
+	};
+	DDC19CA20E81346900575370 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		comments = "error: expected unqualified-id before '<<' token";
+		fRef = 7F1DB1DE0E80430100CF6336 /* videoCamera.cpp */;
+		rLen = 1;
+		rLoc = 37;
+		rType = 1;
+	};
+	DDC19CA30E81346900575370 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = DD81A5030E60195C006963E2 /* grid.cpp */;
+		name = "grid.cpp: 46";
+		rLen = 0;
+		rLoc = 991;
+		rType = 0;
+		vrLen = 2021;
+		vrLoc = 657;
+	};
+	DDC19CA40E81346900575370 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = 7F1DB1DE0E80430100CF6336 /* videoCamera.cpp */;
+		name = "videoCamera.cpp: 48";
+		rLen = 0;
+		rLoc = 978;
+		rType = 0;
+		vrLen = 1368;
+		vrLoc = 85;
 	};
 	DDE240310E544EB000E3617F /* camera.h */ = {
 		uiCtxt = {
@@ -1692,6 +1880,25 @@
 			DDC19C760E812F9500575370 /* PBXTextBookmark */ = DDC19C760E812F9500575370 /* PBXTextBookmark */;
 			DDC19C770E812F9500575370 /* PBXTextBookmark */ = DDC19C770E812F9500575370 /* PBXTextBookmark */;
 			DDC19C780E812F9500575370 /* PBXTextBookmark */ = DDC19C780E812F9500575370 /* PBXTextBookmark */;
+			DDC19C8B0E81320500575370 /* PBXTextBookmark */ = DDC19C8B0E81320500575370 /* PBXTextBookmark */;
+			DDC19C8C0E81320500575370 /* PBXTextBookmark */ = DDC19C8C0E81320500575370 /* PBXTextBookmark */;
+			DDC19C8D0E81320500575370 /* PBXTextBookmark */ = DDC19C8D0E81320500575370 /* PBXTextBookmark */;
+			DDC19C8E0E81320500575370 /* PBXTextBookmark */ = DDC19C8E0E81320500575370 /* PBXTextBookmark */;
+			DDC19C8F0E81320500575370 /* PBXTextBookmark */ = DDC19C8F0E81320500575370 /* PBXTextBookmark */;
+			DDC19C900E81320500575370 /* PBXTextBookmark */ = DDC19C900E81320500575370 /* PBXTextBookmark */;
+			DDC19C910E81320500575370 /* PBXTextBookmark */ = DDC19C910E81320500575370 /* PBXTextBookmark */;
+			DDC19C920E81320500575370 /* PBXTextBookmark */ = DDC19C920E81320500575370 /* PBXTextBookmark */;
+			DDC19C950E81337D00575370 /* PBXTextBookmark */ = DDC19C950E81337D00575370 /* PBXTextBookmark */;
+			DDC19C960E81337D00575370 /* PBXTextBookmark */ = DDC19C960E81337D00575370 /* PBXTextBookmark */;
+			DDC19C970E81337D00575370 /* PBXTextBookmark */ = DDC19C970E81337D00575370 /* PBXTextBookmark */;
+			DDC19C980E81337D00575370 /* PBXTextBookmark */ = DDC19C980E81337D00575370 /* PBXTextBookmark */;
+			DDC19C990E81337D00575370 /* PBXTextBookmark */ = DDC19C990E81337D00575370 /* PBXTextBookmark */;
+			DDC19C9A0E81337D00575370 /* PBXTextBookmark */ = DDC19C9A0E81337D00575370 /* PBXTextBookmark */;
+			DDC19C9B0E81337D00575370 /* PBXTextBookmark */ = DDC19C9B0E81337D00575370 /* PBXTextBookmark */;
+			DDC19CA10E81346900575370 /* PBXTextBookmark */ = DDC19CA10E81346900575370 /* PBXTextBookmark */;
+			DDC19CA20E81346900575370 /* PBXTextBookmark */ = DDC19CA20E81346900575370 /* PBXTextBookmark */;
+			DDC19CA30E81346900575370 /* PBXTextBookmark */ = DDC19CA30E81346900575370 /* PBXTextBookmark */;
+			DDC19CA40E81346900575370 /* PBXTextBookmark */ = DDC19CA40E81346900575370 /* PBXTextBookmark */;
 			DDEB274D0E72D3F00011C201 = DDEB274D0E72D3F00011C201 /* PBXTextBookmark */;
 			DDEB27510E72D3F00011C201 = DDEB27510E72D3F00011C201 /* PBXTextBookmark */;
 			DDEB27520E72D3F00011C201 = DDEB27520E72D3F00011C201 /* PBXTextBookmark */;
@@ -1725,16 +1932,16 @@
 	E4B69E1E0A3A1BDC003C02F2 /* testApp.cpp */ = {
 		uiCtxt = {
 			sepNavIntBoundsRect = "{{0, 0}, {1110, 5894}}";
-			sepNavSelRange = "{5528, 0}";
-			sepNavVisRange = "{4395, 1253}";
+			sepNavSelRange = "{2244, 129}";
+			sepNavVisRange = "{1401, 2122}";
 			sepNavWindowFrame = "{{922, 326}, {718, 730}}";
 		};
 	};
 	E4B69E1F0A3A1BDC003C02F2 /* testApp.h */ = {
 		uiCtxt = {
-			sepNavIntBoundsRect = "{{0, 0}, {1110, 1512}}";
-			sepNavSelRange = "{739, 0}";
-			sepNavVisRange = "{566, 1164}";
+			sepNavIntBoundsRect = "{{0, 0}, {1110, 1526}}";
+			sepNavSelRange = "{337, 11}";
+			sepNavVisRange = "{0, 1148}";
 			sepNavWindowFrame = "{{104, 254}, {718, 730}}";
 		};
 	};
