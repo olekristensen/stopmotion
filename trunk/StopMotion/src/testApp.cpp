@@ -2,7 +2,7 @@ float t;
 
 
 #include "testApp.h"
-#define GAMMA 1.801
+
 bool newImage = false;
 #include "camera.h"
 
@@ -40,6 +40,10 @@ void testApp::setup(){
 	panel1->addSlider(kParameter_Threshold, "Threshold", 110, OFXGUI_SLIDER_HEIGHT, 0.0f, 300.0f, tracker.threshold, kofxGui_Display_Float2, 0);
 	gui->forceUpdate(true);	
 	gui->activate(true);
+	
+	
+	//Null init
+	takingPhoto = 0;
 }
 //--------------------------------------------------------------
 void testApp::update(){
@@ -49,29 +53,44 @@ void testApp::update(){
 		grid.expandGrid();
 	}
 
+	//If we in progress of taking a image, check if we have waited till end of delay
+	if(takingPhoto != 0){
+		if(tracker.getCurrentLocation().distance(grid.findClosestPoint(tracker.getCurrentLocation(), GRIDPOINT_EMPTY)->orig) > CAPTURERADIUS){
+			takingPhoto = 0;
+			gridPoint* p = grid.findClosestPoint(tracker.getCurrentLocation(), GRIDPOINT_EMPTY);
+			p->capturePercent = 0;
+		} else {
+			gridPoint* p = grid.findClosestPoint(tracker.getCurrentLocation(), GRIDPOINT_EMPTY);
+			p->capturePercent = ((float)ofGetElapsedTimeMillis() - takingPhoto)/PHOTODELAY;
+			if(ofGetElapsedTimeMillis()-takingPhoto > PHOTODELAY){
+				p->capturePercent = 1;
+				takingPhoto = 0;
+				p->loc.x = tracker.getCurrentLocation().x;
+				p->loc.y = tracker.getCurrentLocation().y;
+				string n;
+				if(nextPhotoDigit< 10)
+					n = "000"+ofToString(nextPhotoDigit, 0);
+				else if(nextPhotoDigit < 100)
+					n = "00"+ofToString(nextPhotoDigit, 0);
+				else if(nextPhotoDigit < 1000)
+					n = "0"+ofToString(nextPhotoDigit, 0);
+				else
+					n = ofToString(nextPhotoDigit, 0);
+				
+				p->url = "images/StopMotion1_"+n+".JPG";
+				p->empty = false;
+				p->id = nextPhotoDigit;
+				nextPhotoDigit ++;
+				p->savePoint(XML);
+			}
+		}
+		
 	//Check if we should capture image
-	if(grid.findClosestPoint(tracker.getCurrentLocation(), GRIDPOINT_EMPTY) != NULL){ //Check if we even got any points
-		if(tracker.getCurrentLocation().distance(grid.findClosestPoint(tracker.getCurrentLocation(), GRIDPOINT_EMPTY)->orig) < 0.1){
+	} else if(grid.findClosestPoint(tracker.getCurrentLocation(), GRIDPOINT_EMPTY) != NULL){ //Check if we even got any points
+		if(tracker.getCurrentLocation().distance(grid.findClosestPoint(tracker.getCurrentLocation(), GRIDPOINT_EMPTY)->orig) < CAPTURERADIUS){
 			cout<<"Capture image"<<endl;
 			capturePhoto();
-			gridPoint* p = grid.findClosestPoint(tracker.getCurrentLocation(), GRIDPOINT_EMPTY);
-			string n;
-			if(nextPhotoDigit< 10)
-				n = "000"+ofToString(nextPhotoDigit, 0);
-			else if(nextPhotoDigit < 100)
-				n = "00"+ofToString(nextPhotoDigit, 0);
-			else if(nextPhotoDigit < 1000)
-				n = "0"+ofToString(nextPhotoDigit, 0);
-			else
-				n = ofToString(nextPhotoDigit, 0);
-
-			p->url = "images/StopMotion1_"+n+".JPG";
-			cout<<"Set url: "<<p->url<<endl;
-			p->empty = false;
-			p->id = nextPhotoDigit;
-			//p.loc.x = 1;
-			nextPhotoDigit ++;
-			p->savePoint(XML);
+			takingPhoto = ofGetElapsedTimeMillis();
 		}
 	}
 	
@@ -86,11 +105,6 @@ void testApp::update(){
 	
 	i++;
 	ofBackground(0, 0, 0);
-
-	/*if(newImage){
-		images[imageIndex].loadImage("image.jpg");		
-		newImage = false;
-	}*/
 	//Check if we need new image. Has to be done in update, and not mouse moved due bug
 	if(loadedX != loadX || loadedY != loadY){
 		loadImg((loadX),(loadY));
@@ -141,6 +155,10 @@ void testApp::draw(){
 		
 	//Draw points if settings says so
 //	cout<<"Number points "<<grid.points.size()<<endl;
+	for(int i=0; i<grid.points.size(); i++){
+		grid.points[i].draw();
+	}
+	
 	if(showPoints){
 		for(int i=0; i<grid.points.size(); i++){
 			if(grid.points[i].empty)
@@ -355,6 +373,7 @@ void testApp::handleGui(int parameterId, int task, void* data, int length){
 
 
 void testApp::capturePhoto(){
-	system("osascript -e 'tell application \"RemoteCapture DC\" to activate' -e 'tell application \"System Events\" to tell process \"RemoteCapture DC\"' -e 'keystroke \"r\" using command down' -e 'end tell' ");	
+//	system("osascript -e 'tell application \"RemoteCapture DC\" to activate' -e 'tell application \"System Events\" to tell process \"RemoteCapture DC\"' -e 'keystroke \"r\" using command down' -e 'end tell' ");	
+	TO.start();
 }
 

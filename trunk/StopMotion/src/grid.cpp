@@ -4,6 +4,7 @@
 
 gridPoint::gridPoint(){
 	empty = true;
+	capturePercent = 0;
 }
 
 void gridPoint::savePoint(ofxXmlSettings &xmlFile){
@@ -39,6 +40,44 @@ void gridPoint::savePoint(ofxXmlSettings &xmlFile){
 	xmlFile.popTag();
 
 	xmlFile.saveFile("images.xml");
+}
+
+void gridPoint::draw(){
+	if(capturePercent > 0 && capturePercent < 1){
+		sizeV += (CAPTURERADIUS - size)*0.01;
+	} else if(capturePercent >=1  && size > 0){
+		sizeV += (0 - size)*0.01;
+	}else if(size >0){
+		sizeV -= 0.01;
+	} else {
+		sizeV = 0;
+		size = 0;
+	}
+	sizeV *= 0.9;
+	size += sizeV;
+	
+	if(size >0){
+		ofSetCircleResolution(100);
+		ofNoFill();
+		ofSetColor(255, 255, 255);
+		ofCircle(orig.x*ofGetWidth(), orig.y*ofGetWidth(), size*ofGetWidth());
+		ofSetColor(0, 0, 0);
+		ofCircle(orig.x*ofGetWidth(), orig.y*ofGetWidth(), size*ofGetWidth()-1);
+		ofCircle(orig.x*ofGetWidth(), orig.y*ofGetWidth(), size*ofGetWidth()+1);
+		
+		int numBricks = round(100.0*capturePercent);
+		double radianStep = (double)TWO_PI/100.0;
+		glColor3f(255, 255, 255);
+		glBegin(GL_LINES);
+		glVertex2f(orig.x*ofGetWidth(), orig.y*ofGetWidth());
+		for(int i=0;i<numBricks; i++){
+//			glVertex2f(orig.x*ofGetWidth(), orig.y*ofGetWidth());
+			glVertex2f(orig.x*ofGetWidth()+(CAPTURERADIUS-0.01)*cos(i*radianStep)*ofGetWidth(), orig.y*ofGetWidth()+(CAPTURERADIUS-0.01)*sin(i*radianStep)*ofGetWidth());
+			glVertex2f(orig.x*ofGetWidth()+(CAPTURERADIUS-0.01)*cos((i-1)*radianStep)*ofGetWidth(), orig.y*ofGetWidth()+(CAPTURERADIUS-0.01)*sin((i-1)*radianStep)*ofGetWidth());
+		}
+		glVertex2f(orig.x*ofGetWidth(), orig.y*ofGetWidth());
+		glEnd();
+	}
 }
 
 ofxGrid::ofxGrid(){
