@@ -10,6 +10,7 @@ public:
 	int id;
 	
 	gridPoint();
+	void savePoint(ofxXmlSettings &xmlFile);
 };
 
 
@@ -29,5 +30,9 @@ public:
 	
 	vector<gridPoint> points;//Contains all points
 	int gridSize;
+	
+	ofxXmlSettings XML;
+	
+	int highestId;
 };
 

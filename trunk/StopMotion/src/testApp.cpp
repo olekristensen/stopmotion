@@ -14,13 +14,15 @@ void testApp::setup(){
 	//Load tracker
 	tracker.setup();
 	
+	imageIndex = 0;
+	
 	//Load XML images
 	bool fileLoaded = XML.loadFile("images.xml");
 	if(fileLoaded){
 		grid.loadXml(XML);
 		tracker.threshold = XML.getValue("TRACKER:THRESHOLD", 100);
-		nextPhotoDigit = XML.getValue("IMAG:NEXT", 1);
-
+		
+		nextPhotoDigit = grid.highestId+1; //The grid returns the highest ID in the xml file, which we use to define the next image.
 	} 
 	
 	//Setup font
@@ -36,17 +38,8 @@ void testApp::setup(){
 	panel1->addButton(kParameter_ShowPoints, "Show Points", OFXGUI_BUTTON_HEIGHT, OFXGUI_BUTTON_HEIGHT, showPoints, kofxGui_Button_Switch);
 	panel1->addButton(kParameter_ShowTracker, "Show Tracker", OFXGUI_BUTTON_HEIGHT, OFXGUI_BUTTON_HEIGHT, showTracker, kofxGui_Button_Switch);
 	panel1->addSlider(kParameter_Threshold, "Threshold", 110, OFXGUI_SLIDER_HEIGHT, 0.0f, 300.0f, tracker.threshold, kofxGui_Display_Float2, 0);
-
-	//	do update while inactive
 	gui->forceUpdate(true);	
 	gui->activate(true);
-
-	
-
-	imageIndex = 0;
-	
-
-
 }
 //--------------------------------------------------------------
 void testApp::update(){
@@ -78,6 +71,7 @@ void testApp::update(){
 			p->id = nextPhotoDigit;
 			//p.loc.x = 1;
 			nextPhotoDigit ++;
+			p->savePoint(XML);
 		}
 	}
 	
