@@ -41,9 +41,12 @@ void testApp::setup(){
 	gui->forceUpdate(true);	
 	gui->activate(true);
 	
+	marker.loadImage("Marker.png");
+	
 	
 	//Null init
 	takingPhoto = 0;
+	captureInterrupted = false;
 }
 //--------------------------------------------------------------
 void testApp::update(){
@@ -55,8 +58,28 @@ void testApp::update(){
 
 	//If we in progress of taking a image, check if we have waited till end of delay
 	if(takingPhoto != 0){
-		if(tracker.getCurrentLocation().distance(grid.findClosestPoint(tracker.getCurrentLocation(), GRIDPOINT_EMPTY)->orig) > CAPTURERADIUS){
-			takingPhoto = 0;
+		string n;
+		if(nextPhotoDigit< 10)
+			n = "000"+ofToString(nextPhotoDigit, 0);
+		else if(nextPhotoDigit < 100)
+			n = "00"+ofToString(nextPhotoDigit, 0);
+		else if(nextPhotoDigit < 1000)
+			n = "0"+ofToString(nextPhotoDigit, 0);
+		else
+			n = ofToString(nextPhotoDigit, 0);
+		
+		
+		if(captureInterrupted){
+			if(ofGetElapsedTimeMillis()-takingPhoto > PHOTODELAY){
+				string cmd = "rm "+ofToDataPath("images/StopMotion1_"+n+".JPG");
+				system((const char *)cmd.c_str());
+				captureInterrupted = false;
+				takingPhoto = 0;
+			}
+		}
+		else if(tracker.getCurrentLocation().distance(grid.findClosestPoint(tracker.getCurrentLocation(), GRIDPOINT_EMPTY)->orig) > CAPTURERADIUS){
+			//takingPhoto = 0;
+			captureInterrupted = true;
 			gridPoint* p = grid.findClosestPoint(tracker.getCurrentLocation(), GRIDPOINT_EMPTY);
 			p->capturePercent = 0;
 		} else {
@@ -67,16 +90,7 @@ void testApp::update(){
 				takingPhoto = 0;
 				p->loc.x = tracker.getCurrentLocation().x;
 				p->loc.y = tracker.getCurrentLocation().y;
-				string n;
-				if(nextPhotoDigit< 10)
-					n = "000"+ofToString(nextPhotoDigit, 0);
-				else if(nextPhotoDigit < 100)
-					n = "00"+ofToString(nextPhotoDigit, 0);
-				else if(nextPhotoDigit < 1000)
-					n = "0"+ofToString(nextPhotoDigit, 0);
-				else
-					n = ofToString(nextPhotoDigit, 0);
-				
+								
 				p->url = "images/StopMotion1_"+n+".JPG";
 				p->empty = false;
 				p->id = nextPhotoDigit;
@@ -156,7 +170,7 @@ void testApp::draw(){
 	//Draw points if settings says so
 //	cout<<"Number points "<<grid.points.size()<<endl;
 	for(int i=0; i<grid.points.size(); i++){
-		grid.points[i].draw();
+		grid.points[i].draw(tracker.getCurrentLocation());
 	}
 	
 	if(showPoints){
@@ -174,6 +188,11 @@ void testApp::draw(){
 			ofCircle((float)grid.points[i].loc.x * (float)ofGetWidth(), (float)grid.points[i].loc.y*ofGetWidth(), 3);
 		}
 	}
+	
+	ofSetColor(255, 255, 255,60);
+	float markerSize = CAPTURERADIUS*4*ofGetWidth();
+	marker.draw(tracker.getCurrentLocation().x*ofGetWidth()-markerSize*0.5, tracker.getCurrentLocation().y*ofGetWidth()-markerSize*0.5,markerSize,markerSize);
+
 	ofDisableAlphaBlending();
 	
 	if(showTracker){
@@ -188,8 +207,6 @@ void testApp::draw(){
 
 	
 	gui->draw();
-	ofSetColor(255, 255, 255);
-	ofEllipse(tracker.getCurrentLocation().x*ofGetWidth(), tracker.getCurrentLocation().y*ofGetWidth(), 20, 20);
 
 	
 }
