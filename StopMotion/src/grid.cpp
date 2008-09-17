@@ -43,12 +43,7 @@ void gridPoint::savePoint(ofxXmlSettings &xmlFile){
 }
 
 void gridPoint::draw(ofxPoint2f tracker){
-	float dist = tracker.distance(orig);
-	if (dist < MAXSHOWDIST && empty){
-		ofNoFill();
-		ofSetColor(255, 255, 255, 100.0-(float)(dist/MAXSHOWDIST)*100.0);
-		ofCircle(loc.x*ofGetWidth(), loc.y*ofGetWidth(), 5);
-	}
+
 //	glEnable(GL_LINE_SMOOTH);
     //glHint(GL_LINE_SMOOTH_HINT, GL_DONT_CARE);
   //  glLineWidth(3);
@@ -99,8 +94,15 @@ void gridPoint::draw(ofxPoint2f tracker){
 		}
 		glEnd();
 		*/
+			
 		
 		
+	}
+	float dist = tracker.distance(orig);
+	if (dist < MAXSHOWDIST && empty  ){
+		ofNoFill();
+		ofSetColor(255, 255, 255, 100.0-(float)(dist/MAXSHOWDIST)*100.0);
+		ofCircle(orig.x*ofGetWidth(), orig.y*ofGetWidth(), 5);
 	}
 }
 

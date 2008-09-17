@@ -35,6 +35,8 @@ class testApp : public ofSimpleApp, public ofxGuiListener	{
 		
 		kParameter_ShowPoints,
 		kParameter_ShowTracker,
+		kParameter_Capture,
+
 		kParameter_Threshold,
 	};
 	public:
@@ -69,6 +71,7 @@ class testApp : public ofSimpleApp, public ofxGuiListener	{
 		ofxGui*		gui;	
 		bool showPoints;	
 		bool showTracker;
+		bool capture;
 		
 		static const int numImages = 20;
 		ofImage images[numImages];
