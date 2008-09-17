@@ -33,7 +33,6 @@ void ofxTracker::update(){
 	if (bNewFrame){
 		
 		colorImg.setFromPixels(vidGrabber.getPixels(), 320,240);
-		
         grayImage = colorImg;
 		
 		
@@ -59,19 +58,30 @@ void ofxTracker::update(){
 }
 
 void ofxTracker::draw(){
+	ofDisableAlphaBlending();
+
 	glPushMatrix();
+	glTranslated(ofGetWidth(), 0, 0);
+	glRotated(90, 0, 0, 1);
+//	glRotated(180, 0, 1, 0);
+
+	
 	//glTranslated(-10, -10, 0);
-	colorImg.draw(0,0);
-	contourFinder.draw(0,0);
-	glPushMatrix();
+	colorImg.draw(0,0, ofGetHeight(), ofGetWidth());
+	//contourFinder.draw(0,0);
 	//glRotated(-90, 0, 0, 1);
 	//glTranslated(-ofGetWidth(), 0, 0);
-	ofEllipse(loc.x, loc.y, 10, 10);
-	font.drawString(ofToString(getCurrentLocation().x, 1)+ " - "+ofToString(getCurrentLocation().y,1), ofGetWidth()-240, 310);
+	//ofEllipse(loc.x, loc.y, 10, 10);
+	ofSetColor(255, 255, 255, 255);
+	font.drawString(ofToString((float)loc.x/240, 1)+ " - "+ofToString(loc.y)+" - "+ofToString((1-(float)loc.y/320),1), ofGetWidth()-240, 310);
+	glPushMatrix();
+
 	glPopMatrix();
 	glPopMatrix();
+	ofEnableAlphaBlending();
+
 }
 
-ofxPoint2f ofxTracker::getCurrentLocation(){
-	return ofxPoint2f((float)loc.x/320, (1-(float)loc.y/240)*ASPECTRATIO);
+ofxPoint2f ofxTracker::getCurrentLocation(ofxVideoCamera cam){
+	return ofxPoint2f(cam.getTransformedPoint(ofxPoint2f((float)loc.x/240, (1-(float)loc.y/320)*ASPECTRATIO)));
 }

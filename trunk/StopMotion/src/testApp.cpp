@@ -31,12 +31,14 @@ void testApp::setup(){
 	//Setup GUI
 	showPoints = kofxGui_Button_Off;
 	showTracker = kofxGui_Button_Off;
+	capture = kofxGui_Button_On;
 	
 	gui	= ofxGui::Instance(this);
 
 	ofxGuiPanel* panel1 = gui->addPanel(kParameter_Panel1, "properties", 10, 10, OFXGUI_PANEL_BORDER, OFXGUI_PANEL_SPACING);
 	panel1->addButton(kParameter_ShowPoints, "Show Points", OFXGUI_BUTTON_HEIGHT, OFXGUI_BUTTON_HEIGHT, showPoints, kofxGui_Button_Switch);
 	panel1->addButton(kParameter_ShowTracker, "Show Tracker", OFXGUI_BUTTON_HEIGHT, OFXGUI_BUTTON_HEIGHT, showTracker, kofxGui_Button_Switch);
+	panel1->addButton(kParameter_Capture, "Take photos", OFXGUI_BUTTON_HEIGHT, OFXGUI_BUTTON_HEIGHT, capture, kofxGui_Button_Switch);
 	panel1->addSlider(kParameter_Threshold, "Threshold", 110, OFXGUI_SLIDER_HEIGHT, 0.0f, 300.0f, tracker.threshold, kofxGui_Display_Float2, 0);
 	gui->forceUpdate(true);	
 	gui->activate(true);
@@ -54,61 +56,63 @@ void testApp::setup(){
 }
 //--------------------------------------------------------------
 void testApp::update(){
-
+	
 	//Check if the grid should be expanded
 	if(grid.numberEmptyPoints() < 5){
 		grid.expandGrid();
 	}
-
-	//If we in progress of taking a image, check if we have waited till end of delay
-	if(takingPhoto != 0){
-		string n;
-		if(nextPhotoDigit< 10)
-			n = "000"+ofToString(nextPhotoDigit, 0);
-		else if(nextPhotoDigit < 100)
-			n = "00"+ofToString(nextPhotoDigit, 0);
-		else if(nextPhotoDigit < 1000)
-			n = "0"+ofToString(nextPhotoDigit, 0);
-		else
-			n = ofToString(nextPhotoDigit, 0);
-		
-		
-		if(captureInterrupted){
-			if(ofGetElapsedTimeMillis()-takingPhoto > PHOTODELAY){
-				string cmd = "rm "+ofToDataPath("images/StopMotion1_"+n+".JPG");
-				system((const char *)cmd.c_str());
-				captureInterrupted = false;
-				takingPhoto = 0;
+	
+	if(capture){
+		//If we in progress of taking a image, check if we have waited till end of delay
+		if(takingPhoto != 0){
+			string n;
+			if(nextPhotoDigit< 10)
+				n = "000"+ofToString(nextPhotoDigit, 0);
+			else if(nextPhotoDigit < 100)
+				n = "00"+ofToString(nextPhotoDigit, 0);
+			else if(nextPhotoDigit < 1000)
+				n = "0"+ofToString(nextPhotoDigit, 0);
+			else
+				n = ofToString(nextPhotoDigit, 0);
+			
+			
+			if(captureInterrupted){
+				if(ofGetElapsedTimeMillis()-takingPhoto > PHOTODELAY){
+					string cmd = "rm "+ofToDataPath("images/StopMotion1_"+n+".JPG");
+					system((const char *)cmd.c_str());
+					captureInterrupted = false;
+					takingPhoto = 0;
+				}
 			}
-		}
-		else if(tracker.getCurrentLocation().distance(grid.findClosestPoint(tracker.getCurrentLocation(), GRIDPOINT_EMPTY)->orig) > CAPTURERADIUS){
-			//takingPhoto = 0;
-			captureInterrupted = true;
-			gridPoint* p = grid.findClosestPoint(tracker.getCurrentLocation(), GRIDPOINT_EMPTY);
-			p->capturePercent = 0;
-		} else {
-			gridPoint* p = grid.findClosestPoint(tracker.getCurrentLocation(), GRIDPOINT_EMPTY);
-			p->capturePercent = ((float)ofGetElapsedTimeMillis() - takingPhoto)/PHOTODELAY;
-			if(ofGetElapsedTimeMillis()-takingPhoto > PHOTODELAY){
-				p->capturePercent = 1;
-				takingPhoto = 0;
-				p->loc.x = tracker.getCurrentLocation().x;
-				p->loc.y = tracker.getCurrentLocation().y;
-								
-				p->url = "images/StopMotion1_"+n+".JPG";
-				p->empty = false;
-				p->id = nextPhotoDigit;
-				nextPhotoDigit ++;
-				p->savePoint(XML);
+			else if(tracker.getCurrentLocation(videoCamera).distance(grid.findClosestPoint(tracker.getCurrentLocation(videoCamera), GRIDPOINT_EMPTY)->orig) > CAPTURERADIUS){
+				//takingPhoto = 0;
+				captureInterrupted = true;
+				gridPoint* p = grid.findClosestPoint(tracker.getCurrentLocation(videoCamera), GRIDPOINT_EMPTY);
+				p->capturePercent = 0;
+			} else {
+				gridPoint* p = grid.findClosestPoint(tracker.getCurrentLocation(videoCamera), GRIDPOINT_EMPTY);
+				p->capturePercent = ((float)ofGetElapsedTimeMillis() - takingPhoto)/PHOTODELAY;
+				if(ofGetElapsedTimeMillis()-takingPhoto > PHOTODELAY){
+					p->capturePercent = 1;
+					takingPhoto = 0;
+					p->loc.x = tracker.getCurrentLocation(videoCamera).x;
+					p->loc.y = tracker.getCurrentLocation(videoCamera).y;
+									
+					p->url = "images/StopMotion1_"+n+".JPG";
+					p->empty = false;
+					p->id = nextPhotoDigit;
+					nextPhotoDigit ++;
+					p->savePoint(XML);
+				}
 			}
-		}
-		
-	//Check if we should capture image
-	} else if(grid.findClosestPoint(tracker.getCurrentLocation(), GRIDPOINT_EMPTY) != NULL){ //Check if we even got any points
-		if(tracker.getCurrentLocation().distance(grid.findClosestPoint(tracker.getCurrentLocation(), GRIDPOINT_EMPTY)->orig) < CAPTURERADIUS){
-			cout<<"Capture image"<<endl;
-			capturePhoto();
-			takingPhoto = ofGetElapsedTimeMillis();
+			
+		//Check if we should capture image
+		} else if(grid.findClosestPoint(tracker.getCurrentLocation(videoCamera), GRIDPOINT_EMPTY) != NULL){ //Check if we even got any points
+			if(tracker.getCurrentLocation(videoCamera).distance(grid.findClosestPoint(tracker.getCurrentLocation(videoCamera), GRIDPOINT_EMPTY)->orig) < CAPTURERADIUS){
+				cout<<"Capture image"<<endl;
+				capturePhoto();
+				takingPhoto = ofGetElapsedTimeMillis();
+			}
 		}
 	}
 	
@@ -116,7 +120,7 @@ void testApp::update(){
 	tracker.update();
 	
 	if(tracker.pointMoved){
-		ofxPoint2f loc = tracker.getCurrentLocation();
+		ofxPoint2f loc = tracker.getCurrentLocation(videoCamera);
 		loadX = (loc.x*1.0);
 		loadY = (loc.y*1.0);
 	}
@@ -142,7 +146,7 @@ void testApp::update(){
 	imageAlpha[imageIndex] = pow(pow(255,GAMMA)-totalAlpha,0.555);
 	//cout<<totalAlpha+(255-totalAlpha)<<endl;
 
-	videoCamera.update(tracker.getCurrentLocation(), captureCornerPoint);
+	videoCamera.update(tracker.getCurrentLocation(videoCamera), captureCornerPoint);
 	
 	if(captureCornerPoint){
 		captureCornerPoint = false;
@@ -167,6 +171,12 @@ void testApp::draw(){
 		images[i].draw(0,0, ofGetHeight(), ofGetWidth());
 	}	
 	glPopMatrix();
+	
+	
+	if(showTracker){
+		tracker.draw();
+	}
+	
 	//Infobar
 	/*ofSetColor(255, 255, 255);
 	ofRect(0,0,ofGetWidth(), 15);
@@ -178,7 +188,7 @@ void testApp::draw(){
 	//Draw points if settings says so
 //	cout<<"Number points "<<grid.points.size()<<endl;
 	for(int i=0; i<grid.points.size(); i++){
-		grid.points[i].draw(tracker.getCurrentLocation());
+		grid.points[i].draw(tracker.getCurrentLocation(videoCamera));
 	}
 	
 	if(showPoints){
@@ -196,22 +206,20 @@ void testApp::draw(){
 			ofCircle((float)grid.points[i].loc.x * (float)ofGetWidth(), (float)grid.points[i].loc.y*ofGetWidth(), 3);
 		}
 	}
+
+	
 	
 	ofSetColor(255, 255, 255,60);
 	float markerSize = CAPTURERADIUS*4*ofGetWidth();
-	marker.draw(tracker.getCurrentLocation().x*ofGetWidth()-markerSize*0.5, tracker.getCurrentLocation().y*ofGetWidth()-markerSize*0.5,markerSize,markerSize);
+	marker.draw(tracker.getCurrentLocation(videoCamera).x*ofGetWidth()-markerSize*0.5, tracker.getCurrentLocation(videoCamera).y*ofGetWidth()-markerSize*0.5,markerSize,markerSize);
 
 	ofDisableAlphaBlending();
-	
-	if(showTracker){
-		tracker.draw();
-	}
 
 	
 	glPopMatrix();
 
 	
-	videoCamera.draw(tracker.getCurrentLocation());	
+	videoCamera.draw(tracker.getCurrentLocation(videoCamera));	
 
 	
 	gui->draw();
@@ -386,6 +394,10 @@ void testApp::handleGui(int parameterId, int task, void* data, int length){
 		case kParameter_ShowTracker:
 			if(task == kofxGui_Set_Bool)
 				showTracker = *(bool*)data;
+			break;	
+		case kParameter_Capture:
+			if(task == kofxGui_Set_Bool)
+				capture = *(bool*)data;
 			break;		
 		case kParameter_Threshold:
 			if(task == kofxGui_Set_Float)

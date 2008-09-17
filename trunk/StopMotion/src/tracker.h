@@ -1,3 +1,5 @@
+#include "videoCamera.h"
+
 class ofxTracker : public ofSimpleApp {
 public:
 	
@@ -5,7 +7,7 @@ public:
 	void update();
 	void draw();
 
-	ofxPoint2f getCurrentLocation();
+	ofxPoint2f getCurrentLocation(ofxVideoCamera cam);
 	
 	ofxPoint2f loc;
 	
