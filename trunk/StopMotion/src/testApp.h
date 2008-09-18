@@ -27,6 +27,7 @@
 #include "grid.h"
 #include "tracker.h"
 #include "videoCamera.h"
+#include "marker.h"
 
 
 class testApp : public ofSimpleApp, public ofxGuiListener	{
@@ -89,7 +90,7 @@ class testApp : public ofSimpleApp, public ofxGuiListener	{
 	float blinkWhite;
 	bool imageCaptured;
 	
-	ofxPoint2f markerLoc;
+	ofxStopmotionMarker marker;
 	
 		int nextIndex(){
 			int rimageIndex= imageIndex+1;
@@ -117,7 +118,7 @@ class testApp : public ofSimpleApp, public ofxGuiListener	{
 	
 	threadedObject	TO;
 	
-	ofImage marker;
+
 	
 	ofxVideoCamera videoCamera;
 	bool captureCornerPoint;

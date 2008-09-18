@@ -49,7 +49,6 @@ void testApp::setup(){
 	gui->forceUpdate(true);	
 	gui->activate(true);
 	
-	marker.loadImage("Marker.png");
 	
 	
 	//Null init
@@ -57,8 +56,7 @@ void testApp::setup(){
 	captureInterrupted = false;	
 	captureCornerPoint = false;
 	imageCaptured = false;
-	blinkWhite = 0;
-	
+	blinkWhite = 0;	
 }
 //--------------------------------------------------------------
 void testApp::update(){
@@ -83,14 +81,18 @@ void testApp::update(){
 				n = ofToString(nextPhotoDigit, 0);
 			
 			
-			gridPoint* p = grid.findClosestPoint(tracker.getCurrentLocation(videoCamera), GRIDPOINT_EMPTY);
+			gridPoint* p = grid.findClosestPoint(marker.loc, GRIDPOINT_EMPTY);
 			if(captureInterrupted){
+				marker.captureState = marker.CAPTURE_INTERRUPTED;
+				marker.percent = ((float)ofGetElapsedTimeMillis() - takingPhoto)/PHOTODELAY;
+
 				if(ofGetElapsedTimeMillis()-takingPhoto > PHOTODELAY){
 					string cmd = "rm "+ofToDataPath("images/StopMotion1_"+n+".JPG");
 					int ret = system((const char *)cmd.c_str());
 					cout<<"remove newest image "<<cmd<<endl;
 					cout<<"return "<<ret<<endl;
 					if(ret == 0){
+						marker.captureState = marker.CAPTURE_IDLE;
 						captureInterrupted = false;
 						takingPhoto = 0;
 					}
@@ -99,14 +101,18 @@ void testApp::update(){
 				takingPhoto = 0;
 				imageCaptured = false;
 				p->imageCaptured = true;
-
+				
+				marker.captureState = marker.CAPTURE_IDLE;
+				marker.percent = 0;
+				
 			} else if(ofGetElapsedTimeMillis()-takingPhoto > PHOTORELEASEDELAY){
 			//		else {
+				marker.captureState = marker.CAPTURE_LOADING;
+				marker.percent = ((float)ofGetElapsedTimeMillis() - (takingPhoto+ PHOTORELEASEDELAY))/(PHOTODELAY-PHOTORELEASEDELAY);
 				if(!imageCaptured){
-					p->capturePercent = 1;
 					//	takingPhoto = -100;
-					p->loc.x = tracker.getCurrentLocation(videoCamera).x;
-					p->loc.y = tracker.getCurrentLocation(videoCamera).y;
+					p->loc.x = marker.loc.x;
+					p->loc.y = marker.loc.y;
 					
 					p->url = "images/StopMotion1_"+n+".JPG";
 					p->empty = false;
@@ -120,20 +126,21 @@ void testApp::update(){
 				}
 	//			}	
 			} else {
-				p->capturePercent = ((float)ofGetElapsedTimeMillis() - takingPhoto)/PHOTORELEASEDELAY;
-				if(tracker.getCurrentLocation(videoCamera).distance(grid.findClosestPoint(tracker.getCurrentLocation(videoCamera), GRIDPOINT_EMPTY)->orig) > CAPTURERADIUS && !imageCaptured){
+				marker.captureState = marker.CAPTURE_CAPTURING;
+				marker.percent = ((float)ofGetElapsedTimeMillis() - takingPhoto)/PHOTORELEASEDELAY;
+				if(marker.loc.distance(grid.findClosestPoint(marker.loc, GRIDPOINT_EMPTY)->orig) > CAPTURERADIUS && !imageCaptured){
 					//takingPhoto = 0;
 					captureInterrupted = true;
 				
-					gridPoint* p = grid.findClosestPoint(tracker.getCurrentLocation(videoCamera), GRIDPOINT_EMPTY);
-					p->capturePercent = 0;
+					gridPoint* p = grid.findClosestPoint(marker.loc, GRIDPOINT_EMPTY);
+//					marker.percent= 0;
 				}
 
 			}
 			
 		//Check if we should capture image
-		} else if(grid.findClosestPoint(tracker.getCurrentLocation(videoCamera), GRIDPOINT_EMPTY) != NULL){ //Check if we even got any points
-			if(tracker.getCurrentLocation(videoCamera).distance(grid.findClosestPoint(tracker.getCurrentLocation(videoCamera), GRIDPOINT_EMPTY)->orig) < CAPTURERADIUS){
+		} else if(grid.findClosestPoint(marker.loc, GRIDPOINT_EMPTY) != NULL){ //Check if we even got any points
+			if(marker.loc.distance(grid.findClosestPoint(marker.loc, GRIDPOINT_EMPTY)->orig) < CAPTURERADIUS){
 				cout<<"Capture image"<<endl;
 				capturePhoto();
 				takingPhoto = ofGetElapsedTimeMillis();
@@ -147,17 +154,18 @@ void testApp::update(){
 	
 	
 	//Grabber stuff	
-	tracker.update(camDriver);
+	tracker.update();
 	
-	if(tracker.pointMoved){
-		ofxPoint2f loc = tracker.getCurrentLocation(videoCamera);
-		loadX = (loc.x);
-		loadY = (loc.y);
+	if(tracker.pointMoved && camDriver){
+		 marker.loc = tracker.getCurrentLocation(videoCamera);
 	}
 	
 	i++;
 	ofBackground(0, 0, 0);
+	
 	//Check if we need new image. Has to be done in update, and not mouse moved due bug
+	loadX = (marker.loc.x);
+	loadY = (marker.loc.y);
 	if(loadedX != loadX || loadedY != loadY){
 		loadImg(loadX,loadY);
 	}
@@ -201,7 +209,6 @@ void testApp::draw(){
 	ofEnableAlphaBlending();
 
 	glPushMatrix();
-	glPushMatrix();
 	glTranslated(ofGetWidth(), 0, 0);
 	glRotated(90, 0, 0, 1);
 	
@@ -230,6 +237,7 @@ void testApp::draw(){
 //	cout<<"Number points "<<grid.points.size()<<endl;
 
 	
+	//Draw debug for points
 	if(showPoints){
 		for(int i=0; i<grid.points.size(); i++){
 			if(grid.points[i].empty)
@@ -242,30 +250,30 @@ void testApp::draw(){
 			} else {
 				ofSetColor(0, 0, 255, 90);
 			}
-			ofCircle((float)grid.points[i].loc.x * (float)ofGetWidth(), (float)grid.points[i].loc.y*ofGetWidth(), 3);
+			ofCircle((float)grid.points[i].loc.x * (float)ofGetWidth(), (float)grid.points[i].loc.y*ofGetWidth(), 5);
 		}
 	}
 
 	
+	//Draw marker
+	marker.draw();
 	
-	ofSetColor(255, 255, 255,60);
-	float markerSize = CAPTURERADIUS*4*ofGetWidth();
-	marker.draw(tracker.getCurrentLocation(videoCamera).x*ofGetWidth()-markerSize*0.5, tracker.getCurrentLocation(videoCamera).y*ofGetWidth()-markerSize*0.5,markerSize,markerSize);
+	//Draw grid
 	for(int i=0; i<grid.points.size(); i++){
-		grid.points[i].draw(tracker.getCurrentLocation(videoCamera));
+		grid.points[i].draw(marker.loc);
 	}
+	
+
 	ofDisableAlphaBlending();
-
 	
-	glPopMatrix();
-
-	
-	videoCamera.draw(tracker.getCurrentLocation(videoCamera));	
+	//For calibration
+	videoCamera.draw(marker.loc);	
 
 	
 	gui->draw();
-	ofEnableAlphaBlending();
 
+	//White capture blink
+	ofEnableAlphaBlending();
 	if(blinkWhite > 0){
 		ofFill();
 		ofSetColor(255, 255, 255, blinkWhite);
@@ -277,8 +285,7 @@ void testApp::draw(){
 
 
 void testApp::loadImg(float xin, float yin){
-	if(grid.findClosestPoint(ofxPoint2f(xin,
-										yin), GRIDPOINT_FULL)!= NULL){
+	if(grid.findClosestPoint(ofxPoint2f(xin,yin), GRIDPOINT_FULL)!= NULL){
 		gridPoint newP = *grid.findClosestPoint(ofxPoint2f(xin, yin), GRIDPOINT_FULL);
 		if(takingPhoto == 0 || captureInterrupted){
 			if(newP.id != curId){
@@ -292,7 +299,7 @@ void testApp::loadImg(float xin, float yin){
 				t = ofGetElapsedTimeMillis();
 
 				images[imageIndex].loadImage(newP.url);
-				cout<<ofGetElapsedTimeMillis()-t<<endl;
+			//	cout<<ofGetElapsedTimeMillis()-t<<endl;
 
 				imageId[imageIndex] = curId;
 				loadedX = xin;
@@ -413,11 +420,11 @@ void testApp::mouseMoved(int x, int y ){
 //	if(i%1==0)
 //		loadImg((y*1.0)/ofGetHeight(),1-(x*1.0)/ofGetWidth());
 	if(mouseDriver){
-		float Y = ((float)y/ofGetHeight());
-		float X = (ASPECTRATIO)*(((float)x/ofGetWidth()));
+		float Y = (float)y/ofGetHeight();
+		float X = (float)x/ofGetWidth();
 		cout<<X<<" "<<Y<<endl;
-		tracker.loc.x = X;
-		tracker.loc.y=  Y;
+		marker.loc.x = X;
+		marker.loc.y=  Y*ASPECTRATIO;
 	}
 }
 
