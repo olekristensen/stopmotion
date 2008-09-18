@@ -19,6 +19,8 @@
 #define CAPTURERADIUS 0.03
 #define MAXSHOWDIST 0.3
 
+#define IMAGEPATH "/images"
+
 #include "ofxGui.h"
 #include "ofxGuiTypes.h"
 
@@ -28,6 +30,7 @@
 #include "tracker.h"
 #include "videoCamera.h"
 #include "marker.h"
+#include "imageStore.h"
 
 
 class testApp : public ofSimpleApp, public ofxGuiListener	{
@@ -118,7 +121,7 @@ class testApp : public ofSimpleApp, public ofxGuiListener	{
 	
 	threadedObject	TO;
 	
-
+	imageStore imgStore;
 	
 	ofxVideoCamera videoCamera;
 	bool captureCornerPoint;
