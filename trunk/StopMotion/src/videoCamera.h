@@ -33,7 +33,7 @@ public:
 	
 	coordWarping coordWarper;
 	
-	ofImage[4] calibrationImages;
+	ofImage calibrationImages[4];
 };
 
 #endif

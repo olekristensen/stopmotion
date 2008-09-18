@@ -9,6 +9,10 @@ ofxStopmotionMarker::ofxStopmotionMarker(){
 
 void ofxStopmotionMarker::draw(){
 	//Draw marker image
+	// Turn on the blend mode
+	glEnable(GL_BLEND);
+	// Define the blend mode
+	glBlendFunc(GL_SRC_ALPHA,GL_ONE);
 	ofFill();
 	ofSetColor(255, 255, 255,60);
 	float markerSize = CAPTURERADIUS*4*ofGetWidth();
