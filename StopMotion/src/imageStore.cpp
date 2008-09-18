@@ -19,7 +19,6 @@ imageStore::imageStore(){
 	ext = "";
 }
 
-
 int imageStore::getImageCount(){
 	dirList.reset();
 	dirList.setVerbose(true);
