@@ -9,7 +9,7 @@
 
 #include "testApp.h"
 
-imageStore::imageStore(string _folderPath, string _ext){
+imageStore::imageStore(string _folderPath, string _ext ){
 	folderPath = _folderPath;
 	ext = _ext;
 }
@@ -49,7 +49,7 @@ string imageStore::getFilenameFromPos(int _pos){
 	dirList.allowExt(ext);
 	fileCount = dirList.listDir(folderPath);
 	if(_pos <= fileCount){
-		return dirList.getName(_pos);
+		return dirList.getName(_pos-1);
 	} else {
 		return "";
 	}

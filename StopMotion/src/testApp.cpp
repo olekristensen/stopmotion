@@ -16,7 +16,10 @@ void testApp::setup(){
 	
 	imageIndex = 0;
 	
-	imgStore = imageStore(ofToDataPath("/images"));
+	//Setup imgStore
+	imgStore.folderPath = "/Volumes/data/images";
+	imgStore.ext = "jpg";
+	lastImageCount = imgStore.getImageCount();
 
 	//Load XML images
 	bool fileLoaded = XML.loadFile("images.xml");
@@ -51,6 +54,7 @@ void testApp::setup(){
 	gui->activate(true);
 	
 	
+
 	
 	//Null init
 	takingPhoto = 0;
@@ -58,6 +62,8 @@ void testApp::setup(){
 	captureCornerPoint = false;
 	imageCaptured = false;
 	blinkWhite = 0;	
+	imageFileTimeout = 0;
+
 }
 //--------------------------------------------------------------
 void testApp::update(){
@@ -73,17 +79,24 @@ void testApp::update(){
 		if(takingPhoto != 0){
 			string n;
 			if(nextPhotoDigit< 10)
-				n = "000"+ofToString(nextPhotoDigit, 0);
+				n = "0000"+ofToString(nextPhotoDigit, 0);
 			else if(nextPhotoDigit < 100)
-				n = "00"+ofToString(nextPhotoDigit, 0);
+				n = "000"+ofToString(nextPhotoDigit, 0);
 			else if(nextPhotoDigit < 1000)
-				n = "0"+ofToString(nextPhotoDigit, 0);
+				n = "00"+ofToString(nextPhotoDigit, 0);
 			else
-				n = ofToString(nextPhotoDigit, 0);
+				n = "0"+ofToString(nextPhotoDigit, 0);
 			
 			
 			gridPoint* p = grid.findClosestPoint(marker.loc, GRIDPOINT_EMPTY);
-			if(captureInterrupted){
+			if(imageFileTimeout > 100){
+				p->imageCaptured = false;
+				p->loc.x = p->orig.x;
+				p->loc.y = p->orig.y;
+				p->empty = true;
+				p->id = 0;
+				imageFileTimeout = 0;
+			} else if(captureInterrupted){
 				marker.captureState = marker.CAPTURE_INTERRUPTED;
 				marker.percent = ((float)ofGetElapsedTimeMillis() - takingPhoto)/PHOTODELAY;
 
@@ -98,13 +111,20 @@ void testApp::update(){
 						takingPhoto = 0;
 					}
 				}
-			}else if(ofGetElapsedTimeMillis()-takingPhoto > PHOTODELAY){
-				takingPhoto = 0;
-				imageCaptured = false;
-				p->imageCaptured = true;
-				
-				marker.captureState = marker.CAPTURE_IDLE;
-				marker.percent = 0;
+			}else if(ofGetElapsedTimeMillis()-takingPhoto > PHOTODELAY){				
+				if(lastImageCount < imgStore.getImageCount()){
+					takingPhoto = 0;
+					imageCaptured = false;
+					p->imageCaptured = true;
+					p->url = "image/"+imgStore.getFilenameFromPos(imgStore.getImageCount());
+					marker.captureState = marker.CAPTURE_IDLE;
+					marker.percent = 0;
+					lastImageCount = imgStore.getImageCount();
+					p->savePoint(XML);
+
+				} else {
+					imageFileTimeout ++;
+				}
 				
 			} else if(ofGetElapsedTimeMillis()-takingPhoto > PHOTORELEASEDELAY){
 				marker.captureState = marker.CAPTURE_LOADING;
@@ -114,12 +134,12 @@ void testApp::update(){
 					p->loc.x = marker.loc.x;
 					p->loc.y = marker.loc.y;
 					
-					p->url = "images/StopMotion1_"+n+".JPG";
 					p->empty = false;
 					p->imageCaptured = false;
 					p->id = nextPhotoDigit;
+					p->url = "";
+
 					nextPhotoDigit ++;
-					p->savePoint(XML);
 					imageCaptured = true;
 					blinkWhite = 255;
 
@@ -138,6 +158,10 @@ void testApp::update(){
 			if(marker.loc.distance(grid.findClosestPoint(marker.loc, GRIDPOINT_EMPTY)->orig) < CAPTURERADIUS){
 				cout<<"Capture image"<<endl;
 				capturePhoto();
+				
+				//Clean up the timeouter
+				imageFileTimeout = 0;
+				
 				takingPhoto = ofGetElapsedTimeMillis();
 			}
 		} 
@@ -293,7 +317,7 @@ void testApp::loadImg(float xin, float yin){
 				imageAlpha[imageIndex] = 0;
 				t = ofGetElapsedTimeMillis();
 
-				images[imageIndex].loadImage(newP.url);
+				images[imageIndex].loadImage("/Volumes/data/"+newP.url);
 			//	cout<<ofGetElapsedTimeMillis()-t<<endl;
 
 				imageId[imageIndex] = curId;
@@ -318,7 +342,7 @@ void testApp::keyPressed  (int key){
 		captureCornerPoint = true;
 		
 	}
-/*else if(key == 'p'){
+	else if(key == 'p'){
 	OSErr					err = noErr;
 	char					*buf = NULL;
     PTPPassThroughPB 		*passThroughPB;
@@ -329,7 +353,7 @@ void testApp::keyPressed  (int key){
         buf =(char *) malloc( 64*1024 + sizeof(PTPPassThroughPB) );		// allocate enough buffer for the pass throught command
         if ( buf || 1 )
         {
-		/*	printf("Blag");
+			printf("Blag");
             passThroughPB = (PTPPassThroughPB *)buf;
             memset( buf, 0, 64*1024 + sizeof(PTPPassThroughPB) );
             passThroughPB->commandCode = 0x9008;
@@ -362,7 +386,7 @@ void testApp::keyPressed  (int key){
             msgPB.message.dataSize		= 64*1024 + sizeof(PTPPassThroughPB);
             msgPB.message.dataType		= kICATypeData;
             
-            err = ICAObjectSendMessage( &msgPB, NULL );*/
+            err = ICAObjectSendMessage( &msgPB, NULL );
 
 			/*passThroughPB = (PTPPassThroughPB *)buf;
             memset( buf, 0, 64*1024 + sizeof(PTPPassThroughPB) );
@@ -403,6 +427,7 @@ void testApp::keyPressed  (int key){
 	else {
 		system("osascript -e 'tell application \"RemoteCapture DC\" to activate' -e 'tell application \"System Events\" to tell process \"RemoteCapture DC\"' -e 'keystroke \"r\" using command down' -e 'end tell' ");
 	}*/
+		}}}
 }
 
 //--------------------------------------------------------------
