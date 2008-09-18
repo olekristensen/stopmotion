@@ -32,6 +32,7 @@
 		DDE240560E544FAC00E3617F /* tinyxmlerror.cpp in Sources */ = {isa = PBXBuildFile; fileRef = DDE2404D0E544FAC00E3617F /* tinyxmlerror.cpp */; };
 		DDE240570E544FAC00E3617F /* tinyxmlparser.cpp in Sources */ = {isa = PBXBuildFile; fileRef = DDE2404E0E544FAC00E3617F /* tinyxmlparser.cpp */; };
 		DDE240580E544FAC00E3617F /* ofxXmlSettings.cpp in Sources */ = {isa = PBXBuildFile; fileRef = DDE240500E544FAC00E3617F /* ofxXmlSettings.cpp */; };
+		DDE6AA2A0E825B2D00556737 /* marker.cpp in Sources */ = {isa = PBXBuildFile; fileRef = DDE6AA290E825B2D00556737 /* marker.cpp */; };
 		DDF2AEE10E7FEEA700BAECC1 /* libOpenCV.a in Frameworks */ = {isa = PBXBuildFile; fileRef = DDF2AEC60E7FEEA700BAECC1 /* libOpenCV.a */; };
 		DDF2AEE50E7FEEA700BAECC1 /* ofxCvColorImage.cpp in Sources */ = {isa = PBXBuildFile; fileRef = DDF2AECD0E7FEEA700BAECC1 /* ofxCvColorImage.cpp */; };
 		DDF2AEE60E7FEEA700BAECC1 /* ofxCvContourFinder.cpp in Sources */ = {isa = PBXBuildFile; fileRef = DDF2AED00E7FEEA700BAECC1 /* ofxCvContourFinder.cpp */; };
@@ -118,6 +119,8 @@
 		DDE2404E0E544FAC00E3617F /* tinyxmlparser.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = tinyxmlparser.cpp; sourceTree = "<group>"; };
 		DDE240500E544FAC00E3617F /* ofxXmlSettings.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ofxXmlSettings.cpp; sourceTree = "<group>"; };
 		DDE240510E544FAC00E3617F /* ofxXmlSettings.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ofxXmlSettings.h; sourceTree = "<group>"; };
+		DDE6AA280E825B2D00556737 /* marker.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = marker.h; sourceTree = "<group>"; };
+		DDE6AA290E825B2D00556737 /* marker.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = marker.cpp; sourceTree = "<group>"; };
 		DDF2AEB40E7FEEA700BAECC1 /* cv.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = cv.h; sourceTree = "<group>"; };
 		DDF2AEB50E7FEEA700BAECC1 /* cv.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = cv.hpp; sourceTree = "<group>"; };
 		DDF2AEB60E7FEEA700BAECC1 /* cvaux.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = cvaux.h; sourceTree = "<group>"; };
@@ -546,6 +549,8 @@
 		E4B69E1C0A3A1BDC003C02F2 /* src */ = {
 			isa = PBXGroup;
 			children = (
+				DDE6AA280E825B2D00556737 /* marker.h */,
+				DDE6AA290E825B2D00556737 /* marker.cpp */,
 				DD76CF820E8118690070720F /* threadedObject.h */,
 				7F1DB2C60E80608B00CF6336 /* coordWarping.cpp */,
 				7F1DB2C70E80608C00CF6336 /* coordWarping.h */,
@@ -690,6 +695,7 @@
 				7F1DB1DF0E80430100CF6336 /* videoCamera.cpp in Sources */,
 				7F1DB2C80E80608C00CF6336 /* coordWarping.cpp in Sources */,
 				DD76CF760E8117150070720F /* ofxThread.cpp in Sources */,
+				DDE6AA2A0E825B2D00556737 /* marker.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

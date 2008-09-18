@@ -4,7 +4,7 @@ class ofxTracker : public ofSimpleApp {
 public:
 	
 	void setup();
-	void update(bool moveCursor);
+	void update();
 	void draw();
 
 	ofxPoint2f getCurrentLocation(ofxVideoCamera cam);

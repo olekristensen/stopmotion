@@ -24,7 +24,7 @@ void ofxTracker::setup(){
 	font.loadFont("verdana.ttf", 10); 
 	
 }
-void ofxTracker::update(bool moveCursor){
+void ofxTracker::update(){
 	bool bNewFrame = false;
 	
 	vidGrabber.grabFrame();
@@ -42,17 +42,15 @@ void ofxTracker::update(bool moveCursor){
 		
 		// find contours which are between the size of 20 pixels and 1/3 the w*h pixels.
 		// also, find holes is set to true so we will get interior contours as well....
-		if(moveCursor){
-			contourFinder.findContours(grayImage, 20, (340*240)/3, 10, false);	// find holes
-			if(contourFinder.nBlobs > 0){
-				ofPoint location = contourFinder.blobs[0].centroid;
-				if(loc.x != location.x || loc.y != location.y){
-					loc.y = (320-location.x);
-					loc.x = location.y;
-					pointMoved = true;
-				} else {
-					pointMoved = false;
-				}
+		contourFinder.findContours(grayImage, 20, (340*240)/3, 10, false);	// find holes
+		if(contourFinder.nBlobs > 0){
+			ofPoint location = contourFinder.blobs[0].centroid;
+			if(loc.x != location.x || loc.y != location.y){
+				loc.y = 320-location.x;
+				loc.x = location.y;
+				pointMoved = true;
+			} else {
+				pointMoved = false;
 			}
 		}
 	}
@@ -85,5 +83,5 @@ void ofxTracker::draw(){
 }
 
 ofxPoint2f ofxTracker::getCurrentLocation(ofxVideoCamera cam){
-	return ofxPoint2f(cam.getTransformedPoint(ofxPoint2f((float)loc.x, ((float)loc.y))));
+	return ofxPoint2f(cam.getTransformedPoint(ofxPoint2f(1-(float)loc.x/240, (1-(float)loc.y/320)*ASPECTRATIO)));
 }

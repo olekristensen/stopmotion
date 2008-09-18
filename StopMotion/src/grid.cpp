@@ -63,8 +63,8 @@ void gridPoint::draw(ofxPoint2f tracker){
 	size += sizeV;
 	
 	if(size >0){
-		int resolution = 200;
-		ofSetCircleResolution(resolution);
+//		int resolution = 200;
+//		ofSetCircleResolution(resolution);
 	/*	ofNoFill();
 		ofSetColor(255, 255, 255);
 		ofCircle(orig.x*ofGetWidth(), orig.y*ofGetWidth(), size*ofGetWidth());
@@ -72,7 +72,7 @@ void gridPoint::draw(ofxPoint2f tracker){
 		ofCircle(orig.x*ofGetWidth(), orig.y*ofGetWidth(), size*ofGetWidth()-1);
 		ofCircle(orig.x*ofGetWidth(), orig.y*ofGetWidth(), size*ofGetWidth()+1);
 	*/	
-		loc = tracker;
+/*		loc = tracker;
 		int numBricks = round(resolution*capturePercent);
 		double radianStep = (double)TWO_PI/resolution;
 		glColor3f(0, 0, 0);
@@ -84,7 +84,7 @@ void gridPoint::draw(ofxPoint2f tracker){
 			glVertex2f(loc.x*ofGetWidth()+(CAPTURERADIUS)*cos((i-1)*radianStep)*ofGetWidth(), loc.y*ofGetWidth()+(CAPTURERADIUS)*sin((i-1)*radianStep)*ofGetWidth());
 		}
 //		glVertex2f(orig.x*ofGetWidth(), orig.y*ofGetWidth());
-		glEnd();
+		glEnd();*/
 		/*
 		glColor3f(100, 100, 100);
 		glBegin(GL_TRIANGLES);
