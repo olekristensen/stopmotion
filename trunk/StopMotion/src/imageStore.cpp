@@ -7,52 +7,61 @@
  *
  */
 
-#include "imageStore.h"
+#include "testApp.h"
 
 imageStore::imageStore(string _folderPath, string _ext){
 	folderPath = _folderPath;
 	ext = _ext;
 }
 
+imageStore::imageStore(){
+	folderPath = ".";
+	ext = "";
+}
+
+
 int imageStore::getImageCount(){
-	ofxDirList.reset();
-	ofxDirList.setVerbose(true);
-	ofxDirList.allowExt(ext);
-	return ofxDirList.listDir(folderPath);
+	dirList.reset();
+	dirList.setVerbose(true);
+	dirList.allowExt(ext);
+	return dirList.listDir(folderPath);
 }
 
-string imageStore::addImage(*ofImage){
+string imageStore::addImage(ofImage *image){
 	// not implemented
+	return "";
 }
 
-string imageStore::replaceImage(*ofImage, int _pos){
+string imageStore::replaceImage(ofImage *image, int _pos){
 	// not implemented
+	return "";
 }
 
-string imageStore::replaceImage(*ofImage, string _filename){
+string imageStore::replaceImage(ofImage *image, string _filename){
 	// not implemented
+	return "";
 }
 
 string imageStore::getFilenameFromPos(int _pos){
 	int fileCount;
-	ofxDirList.reset();
-	ofxDirList.setVerbose(true);
-	ofxDirList.allowExt(ext);
-	fileCount = ofxDirList.listDir(folderPath);
-	if(pos <= fileCount){
-		return ofxDirList.getName(_pos);
+	dirList.reset();
+	dirList.setVerbose(true);
+	dirList.allowExt(ext);
+	fileCount = dirList.listDir(folderPath);
+	if(_pos <= fileCount){
+		return dirList.getName(_pos);
 	} else {
-		return NULL;
+		return "";
 	}
 }
 
-bool imageStore::imageExits(string _filename){
-	ofxDirList.reset();
-	ofxDirList.setVerbose(true);
-	ofxDirList.allowExt(ext);
-	fileCount = ofxDirList.listDir(folderPath);
+bool imageStore::imageExists(string _filename){
+	dirList.reset();
+	dirList.setVerbose(true);
+	dirList.allowExt(ext);
+	int fileCount = dirList.listDir(folderPath);
 	for(int i = 0; i < fileCount; i++){
-		if(ofxDirList.getName(i).compare(_filename)){
+		if(dirList.getName(i).compare(_filename)){
 		   return true;
 		}
 	}
@@ -60,7 +69,7 @@ bool imageStore::imageExits(string _filename){
 }
 
 bool imageStore::imageExists(int _pos){
-	return (pos <= getImageCount());
+	return (_pos <= getImageCount());
 }
 
 ofImage imageStore::getImage(int _pos){
@@ -69,8 +78,8 @@ ofImage imageStore::getImage(int _pos){
 
 ofImage imageStore::getImage(string _filename){
 	ofImage retImage;
-	if (filename != NULL){
-		ofImage.loadImage(folderPath + "/" + _filename);
+	if (!_filename.empty()){
+		retImage.loadImage(folderPath + "/" + _filename);
 	}
 	return retImage;
 }
@@ -83,9 +92,9 @@ bool imageStore::deleteImage(int _pos){
 	return deleteImage(getFilenameFromPos(_pos));
 }
 
-bool imageStore::deleteImage(int _filename){
-	if(imageExits(filename)){
-		string cmd = "rm "+ folderPath + "/" + filename;
+bool imageStore::deleteImage(string _filename){
+	if(imageExists(_filename)){
+		string cmd = "rm "+ folderPath + "/" + _filename;
 		int ret = system((const char *)cmd.c_str());
 		cout<<"remove newest image "<<cmd<<endl;
 		cout<<"return "<<ret<<endl;
