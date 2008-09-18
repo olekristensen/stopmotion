@@ -8,6 +8,7 @@ int main( ){
 	// pass in width and height too:
 	ofSetupOpenGL(400,600, OF_WINDOW);			// <-------- setup the GL context
 	
+	
 	// this kicks off the running of my app
 	ofRunApp(new testApp);
 	

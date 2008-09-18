@@ -11,7 +11,7 @@
 
 #include "testApp.h"
 
-void ofxVideoCamera::setup(){
+void ofxVideoCamera::setup(ofxXmlSettings XML){
 	
 	// set dstPoints unInitialised (-1.0)
 	for (int i = 0; i < 4; i++){
@@ -33,17 +33,32 @@ void ofxVideoCamera::setup(){
 	srcPoints[3].y = ASPECTRATIO;	//North
 	srcPoints[3].x = 0.0f;			//West
 	
+	loadXml(XML);
+	
+}
+
+void ofxVideoCamera::loadXml(ofxXmlSettings XML){
+	dstPoints[0].x = XML.getValue("CALIBRATION:NE:X", -1.0f);
+	dstPoints[0].y = XML.getValue("CALIBRATION:NE:Y", -1.0f);
+	dstPoints[1].x = XML.getValue("CALIBRATION:SE:X", -1.0f);
+	dstPoints[1].y = XML.getValue("CALIBRATION:SE:Y", -1.0f);
+	dstPoints[2].x = XML.getValue("CALIBRATION:SW:X", -1.0f);
+	dstPoints[2].y = XML.getValue("CALIBRATION:SW:Y", -1.0f);
+	dstPoints[3].x = XML.getValue("CALIBRATION:NW:X", -1.0f);
+	dstPoints[3].y = XML.getValue("CALIBRATION:NW:Y", -1.0f);
+	
+	state=STATE_CALIBRATING;
+	
 }
 
 void ofxVideoCamera::loadDstPoints(ofxPoint2f loadPoints[4]){
-	
 	// set dstPoints
 	for (int i = 0; i < 4; i++){
 		dstPoints[i].x = loadPoints[i].x;
 		dstPoints[i].y = loadPoints[i].y;
 	}
 	
-	state = STATE_CALIBRATED_ALL;
+	state = STATE_CALIBRATING;
 	
 }
 

@@ -14,8 +14,8 @@
 
 #define ASPECTRATIO 3.0/2.0
 #define GAMMA 1.801
-#define PHOTODELAY 4000
-#define PHOTORELEASEDELAY 3000
+#define PHOTODELAY 4500
+#define PHOTORELEASEDELAY 2000
 #define CAPTURERADIUS 0.03
 #define MAXSHOWDIST 0.3
 
@@ -36,7 +36,8 @@ class testApp : public ofSimpleApp, public ofxGuiListener	{
 		kParameter_ShowPoints,
 		kParameter_ShowTracker,
 		kParameter_Capture,
-
+		kParameter_Mousedriver,
+		kParameter_Camdriver,
 		kParameter_Threshold,
 	};
 	public:
@@ -72,6 +73,8 @@ class testApp : public ofSimpleApp, public ofxGuiListener	{
 		bool showPoints;	
 		bool showTracker;
 		bool capture;
+		bool mouseDriver;
+		bool camDriver;
 		
 		static const int numImages = 20;
 		ofImage images[numImages];
@@ -83,6 +86,10 @@ class testApp : public ofSimpleApp, public ofxGuiListener	{
 	
 	int takingPhoto;
 	bool captureInterrupted;
+	float blinkWhite;
+	bool imageCaptured;
+	
+	ofxPoint2f markerLoc;
 	
 		int nextIndex(){
 			int rimageIndex= imageIndex+1;
