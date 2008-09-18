@@ -16,13 +16,15 @@ void testApp::setup(){
 	
 	imageIndex = 0;
 	
+
 	//Load XML images
 	bool fileLoaded = XML.loadFile("images.xml");
 	if(fileLoaded){
 		grid.loadXml(XML);
-		tracker.threshold = XML.getValue("TRACKER:THRESHOLD", 100);
-		
 		nextPhotoDigit = grid.highestId+1; //The grid returns the highest ID in the xml file, which we use to define the next image.
+
+		tracker.threshold = XML.getValue("TRACKER:THRESHOLD", 100);
+		videoCamera.setup(XML);
 	} 
 	
 	//Setup font
@@ -31,14 +33,18 @@ void testApp::setup(){
 	//Setup GUI
 	showPoints = kofxGui_Button_Off;
 	showTracker = kofxGui_Button_Off;
-	capture = kofxGui_Button_On;
-	
+	capture = kofxGui_Button_Off;
+	camDriver = kofxGui_Button_Off;
+	mouseDriver = kofxGui_Button_On;
+
 	gui	= ofxGui::Instance(this);
 
 	ofxGuiPanel* panel1 = gui->addPanel(kParameter_Panel1, "properties", 10, 10, OFXGUI_PANEL_BORDER, OFXGUI_PANEL_SPACING);
 	panel1->addButton(kParameter_ShowPoints, "Show Points", OFXGUI_BUTTON_HEIGHT, OFXGUI_BUTTON_HEIGHT, showPoints, kofxGui_Button_Switch);
 	panel1->addButton(kParameter_ShowTracker, "Show Tracker", OFXGUI_BUTTON_HEIGHT, OFXGUI_BUTTON_HEIGHT, showTracker, kofxGui_Button_Switch);
 	panel1->addButton(kParameter_Capture, "Take photos", OFXGUI_BUTTON_HEIGHT, OFXGUI_BUTTON_HEIGHT, capture, kofxGui_Button_Switch);
+	panel1->addButton(kParameter_Capture, "Mouse driver", OFXGUI_BUTTON_HEIGHT, OFXGUI_BUTTON_HEIGHT, mouseDriver, kofxGui_Button_Switch);
+	panel1->addButton(kParameter_Capture, "Camera driver", OFXGUI_BUTTON_HEIGHT, OFXGUI_BUTTON_HEIGHT, camDriver, kofxGui_Button_Switch);
 	panel1->addSlider(kParameter_Threshold, "Threshold", 110, OFXGUI_SLIDER_HEIGHT, 0.0f, 300.0f, tracker.threshold, kofxGui_Display_Float2, 0);
 	gui->forceUpdate(true);	
 	gui->activate(true);
@@ -48,20 +54,21 @@ void testApp::setup(){
 	
 	//Null init
 	takingPhoto = 0;
-	captureInterrupted = false;
-	
+	captureInterrupted = false;	
 	captureCornerPoint = false;
+	imageCaptured = false;
+	blinkWhite = 0;
 	
-	videoCamera.setup();
 }
 //--------------------------------------------------------------
 void testApp::update(){
 	
 	//Check if the grid should be expanded
-	if(grid.numberEmptyPoints() < 5){
+	if(grid.numberEmptyPoints() < 15){
 		grid.expandGrid();
 	}
 	
+	//If capture is enabled
 	if(capture){
 		//If we in progress of taking a image, check if we have waited till end of delay
 		if(takingPhoto != 0){
@@ -76,34 +83,52 @@ void testApp::update(){
 				n = ofToString(nextPhotoDigit, 0);
 			
 			
+			gridPoint* p = grid.findClosestPoint(tracker.getCurrentLocation(videoCamera), GRIDPOINT_EMPTY);
 			if(captureInterrupted){
 				if(ofGetElapsedTimeMillis()-takingPhoto > PHOTODELAY){
 					string cmd = "rm "+ofToDataPath("images/StopMotion1_"+n+".JPG");
-					system((const char *)cmd.c_str());
-					captureInterrupted = false;
-					takingPhoto = 0;
+					int ret = system((const char *)cmd.c_str());
+					cout<<"remove newest image "<<cmd<<endl;
+					cout<<"return "<<ret<<endl;
+					if(ret == 0){
+						captureInterrupted = false;
+						takingPhoto = 0;
+					}
 				}
-			}
-			else if(tracker.getCurrentLocation(videoCamera).distance(grid.findClosestPoint(tracker.getCurrentLocation(videoCamera), GRIDPOINT_EMPTY)->orig) > CAPTURERADIUS){
-				//takingPhoto = 0;
-				captureInterrupted = true;
-				gridPoint* p = grid.findClosestPoint(tracker.getCurrentLocation(videoCamera), GRIDPOINT_EMPTY);
-				p->capturePercent = 0;
-			} else {
-				gridPoint* p = grid.findClosestPoint(tracker.getCurrentLocation(videoCamera), GRIDPOINT_EMPTY);
-				p->capturePercent = ((float)ofGetElapsedTimeMillis() - takingPhoto)/PHOTODELAY;
-				if(ofGetElapsedTimeMillis()-takingPhoto > PHOTODELAY){
+			}else if(ofGetElapsedTimeMillis()-takingPhoto > PHOTODELAY){
+				takingPhoto = 0;
+				imageCaptured = false;
+				p->imageCaptured = true;
+
+			} else if(ofGetElapsedTimeMillis()-takingPhoto > PHOTORELEASEDELAY){
+			//		else {
+				if(!imageCaptured){
 					p->capturePercent = 1;
-					takingPhoto = 0;
+					//	takingPhoto = -100;
 					p->loc.x = tracker.getCurrentLocation(videoCamera).x;
 					p->loc.y = tracker.getCurrentLocation(videoCamera).y;
-									
+					
 					p->url = "images/StopMotion1_"+n+".JPG";
 					p->empty = false;
+					p->imageCaptured = false;
 					p->id = nextPhotoDigit;
 					nextPhotoDigit ++;
 					p->savePoint(XML);
+					imageCaptured = true;
+					blinkWhite = 255;
+
 				}
+	//			}	
+			} else {
+				p->capturePercent = ((float)ofGetElapsedTimeMillis() - takingPhoto)/PHOTORELEASEDELAY;
+				if(tracker.getCurrentLocation(videoCamera).distance(grid.findClosestPoint(tracker.getCurrentLocation(videoCamera), GRIDPOINT_EMPTY)->orig) > CAPTURERADIUS && !imageCaptured){
+					//takingPhoto = 0;
+					captureInterrupted = true;
+				
+					gridPoint* p = grid.findClosestPoint(tracker.getCurrentLocation(videoCamera), GRIDPOINT_EMPTY);
+					p->capturePercent = 0;
+				}
+
 			}
 			
 		//Check if we should capture image
@@ -113,27 +138,32 @@ void testApp::update(){
 				capturePhoto();
 				takingPhoto = ofGetElapsedTimeMillis();
 			}
-		}
+		} 
 	}
 	
+	if(blinkWhite > 0){
+		blinkWhite -= 10;
+	}
+	
+	
 	//Grabber stuff	
-	tracker.update();
+	tracker.update(camDriver);
 	
 	if(tracker.pointMoved){
 		ofxPoint2f loc = tracker.getCurrentLocation(videoCamera);
-		loadX = (loc.x*1.0);
-		loadY = (loc.y*1.0);
+		loadX = (loc.x);
+		loadY = (loc.y);
 	}
 	
 	i++;
 	ofBackground(0, 0, 0);
 	//Check if we need new image. Has to be done in update, and not mouse moved due bug
 	if(loadedX != loadX || loadedY != loadY){
-		loadImg((loadX),(loadY));
+		loadImg(loadX,loadY);
 	}
 
 	
-	//Update fade
+	//Update fade of images
 	int totalAlpha = 0;
 	for(int i=0;i<numImages;i++){
 		if(i != imageIndex && imageAlpha[i] > 0) {
@@ -143,13 +173,24 @@ void testApp::update(){
 			totalAlpha += pow(imageAlpha[i], GAMMA); 
 		}
 	}
-	imageAlpha[imageIndex] = pow(pow(255,GAMMA)-totalAlpha,0.555);
-	//cout<<totalAlpha+(255-totalAlpha)<<endl;
+	imageAlpha[imageIndex] = pow(pow(255,GAMMA)-totalAlpha,1/GAMMA);
 
-	videoCamera.update(tracker.getCurrentLocation(videoCamera), captureCornerPoint);
-	
+
+	//Video camera calibration
+	videoCamera.update(tracker.getCurrentLocation(videoCamera), captureCornerPoint);	
 	if(captureCornerPoint){
 		captureCornerPoint = false;
+		if(videoCamera.state == videoCamera.STATE_MATRIX_DONE){
+			XML.setValue("CALIBRATION:NE:X", videoCamera.dstPoints[0].x);
+			XML.setValue("CALIBRATION:NE:Y", videoCamera.dstPoints[0].y);
+			XML.setValue("CALIBRATION:SE:X", videoCamera.dstPoints[1].x);
+			XML.setValue("CALIBRATION:SE:Y", videoCamera.dstPoints[1].y);
+			XML.setValue("CALIBRATION:SW:X", videoCamera.dstPoints[2].x);
+			XML.setValue("CALIBRATION:SW:Y", videoCamera.dstPoints[2].y);
+			XML.setValue("CALIBRATION:NW:X", videoCamera.dstPoints[3].x);
+			XML.setValue("CALIBRATION:NW:Y", videoCamera.dstPoints[3].y);
+			XML.saveFile("images.xml");
+		}
 	}
 }
 
@@ -187,9 +228,7 @@ void testApp::draw(){
 		
 	//Draw points if settings says so
 //	cout<<"Number points "<<grid.points.size()<<endl;
-	for(int i=0; i<grid.points.size(); i++){
-		grid.points[i].draw(tracker.getCurrentLocation(videoCamera));
-	}
+
 	
 	if(showPoints){
 		for(int i=0; i<grid.points.size(); i++){
@@ -212,7 +251,9 @@ void testApp::draw(){
 	ofSetColor(255, 255, 255,60);
 	float markerSize = CAPTURERADIUS*4*ofGetWidth();
 	marker.draw(tracker.getCurrentLocation(videoCamera).x*ofGetWidth()-markerSize*0.5, tracker.getCurrentLocation(videoCamera).y*ofGetWidth()-markerSize*0.5,markerSize,markerSize);
-
+	for(int i=0; i<grid.points.size(); i++){
+		grid.points[i].draw(tracker.getCurrentLocation(videoCamera));
+	}
 	ofDisableAlphaBlending();
 
 	
@@ -223,44 +264,59 @@ void testApp::draw(){
 
 	
 	gui->draw();
+	ofEnableAlphaBlending();
 
-	
+	if(blinkWhite > 0){
+		ofFill();
+		ofSetColor(255, 255, 255, blinkWhite);
+		ofRect(0,0,ofGetWidth(), ofGetHeight());
+	}
+
 }
 
 
 
 void testApp::loadImg(float xin, float yin){
-	if(grid.findClosestPoint(ofxPoint2f(xin, yin), GRIDPOINT_FULL)!= NULL){
+	if(grid.findClosestPoint(ofxPoint2f(xin,
+										yin), GRIDPOINT_FULL)!= NULL){
 		gridPoint newP = *grid.findClosestPoint(ofxPoint2f(xin, yin), GRIDPOINT_FULL);
+		if(takingPhoto == 0 || captureInterrupted){
+			if(newP.id != curId){
+				//Load the image
+				//	printf("loading %s\n", uri); 
+			//	cout<<"Uri:"<<uri<<endl;
+			//	infoString = uri;
+				curId = newP.id;
+				imageIndex = nextIndex();
+				imageAlpha[imageIndex] = 0;
+				t = ofGetElapsedTimeMillis();
 
-		if(newP.id != curId){
-			//Load the image
-			//	printf("loading %s\n", uri); 
-		//	cout<<"Uri:"<<uri<<endl;
-		//	infoString = uri;
-			curId = newP.id;
-			imageIndex = nextIndex();
-			imageAlpha[imageIndex] = 0;
-			t = ofGetElapsedTimeMillis();
+				images[imageIndex].loadImage(newP.url);
+				cout<<ofGetElapsedTimeMillis()-t<<endl;
 
-			images[imageIndex].loadImage(newP.url);
-			cout<<ofGetElapsedTimeMillis()-t<<endl;
-
-			imageId[imageIndex] = curId;
-			loadedX = xin;
-			loadedY = yin;
-		} 
+				imageId[imageIndex] = curId;
+				loadedX = xin;
+				loadedY = yin;
+			} 
+		} else { 
+			int a = 1;
+		}
 	}
 }
 
 
 //--------------------------------------------------------------
 void testApp::keyPressed  (int key){ 
+	if(key == 'f'){
+		ofToggleFullscreen();
+	}
 	if(key == 'g') 
 		gui->activate(!gui->mIsActive);
 	else if(key == 'c'){
 		captureCornerPoint = true;
-	}else if(key == 'p'){
+		
+	}
+/*else if(key == 'p'){
 	OSErr					err = noErr;
 	char					*buf = NULL;
     PTPPassThroughPB 		*passThroughPB;
@@ -312,7 +368,7 @@ void testApp::keyPressed  (int key){
             passThroughPB->numOfInputParams = 0;
             passThroughPB->numOfOutputParams = 0;
             passThroughPB->dataUsageMode = kPTPPassThruReceive;
-            passThroughPB->dataSize = 64*1024;*/
+            passThroughPB->dataSize = 64*1024;*//*
 			ICAObjectSendMessagePB  pb = {};
             pb.object				=	curDevice;
             pb.message.messageType	=	kICAMessageCameraCaptureNewImage;            
@@ -344,7 +400,7 @@ void testApp::keyPressed  (int key){
 	}
 	else {
 		system("osascript -e 'tell application \"RemoteCapture DC\" to activate' -e 'tell application \"System Events\" to tell process \"RemoteCapture DC\"' -e 'keystroke \"r\" using command down' -e 'end tell' ");
-	}
+	}*/
 }
 
 //--------------------------------------------------------------
@@ -356,10 +412,13 @@ void testApp::keyReleased  (int key){
 void testApp::mouseMoved(int x, int y ){
 //	if(i%1==0)
 //		loadImg((y*1.0)/ofGetHeight(),1-(x*1.0)/ofGetWidth());
-	loadY = 1-(y*1.0)/ofGetHeight();
-	loadX = (x*1.0)/ofGetWidth();
-	tracker.loc.x = loadX*320;
-	tracker.loc.y=  loadY*240;
+	if(mouseDriver){
+		float Y = ((float)y/ofGetHeight());
+		float X = (ASPECTRATIO)*(((float)x/ofGetWidth()));
+		cout<<X<<" "<<Y<<endl;
+		tracker.loc.x = X;
+		tracker.loc.y=  Y;
+	}
 }
 
 //--------------------------------------------------------------
@@ -398,6 +457,14 @@ void testApp::handleGui(int parameterId, int task, void* data, int length){
 		case kParameter_Capture:
 			if(task == kofxGui_Set_Bool)
 				capture = *(bool*)data;
+			break;		
+		case kParameter_Mousedriver:
+			if(task == kofxGui_Set_Bool)
+				mouseDriver = *(bool*)data;
+			break;		
+		case kParameter_Camdriver:
+			if(task == kofxGui_Set_Bool)
+				camDriver = *(bool*)data;
 			break;		
 		case kParameter_Threshold:
 			if(task == kofxGui_Set_Float)

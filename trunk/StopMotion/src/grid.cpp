@@ -5,6 +5,7 @@
 gridPoint::gridPoint(){
 	empty = true;
 	capturePercent = 0;
+	imageCaptured = true;
 }
 
 void gridPoint::savePoint(ofxXmlSettings &xmlFile){
@@ -100,7 +101,7 @@ void gridPoint::draw(ofxPoint2f tracker){
 	}
 	float dist = tracker.distance(orig);
 	if (dist < MAXSHOWDIST && empty  ){
-		ofNoFill();
+		ofFill();
 		ofSetColor(255, 255, 255, 100.0-(float)(dist/MAXSHOWDIST)*100.0);
 		ofCircle(orig.x*ofGetWidth(), orig.y*ofGetWidth(), 5);
 	}
