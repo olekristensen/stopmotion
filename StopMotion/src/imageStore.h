@@ -17,15 +17,16 @@ class imageStore : public ofSimpleApp {
 public:
 	
 	imageStore(string _folderPath, string _ext ="jpg");
+	imageStore();
 	
 	string folderPath;
 	string ext;
 	
 	int getImageCount();
 	
-	string addImage(*ofImage);
-	string replaceImage(*ofImage, int _pos);
-	string replaceImage(*ofImage, string _filename);
+	string addImage(ofImage *image);
+	string replaceImage(ofImage *image, int _pos);
+	string replaceImage(ofImage *image, string _filename);
 	
 	string getFilenameFromPos(int _pos);
 	ofImage getImage(int _pos);
@@ -39,7 +40,7 @@ public:
 	
 private:
 	
-	ofxDirList ofxDirList;
+	ofxDirList dirList;
 	
 };
 #endif

@@ -16,6 +16,7 @@ void testApp::setup(){
 	
 	imageIndex = 0;
 	
+	imgStore = imageStore(ofToDataPath("/images"));
 
 	//Load XML images
 	bool fileLoaded = XML.loadFile("images.xml");
