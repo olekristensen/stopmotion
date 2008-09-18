@@ -26,8 +26,8 @@ public:
 	
 private:
 	
-	Camera gpCam;
-	GPContext gpContext;
+	Camera *gpCam;
+	GPContext *gpContext;
 };
 #endif
 

@@ -29,7 +29,9 @@ void gPhotoCam::threadedFunction(){
 	
 	while( isThreadRunning() != 0 ){
 		if( lock() ){
-						
+			gpContext = gpContext->gp_context_new();
+			gp_camera_new(gpContext);
+
 			unlock();
 			stop();
 		}
