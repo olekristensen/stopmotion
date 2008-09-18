@@ -106,7 +106,6 @@ void testApp::update(){
 				marker.percent = 0;
 				
 			} else if(ofGetElapsedTimeMillis()-takingPhoto > PHOTORELEASEDELAY){
-			//		else {
 				marker.captureState = marker.CAPTURE_LOADING;
 				marker.percent = ((float)ofGetElapsedTimeMillis() - (takingPhoto+ PHOTORELEASEDELAY))/(PHOTODELAY-PHOTORELEASEDELAY);
 				if(!imageCaptured){
@@ -124,16 +123,11 @@ void testApp::update(){
 					blinkWhite = 255;
 
 				}
-	//			}	
 			} else {
 				marker.captureState = marker.CAPTURE_CAPTURING;
 				marker.percent = ((float)ofGetElapsedTimeMillis() - takingPhoto)/PHOTORELEASEDELAY;
 				if(marker.loc.distance(grid.findClosestPoint(marker.loc, GRIDPOINT_EMPTY)->orig) > CAPTURERADIUS && !imageCaptured){
-					//takingPhoto = 0;
 					captureInterrupted = true;
-				
-					gridPoint* p = grid.findClosestPoint(marker.loc, GRIDPOINT_EMPTY);
-//					marker.percent= 0;
 				}
 
 			}
