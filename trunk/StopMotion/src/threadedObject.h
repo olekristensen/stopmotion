@@ -1,8 +1,13 @@
 #ifndef _THREADED_OBJECT
 #define _THREADED_OBJECT
 
+#define HOST "ole-kristensens-powerbook.local"
+#define PORT 12345
+
 #include "ofMain.h"
 #define OF_ADDON_USING_OFXTHREAD
+#define OF_ADDON_USING_OFXOSC
+
 #include "ofAddons.h"
 
 // this is not a very exciting example yet 
@@ -16,7 +21,8 @@
 class threadedObject : public ofxThread{
 	
 public:
-	
+	ofxOscSender sender;
+
 	
 	int count;  // threaded fucntions that share data need to use lock (mutex)
 	// and unlock in order to write to that data
@@ -28,6 +34,10 @@ public:
 	
 	//--------------------------
 	threadedObject(){
+		//Setup OSC
+		sender.setup( HOST, PORT );
+		
+	
 	}
 	
 	void start(){
@@ -43,7 +53,12 @@ public:
 		
 		while( isThreadRunning() != 0 ){
 			if( lock() ){
-				system("osascript -e 'tell application \"RemoteCapture DC\" to activate' -e 'tell application \"System Events\" to tell process \"RemoteCapture DC\"' -e 'keystroke \"r\" using command down' -e 'end tell' ");	
+//				system("osascript -e 'tell application \"RemoteCapture DC\" to activate' -e 'tell application \"System Events\" to tell process \"RemoteCapture DC\"' -e 'keystroke \"r\" using command down' -e 'end tell' ");	
+				ofxOscMessage m;
+				m.setAddress( "/capture/image" );
+				m.addStringArg( "go" );
+				sender.sendMessage( m );	
+				
 				unlock();
 				stop();
 			}

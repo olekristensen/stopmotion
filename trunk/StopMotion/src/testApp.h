@@ -14,10 +14,12 @@
 
 #define ASPECTRATIO 3.0/2.0
 #define GAMMA 1.801
-#define PHOTODELAY 4500
-#define PHOTORELEASEDELAY 2000
+#define PHOTODELAY 6500
+#define PHOTORELEASEDELAY 4000
 #define CAPTURERADIUS 0.03
 #define MAXSHOWDIST 0.3
+
+
 
 #define IMAGEPATH "/images"
 
@@ -121,7 +123,10 @@ class testApp : public ofSimpleApp, public ofxGuiListener	{
 	
 	threadedObject	TO;
 	
+	
 	imageStore imgStore;
+	int lastImageCount;
+	int imageFileTimeout;
 	
 	ofxVideoCamera videoCamera;
 	bool captureCornerPoint;
