@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		7F1DB1DF0E80430100CF6336 /* videoCamera.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 7F1DB1DE0E80430100CF6336 /* videoCamera.cpp */; };
 		7F1DB2C80E80608C00CF6336 /* coordWarping.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 7F1DB2C60E80608B00CF6336 /* coordWarping.cpp */; };
+		7F4F735E0E82A62200B8EEF4 /* imageStore.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 7F4F735D0E82A62200B8EEF4 /* imageStore.cpp */; };
 		DD76CF760E8117150070720F /* ofxThread.cpp in Sources */ = {isa = PBXBuildFile; fileRef = DD76CF700E8117150070720F /* ofxThread.cpp */; };
 		DD81A5040E60195C006963E2 /* grid.cpp in Sources */ = {isa = PBXBuildFile; fileRef = DD81A5030E60195C006963E2 /* grid.cpp */; };
 		DDA3EFA90E6F133900A1B55C /* ofxGui.cpp in Sources */ = {isa = PBXBuildFile; fileRef = DDA3EF8A0E6F133900A1B55C /* ofxGui.cpp */; };
@@ -63,6 +64,8 @@
 		7F1DB1DE0E80430100CF6336 /* videoCamera.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = videoCamera.cpp; sourceTree = "<group>"; };
 		7F1DB2C60E80608B00CF6336 /* coordWarping.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = coordWarping.cpp; sourceTree = "<group>"; };
 		7F1DB2C70E80608C00CF6336 /* coordWarping.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = coordWarping.h; sourceTree = "<group>"; };
+		7F4F735C0E82A62200B8EEF4 /* imageStore.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = imageStore.h; sourceTree = "<group>"; };
+		7F4F735D0E82A62200B8EEF4 /* imageStore.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = imageStore.cpp; sourceTree = "<group>"; };
 		DD72798B0E533A190001CE9B /* PTP.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PTP.h; sourceTree = "<group>"; };
 		DD76CF700E8117150070720F /* ofxThread.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ofxThread.cpp; sourceTree = "<group>"; };
 		DD76CF710E8117150070720F /* ofxThread.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ofxThread.h; sourceTree = "<group>"; };
@@ -549,6 +552,8 @@
 		E4B69E1C0A3A1BDC003C02F2 /* src */ = {
 			isa = PBXGroup;
 			children = (
+				7F4F735C0E82A62200B8EEF4 /* imageStore.h */,
+				7F4F735D0E82A62200B8EEF4 /* imageStore.cpp */,
 				DDE6AA280E825B2D00556737 /* marker.h */,
 				DDE6AA290E825B2D00556737 /* marker.cpp */,
 				DD76CF820E8118690070720F /* threadedObject.h */,
@@ -696,6 +701,7 @@
 				7F1DB2C80E80608C00CF6336 /* coordWarping.cpp in Sources */,
 				DD76CF760E8117150070720F /* ofxThread.cpp in Sources */,
 				DDE6AA2A0E825B2D00556737 /* marker.cpp in Sources */,
+				7F4F735E0E82A62200B8EEF4 /* imageStore.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
