@@ -33,6 +33,7 @@
 #include "videoCamera.h"
 #include "marker.h"
 #include "imageStore.h"
+#include "gPhotoCam.h"
 
 
 class testApp : public ofSimpleApp, public ofxGuiListener	{

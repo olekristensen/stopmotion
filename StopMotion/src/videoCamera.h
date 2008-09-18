@@ -18,6 +18,7 @@ public:
 	ofxPoint2f dstPoints[4];
 	
 	void setup(ofxXmlSettings XML);
+	void reset();
 	void update(ofxPoint2f _currentLocation, bool captureCornerPoint);
 	void draw(ofxPoint2f _currentLocation);
 	
