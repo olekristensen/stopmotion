@@ -35,7 +35,7 @@ public:
 	//--------------------------
 	threadedObject(){
 		//Setup OSC
-		sender.setup( HOST, PORT );
+		//sender.setup( HOST, PORT );
 		
 	
 	}
@@ -53,12 +53,12 @@ public:
 		
 		while( isThreadRunning() != 0 ){
 			if( lock() ){
-//				system("osascript -e 'tell application \"RemoteCapture DC\" to activate' -e 'tell application \"System Events\" to tell process \"RemoteCapture DC\"' -e 'keystroke \"r\" using command down' -e 'end tell' ");	
-				ofxOscMessage m;
+				system("osascript -e 'tell application \"RemoteCapture DC\" to activate' -e 'tell application \"System Events\" to tell process \"RemoteCapture DC\"' -e 'keystroke \"r\" using command down' -e 'end tell' ");	
+/**				ofxOscMessage m;
 				m.setAddress( "/capture/image" );
 				m.addStringArg( "go" );
 				sender.sendMessage( m );	
-				
+**/				
 				unlock();
 				stop();
 			}

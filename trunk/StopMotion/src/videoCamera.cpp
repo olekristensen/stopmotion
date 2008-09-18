@@ -12,6 +12,11 @@
 #include "testApp.h"
 
 void ofxVideoCamera::setup(ofxXmlSettings XML){
+	reset();
+	loadXml(XML);
+}
+
+void ofxVideoCamera::reset(){
 	
 	// set dstPoints unInitialised (-1.0)
 	for (int i = 0; i < 4; i++){
@@ -33,8 +38,6 @@ void ofxVideoCamera::setup(ofxXmlSettings XML){
 	srcPoints[3].y = ASPECTRATIO;	//North
 	srcPoints[3].x = 0.0f;			//West
 	
-	loadXml(XML);
-	
 }
 
 void ofxVideoCamera::loadXml(ofxXmlSettings XML){
@@ -47,7 +50,7 @@ void ofxVideoCamera::loadXml(ofxXmlSettings XML){
 	dstPoints[3].x = XML.getValue("CALIBRATION:NW:X", -1.0f);
 	dstPoints[3].y = XML.getValue("CALIBRATION:NW:Y", -1.0f);
 	
-	state=STATE_CALIBRATING;
+	state = STATE_CALIBRATING;
 	
 }
 
