@@ -12,14 +12,12 @@
 #define OF_ADDON_USING_OFXOPENCV
 
 
-#define ASPECTRATIO 3.0/2.0
+#define ASPECTRATIO 2.0/3.0
 #define GAMMA 1.801
 #define PHOTODELAY 6500
 #define PHOTORELEASEDELAY 4000
 #define CAPTURERADIUS 0.03
 #define MAXSHOWDIST 0.3
-
-
 
 #define IMAGEPATH "/images"
 
@@ -46,6 +44,8 @@ class testApp : public ofSimpleApp, public ofxGuiListener	{
 		kParameter_Mousedriver,
 		kParameter_Camdriver,
 		kParameter_Threshold,
+		kParameter_Scale,
+
 	};
 	public:
 		
@@ -82,6 +82,7 @@ class testApp : public ofSimpleApp, public ofxGuiListener	{
 		bool capture;
 		bool mouseDriver;
 		bool camDriver;
+	float scaler;
 		
 		static const int numImages = 5;
 		ofImage images[numImages];
@@ -138,12 +139,6 @@ class testApp : public ofSimpleApp, public ofxGuiListener	{
 	int main_capture_state;
 
 };
-
-
-
-
-
-
 
 #endif
 	
