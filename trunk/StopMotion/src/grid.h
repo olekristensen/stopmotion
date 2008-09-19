@@ -33,6 +33,8 @@ public:
 	void makeGrid();
 	gridPoint* findClosestPoint(ofxPoint2f pos, int rule = GRIDPOINT_ALL);
 	int numberEmptyPoints();
+	int numberFillPoints();
+
 	
 	vector<gridPoint> points;//Contains all points
 	int gridSize;

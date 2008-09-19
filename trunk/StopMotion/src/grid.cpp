@@ -9,6 +9,7 @@ gridPoint::gridPoint(){
 }
 
 void gridPoint::savePoint(ofxXmlSettings &xmlFile){
+	cout<<"Staert save point"<<endl;
 	xmlFile.pushTag("IMAG", 0);
 	int numTags = xmlFile.getNumTags("IMAGES:ID"); //Number of image tags saved in XML file
 	bool tagFound = false;
@@ -41,6 +42,7 @@ void gridPoint::savePoint(ofxXmlSettings &xmlFile){
 	xmlFile.popTag();
 
 	xmlFile.saveFile("images.xml");
+		cout<<"end save point"<<endl;
 }
 
 void gridPoint::draw(ofxPoint2f tracker){
@@ -100,6 +102,7 @@ void gridPoint::draw(ofxPoint2f tracker){
 		
 	}
 	float dist = tracker.distance(orig);
+	ofEnableAlphaBlending();
 	if (dist < MAXSHOWDIST && empty  ){
 		ofFill();
 		ofSetColor(255, 255, 255, 100.0-(float)(dist/MAXSHOWDIST)*100.0);
@@ -112,6 +115,7 @@ ofxGrid::ofxGrid(){
 }
 
 void ofxGrid::loadXml(ofxXmlSettings &xmlFile){
+
 //	int size = xmlFile.getNumTags("GRID:SIZE");
 	
 	XML = xmlFile;
@@ -219,4 +223,15 @@ int ofxGrid::numberEmptyPoints(){
 	}
 	return n;
 }
+
+int ofxGrid::numberFillPoints(){
+	int n =0;
+	for(int i=0; i<points.size(); i++){
+		if(!points[i].empty){
+			n ++;
+		}
+	}
+	return n;
+}
+
 

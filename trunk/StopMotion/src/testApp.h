@@ -83,7 +83,7 @@ class testApp : public ofSimpleApp, public ofxGuiListener	{
 		bool mouseDriver;
 		bool camDriver;
 		
-		static const int numImages = 20;
+		static const int numImages = 5;
 		ofImage images[numImages];
 		int imageAlpha[numImages];
 		int imageId[numImages];
@@ -134,7 +134,7 @@ class testApp : public ofSimpleApp, public ofxGuiListener	{
 	
 	gPhotoCam photoCam;
 	
-	enum { MAIN_CAPTURE_READY, MAIN_CAPTURE_WAIT_CAPTURE, MAIN_CAPTURE_WAIT_DOWNLOAD, MAIN_CAPTURE_INTERRUPTED };
+	enum { MAIN_CAPTURE_READY, MAIN_CAPTURE_WAITINGBEFORECAPTURE,  MAIN_CAPTURE_WAIT_CAPTURE, MAIN_CAPTURE_WAIT_DOWNLOAD, MAIN_CAPTURE_INTERRUPTED };
 	int main_capture_state;
 
 };
