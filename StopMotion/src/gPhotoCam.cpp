@@ -45,32 +45,30 @@ pid_t popen2(const char *command, int *infp, int *outfp)
 
 
 gPhotoCam::gPhotoCam(){
-
+	state = BUSY;
+	hasCded = false;
 }
 
 int gPhotoCam::initCamera(){
 	
 }
 
-int gPhotoCam::takePicture(string picturePath){
-	if( lock() ){
-		
-		/*
-		 * now in main... infp will be the stdin (in file descriptor)
-		 * and outfp will be the stdout (out file descriptor)
-		 * have fun
-		 */
-		
-		memset (buf, 0x0, sizeof(buf));	
-		write(infp, ("capture-image\n"), 14);
-		read(outfp, buf, 1024);
-		printf("buf = '%s'\n", buf);
-		
-		filename = buf;
-		
-		unlock();
-	}
-	
+string gPhotoCam::filenameOfLastPicture(){
+	return filename;
+}
+
+
+int gPhotoCam::getState(){
+	return state;
+}
+
+void gPhotoCam::setState(int _state){
+	state = _state;
+}
+
+int gPhotoCam::takePicture(){
+	if(state == READY)
+		state=START_CAPTURE;
 }
 
 void gPhotoCam::start(){
@@ -80,11 +78,14 @@ void gPhotoCam::start(){
 		printf("Unable to exec gphoto2\n");
 		exit(1);
 	}
-	
-}
+	memset (buf, 0x0, 10000);	
+	write(infp, ("lcd " + ofToDataPath("images") + "\n").c_str(), ("lcd " + ofToDataPath("images") + "\n").length());
+	write(infp, ("capture-image\n"), 14);
+	ofSleepMillis(30*100);
+	read(outfp, buf, 10000);
+	cout<<buf<<endl;
+	state = READY;
 
-string gPhotoCam::getState() {
-	return "";
 }
 
 void gPhotoCam::stop(){
@@ -94,23 +95,87 @@ void gPhotoCam::stop(){
 	stopThread(); 
 }
 
-
-
 void gPhotoCam::threadedFunction(){
 	
-/*	while( isThreadRunning() != 0 ){
-		if( lock() ){
+	while( isThreadRunning() != 0 ){
 
-*/
-			/*
-			 * now in main... infp will be the stdin (in file descriptor)
-			 * and outfp will be the stdout (out file descriptor)
-			 * have fun
-			 */
+			if( lock() ){
+				switch (state) {
+					case START_CAPTURE:
+						state = CAPTURING;
+						/*
+						 * now in main... infp will be the stdin (in file descriptor)
+						 * and outfp will be the stdout (out file descriptor)
+						 * have fun
+						 */
+						
+						write(infp, ("cd /\n"), 5);
+						ofSleepMillis(100);
+						read(outfp, buf, 10000);
+						
+						write(infp, ("capture-image\n"), 14);
+//						read(outfp, buf, 10000);
+						ofSleepMillis(2000);
+						milliseconds = ofGetElapsedTimeMillis();						
+						
+						memset (buf, 0x0, 10000);
+						read(outfp, buf, 10000);
+						bufStr = buf;
+						//if(bufStr.substr(0, 7).compare("capture")){
+						   pathname = bufStr.substr(48, 29);
+						   filename = bufStr.substr(78, 12);
+						/*} else {
+						   cout<<"trick"<<endl;
+						   pathname = bufStr.substr(48-28, 29);
+						   filename = bufStr.substr(78-28, 12);
+						}*/
+						break;
+					case CAPTURING:
+//						if (ofGetElapsedTimeMillis() - milliseconds > 2*1000){
+							state = CAPTURE_COMPLETE;
+//						}
+						break;
+					case CAPTURE_COMPLETE:
+						break;
+					case START_DOWNLOAD:
+						cout<<"=============FILENAMES:"<<endl<<buf<<endl<<"=="<<endl;
+						cout<<"====Pathame: "<<pathname<<"==="<<endl;
+						cout<<"===Filename: "<<filename<<"==="<<endl;
+						memset (buf, 0x0, 10000);	
+						//if(!hasCded){
+						write(infp, ("cd /\n"), 5);
+						ofSleepMillis(100);
+						read(outfp, buf, 10000);
+						
+						write(infp, ("cd " + pathname + "\n").c_str(), 34);
+						ofSleepMillis(100);
+						read(outfp, buf, 10000);
+						//} 
+						
+						write(infp, ("get " + filename + "\n").c_str(), 17);
+						ofSleepMillis(100);
+						read(outfp, buf, 10000);
+						ofSleepMillis(100);
+						cout<<"=============DOWNLOAD IMAGE:"<<endl<<buf<<endl<<"=="<<endl;;
+						state = DOWNLOAD_COMPLETE;
+						break;
+					case INTERRUPTED:
+			//			read(outfp, buf, 10000);
+			//			cout<<buf<<endl;
+						state = READY;
+						break;
+					case DOWNLOAD_COMPLETE:
+						
+						break;
+					case READY:
+						ofSleepMillis(100);
+						break;
+					default:
+						break;
+				}
+				unlock();
+			}
 			
-				
-/*			unlock();
-		}
-	}*/
+	}
 }
 	

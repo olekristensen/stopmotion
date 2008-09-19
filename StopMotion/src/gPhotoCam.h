@@ -22,21 +22,31 @@ class gPhotoCam : public ofxThread {
 public:
 	
 	int initCamera();
-	int takePicture(string picturePath);
-	
+	int takePicture();
+	string filenameOfLastPicture();
 	gPhotoCam();
 	
-	string getState();
+	int getState();
+	void setState(int _state);
 	
 	void start();
 	void stop();
-	
+
+	int state;
+
 	void threadedFunction();
+		
+	enum{START_CAPTURE, CAPTURING, INTERRUPTED, CAPTURE_COMPLETE, START_DOWNLOAD, DOWNLOAD_COMPLETE, READY, BUSY};
 	
 private:
 	int infp, outfp;
-	char buf[1024];
+	char buf[10000];
 	string filename;
+	string pathname;
+	string commandline;
+	string bufStr;
+	int milliseconds;
+	bool hasCded;
 };
 #endif
 

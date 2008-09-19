@@ -64,6 +64,8 @@ void testApp::setup(){
 	blinkWhite = 0;	
 	imageFileTimeout = 0;
 	
+	main_capture_state = MAIN_CAPTURE_READY;
+	
 }
 //--------------------------------------------------------------
 void testApp::update(){
@@ -165,60 +167,71 @@ void testApp::update(){
 		 takingPhoto = ofGetElapsedTimeMillis();
 		 }
 		 } */
-		/*gridPoint* p = grid.findClosestPoint(marker.loc, GRIDPOINT_EMPTY);
-		 switch (main_capture_state) {
-		 case MAIN_CAPTURE_READY:
-		 //CHeck if we should start capture a image
-		 if(grid.findClosestPoint(marker.loc, GRIDPOINT_EMPTY) != NULL){ //Check if we even got any points
-		 if(marker.loc.distance(grid.findClosestPoint(marker.loc, GRIDPOINT_EMPTY)->orig) < CAPTURERADIUS){
-		 cout<<"Capture image"<<endl;
-		 photoCam.takePicture("picture_"+ofToString(grid.points.size(),0));
-		 //capturePhoto();
-		 
-		 //Clean up the timeouter
-		 imageFileTimeout = 0;
-		 
-		 takingPhoto = ofGetElapsedTimeMillis();
-		 }
-		 }
-		 break;
-		 case MAIN_CAPTURE_WAIT_CAPTURE:
-		 if(photoCam.getState() == photoCam.CAPTURE_COMPLETE){
-		 photoCam.state = photoCam.START_DOWNLOAD;
-		 main_capture_state = MAIN_CAPTURE_WAIT_DOWNLOAD;
-		 } else if(marker.loc.distance(grid.findClosestPoint(marker.loc, GRIDPOINT_EMPTY)->orig) > CAPTURERADIUS){
-		 //The marker is out of point
-		 main_capture_state = MAIN_CAPTURE_INTERRUPTED;
-		 }
-		 break;
-		 case MAIN_CAPTURE_WAIT_DOWNLOAD:
-		 if(photoCam.getState() == photoCam.DOWNLOAD_COMPLETE){
-		 main_capture_state = MAIN_CAPTURE_READY;
-		 
-		 p->loc.x = marker.loc.x;
-		 p->loc.y = marker.loc.y;					
-		 p->empty = false;
-		 //	p->id = nextPhotoDigit;
-		 p->url = photoCam.lastUrl;
-		 p->imageCaptured = true;
-		 p->savePoint(XML);
-		 
-		 photoCam.state = photoCam.READY;
-		 
-		 }
-		 break;
-		 case MAIN_CAPTURE_INTERRUPTED:
-		 if(photoCam.getState() == photoCam.CAPTURE_COMPLETE){
-		 photoCam.state = photoCam.READY;
-		 main_capture_state = MAIN_CAPTURE_READY;
-		 imageCaptured = true;
-		 blinkWhite = 255;
-		 }
-		 break;
-		 default:
-		 break;
-		 }
-		 */	
+		
+		gridPoint* p = grid.findClosestPoint(marker.loc, GRIDPOINT_EMPTY);
+		switch (main_capture_state) {
+			case MAIN_CAPTURE_WAITINGBEFORECAPTURE:
+				if(ofGetElapsedTimeMillis() - takingPhoto > 2000){
+					photoCam.takePicture();
+					main_capture_state = MAIN_CAPTURE_WAIT_CAPTURE;
+				} else if(marker.loc.distance(grid.findClosestPoint(marker.loc, GRIDPOINT_EMPTY)->orig) > CAPTURERADIUS){
+					//The marker is out of point
+					main_capture_state = MAIN_CAPTURE_INTERRUPTED;
+					takingPhoto = 0;
+				}
+				break;
+			case MAIN_CAPTURE_READY:
+				//CHeck if we should start capture a image
+				if(photoCam.getState() == photoCam.READY){
+					if(grid.findClosestPoint(marker.loc, GRIDPOINT_EMPTY) != NULL){ //Check if we even got any points
+						if(marker.loc.distance(grid.findClosestPoint(marker.loc, GRIDPOINT_EMPTY)->orig) < CAPTURERADIUS){
+							cout<<"Capture image"<<endl;
+							main_capture_state = MAIN_CAPTURE_WAITINGBEFORECAPTURE;
+							//capturePhoto();
+							
+							//Clean up the timeouter
+							imageFileTimeout = 0;
+							takingPhoto = ofGetElapsedTimeMillis();
+						}
+					}
+				}
+				break;
+			case MAIN_CAPTURE_WAIT_CAPTURE:
+				if(photoCam.getState() == photoCam.CAPTURE_COMPLETE){
+					photoCam.setState(photoCam.START_DOWNLOAD);
+					main_capture_state = MAIN_CAPTURE_WAIT_DOWNLOAD;
+				} else if(marker.loc.distance(grid.findClosestPoint(marker.loc, GRIDPOINT_EMPTY)->orig) > CAPTURERADIUS){
+					//The marker is out of point
+					main_capture_state = MAIN_CAPTURE_INTERRUPTED;
+					takingPhoto = 0;
+				}
+				break;
+			case MAIN_CAPTURE_WAIT_DOWNLOAD:
+				if(photoCam.getState() == photoCam.DOWNLOAD_COMPLETE){
+					main_capture_state = MAIN_CAPTURE_READY;
+					
+					p->loc.x = marker.loc.x;
+					p->loc.y = marker.loc.y;					
+					p->empty = false;
+					p->id = grid.numberFillPoints()+1;
+					p->url = "images/" + photoCam.filenameOfLastPicture();
+					p->imageCaptured = true;
+					p->savePoint(XML);
+					takingPhoto = 0;
+					
+					photoCam.setState(photoCam.READY);
+					blinkWhite = 255;					
+				}
+				break;
+			case MAIN_CAPTURE_INTERRUPTED:
+				if(photoCam.getState() == photoCam.CAPTURE_COMPLETE){
+					photoCam.setState(photoCam.INTERRUPTED);
+					main_capture_state = MAIN_CAPTURE_READY;
+				}
+				break;
+			default:
+				break;
+		}
 	}
 	
 	if(blinkWhite > 0){
@@ -371,7 +384,7 @@ void testApp::loadImg(float xin, float yin){
 				imageAlpha[imageIndex] = 0;
 				t = ofGetElapsedTimeMillis();
 				
-				images[imageIndex].loadImage("/Volumes/data/"+newP.url);
+				images[imageIndex].loadImage(newP.url);
 				//	cout<<ofGetElapsedTimeMillis()-t<<endl;
 				
 				imageId[imageIndex] = curId;
@@ -388,7 +401,7 @@ void testApp::loadImg(float xin, float yin){
 //--------------------------------------------------------------
 void testApp::keyPressed  (int key){ 
 	if(key =='h'){
-		photoCam.takePicture("");	
+		photoCam.takePicture();	
 	}
 	if(key == 'f'){
 		ofToggleFullscreen();
@@ -499,7 +512,6 @@ void testApp::mouseMoved(int x, int y ){
 	if(mouseDriver){
 		float Y = (float)y/ofGetHeight();
 		float X = (float)x/ofGetWidth();
-		cout<<X<<" "<<Y<<endl;
 		marker.loc.x = X;
 		marker.loc.y=  Y*ASPECTRATIO;
 	}
