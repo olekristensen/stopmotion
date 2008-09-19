@@ -385,7 +385,7 @@
 										<key>_historyCapacity</key>
 										<integer>0</integer>
 										<key>bookmark</key>
-										<string>DDE6AD8A0E82C7CD00556737</string>
+										<string>DD4B6D980E8399B0003EDEE2</string>
 										<key>history</key>
 										<array>
 											<string>DD88F8570E7FE8E10077F2F1</string>
@@ -401,19 +401,18 @@
 											<string>DDE6AB330E826C3F00556737</string>
 											<string>DDE6AB500E826D1600556737</string>
 											<string>DDE6AB660E8271EE00556737</string>
-											<string>DDE6AB670E8271EE00556737</string>
 											<string>DDE6ABB10E8278E100556737</string>
 											<string>DDE6ABB30E8278E100556737</string>
 											<string>DDE6ABCC0E82A57400556737</string>
-											<string>DDE6ACA90E82B2D200556737</string>
 											<string>DDE6ACAB0E82B2D200556737</string>
 											<string>DDE6AD240E82B63500556737</string>
 											<string>DDE6AD3B0E82BA4300556737</string>
 											<string>DDE6AD5C0E82BDF800556737</string>
 											<string>DDE6AD5D0E82BDF800556737</string>
 											<string>DDE6AD690E82BE9F00556737</string>
-											<string>DDE6AD800E82C0D700556737</string>
-											<string>DDE6AD810E82C0D700556737</string>
+											<string>DD4B6D920E8399B0003EDEE2</string>
+											<string>DD4B6D930E8399B0003EDEE2</string>
+											<string>DD4B6D940E8399B0003EDEE2</string>
 										</array>
 										<key>prevStack</key>
 										<array>
@@ -433,33 +432,16 @@
 											<string>DDE6AA580E8265C100556737</string>
 											<string>DDE6AAA00E8265C100556737</string>
 											<string>DDE6AAA10E8265C100556737</string>
-											<string>DDE6ACB10E82B2D200556737</string>
 											<string>DDE6ACB30E82B2D200556737</string>
 											<string>DDE6ACB40E82B2D200556737</string>
-											<string>DDE6ACDF0E82B3F000556737</string>
-											<string>DDE6AD000E82B4F500556737</string>
-											<string>DDE6AD020E82B4F500556737</string>
-											<string>DDE6AD030E82B4F500556737</string>
-											<string>DDE6AD050E82B4F500556737</string>
-											<string>DDE6AD160E82B54900556737</string>
-											<string>DDE6AD170E82B54900556737</string>
-											<string>DDE6AD180E82B54900556737</string>
-											<string>DDE6AD190E82B54900556737</string>
-											<string>DDE6AD1A0E82B54900556737</string>
-											<string>DDE6AD260E82B63500556737</string>
 											<string>DDE6AD3E0E82BA4300556737</string>
-											<string>DDE6AD490E82BBBE00556737</string>
-											<string>DDE6AD4B0E82BBBE00556737</string>
-											<string>DDE6AD4D0E82BBBE00556737</string>
 											<string>DDE6AD600E82BDF800556737</string>
 											<string>DDE6AD620E82BDF800556737</string>
 											<string>DDE6AD630E82BDF800556737</string>
-											<string>DDE6AD650E82BDF800556737</string>
 											<string>DDE6AD6B0E82BE9F00556737</string>
-											<string>DDE6AD720E82C01C00556737</string>
-											<string>DDE6AD730E82C01C00556737</string>
-											<string>DDE6AD7D0E82C07F00556737</string>
-											<string>DDE6AD820E82C0D700556737</string>
+											<string>DD4B6D950E8399B0003EDEE2</string>
+											<string>DD4B6D960E8399B0003EDEE2</string>
+											<string>DD4B6D970E8399B0003EDEE2</string>
 										</array>
 									</dict>
 									<key>SplitCount</key>
@@ -518,9 +500,9 @@
 			</array>
 			<key>TableOfContents</key>
 			<array>
-				<string>DDE6AC370E82A96200556737</string>
+				<string>DD4B6D990E8399B0003EDEE2</string>
 				<string>1CE0B1FE06471DED0097A5F4</string>
-				<string>DDE6AC380E82A96200556737</string>
+				<string>DD4B6D9A0E8399B0003EDEE2</string>
 				<string>1CE0B20306471E060097A5F4</string>
 				<string>1CE0B20306471E060097A5F4</string>
 				<string>1CE0B20506471E060097A5F4</string>
@@ -655,13 +637,8 @@
 	<integer>5</integer>
 	<key>WindowOrderList</key>
 	<array>
-		<string>DDE6ACBA0E82B2D200556737</string>
-		<string>DDE6ACBB0E82B2D200556737</string>
-		<string>DD88F8290E7FE6F50077F2F1</string>
 		<string>1CD10A99069EF8BA00B06720</string>
-		<string>DDEB27370E72CDC20011C201</string>
-		<string>1C78EAAD065D492600B07095</string>
-		<string>/Users/jonas/udvikling/of_preRelease_v0.05_xcode_FAT/apps/jonas/StopMotion2S/StopMotion2.xcodeproj</string>
+		<string>/Users/jonas/udvikling/of_preRelease_v0.05_xcode_FAT/apps/jonas/StopMotion2Svn2/StopMotion2.xcodeproj</string>
 	</array>
 	<key>WindowString</key>
 	<string>3 127 1280 645 0 0 1280 778 </string>
@@ -863,13 +840,13 @@
 			<key>TableOfContents</key>
 			<array>
 				<string>1CD10A99069EF8BA00B06720</string>
-				<string>DDE6AC8B0E82AFB800556737</string>
+				<string>DD4B6D9B0E8399B0003EDEE2</string>
 				<string>1C162984064C10D400B95A72</string>
-				<string>DDE6AC8C0E82AFB800556737</string>
-				<string>DDE6AC8D0E82AFB800556737</string>
-				<string>DDE6AC8E0E82AFB800556737</string>
-				<string>DDE6AC8F0E82AFB800556737</string>
-				<string>DDE6AC900E82AFB800556737</string>
+				<string>DD4B6D9C0E8399B0003EDEE2</string>
+				<string>DD4B6D9D0E8399B0003EDEE2</string>
+				<string>DD4B6D9E0E8399B0003EDEE2</string>
+				<string>DD4B6D9F0E8399B0003EDEE2</string>
+				<string>DD4B6DA00E8399B0003EDEE2</string>
 			</array>
 			<key>ToolbarConfiguration</key>
 			<string>xcode.toolbar.config.debugV3</string>
