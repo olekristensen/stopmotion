@@ -165,14 +165,14 @@ void testApp::update(){
 				takingPhoto = ofGetElapsedTimeMillis();
 			}
 		} */
-		gridPoint* p = grid.findClosestPoint(marker.loc, GRIDPOINT_EMPTY);
+		/*gridPoint* p = grid.findClosestPoint(marker.loc, GRIDPOINT_EMPTY);
 		switch (main_capture_state) {
 			case MAIN_CAPTURE_READY:
 				//CHeck if we should start capture a image
 				if(grid.findClosestPoint(marker.loc, GRIDPOINT_EMPTY) != NULL){ //Check if we even got any points
 					if(marker.loc.distance(grid.findClosestPoint(marker.loc, GRIDPOINT_EMPTY)->orig) < CAPTURERADIUS){
 						cout<<"Capture image"<<endl;
-						photoCam.takePicture();
+						photoCam.takePicture("picture_"+ofToString(grid.points.size(),0));
 						//capturePhoto();
 		
 						//Clean up the timeouter
@@ -219,7 +219,7 @@ void testApp::update(){
 				break;
 		}
 	}
-	
+*/	
 	if(blinkWhite > 0){
 		blinkWhite -= 10;
 	}
