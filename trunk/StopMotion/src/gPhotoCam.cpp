@@ -63,9 +63,10 @@ int gPhotoCam::takePicture(string picturePath){
 		
 		memset (buf, 0x0, sizeof(buf));	
 		write(infp, ("capture-image\n"), 14);
-	//	close(infp);
 		read(outfp, buf, 1024);
 		printf("buf = '%s'\n", buf);
+		
+		filename = buf;
 		
 		unlock();
 	}
@@ -82,6 +83,10 @@ void gPhotoCam::start(){
 	
 }
 
+string gPhotoCam::getState() {
+	return "";
+}
+
 void gPhotoCam::stop(){
 	write(infp, "q\n", 14);
 	close(infp);
@@ -95,6 +100,7 @@ void gPhotoCam::threadedFunction(){
 	
 /*	while( isThreadRunning() != 0 ){
 		if( lock() ){
+
 */
 			/*
 			 * now in main... infp will be the stdin (in file descriptor)
