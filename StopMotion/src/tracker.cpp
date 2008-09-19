@@ -46,8 +46,8 @@ void ofxTracker::update(){
 		if(contourFinder.nBlobs > 0){
 			ofPoint location = contourFinder.blobs[0].centroid;
 			if(loc.x != location.x || loc.y != location.y){
-				loc.y = 320-location.x;
-				loc.x = location.y;
+				loc.y = 240-location.y;
+				loc.x = 340-location.x;
 				pointMoved = true;
 			} else {
 				pointMoved = false;
@@ -60,12 +60,6 @@ void ofxTracker::update(){
 void ofxTracker::draw(){
 	ofDisableAlphaBlending();
 
-	glPushMatrix();
-	glTranslated(ofGetWidth(), 0, 0);
-	glRotated(90, 0, 0, 1);
-//	glRotated(180, 0, 1, 0);
-
-	
 	//glTranslated(-10, -10, 0);
 	colorImg.draw(0,0, ofGetHeight(), ofGetWidth());
 	//contourFinder.draw(0,0);
@@ -74,10 +68,6 @@ void ofxTracker::draw(){
 	//ofEllipse(loc.x, loc.y, 10, 10);
 	ofSetColor(255, 255, 255, 255);
 	font.drawString(ofToString((float)loc.x/240, 1)+ " - "+ofToString(loc.y)+" - "+ofToString((1-(float)loc.y/320),1), ofGetWidth()-240, 310);
-	glPushMatrix();
-
-	glPopMatrix();
-	glPopMatrix();
 	ofEnableAlphaBlending();
 
 }
