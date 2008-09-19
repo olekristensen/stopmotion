@@ -165,7 +165,7 @@ void testApp::update(){
 				takingPhoto = ofGetElapsedTimeMillis();
 			}
 		} */
-		
+		gridPoint* p = grid.findClosestPoint(marker.loc, GRIDPOINT_EMPTY);
 		switch (main_capture_state) {
 			case MAIN_CAPTURE_READY:
 				//CHeck if we should start capture a image
@@ -180,6 +180,39 @@ void testApp::update(){
 						
 						takingPhoto = ofGetElapsedTimeMillis();
 					}
+				}
+				break;
+			case MAIN_CAPTURE_WAIT_CAPTURE:
+				if(photoCam.getState() == photoCam.CAPTURE_COMPLETE){
+					photoCam.state = photoCam.START_DOWNLOAD;
+					main_capture_state = MAIN_CAPTURE_WAIT_DOWNLOAD;
+				} else if(marker.loc.distance(grid.findClosestPoint(marker.loc, GRIDPOINT_EMPTY)->orig) > CAPTURERADIUS){
+					//The marker is out of point
+					main_capture_state = MAIN_CAPTURE_INTERRUPTED;
+				}
+				break;
+			case MAIN_CAPTURE_WAIT_DOWNLOAD:
+				if(photoCam.getState() == photoCam.DOWNLOAD_COMPLETE){
+					main_capture_state = MAIN_CAPTURE_READY;
+					
+					p->loc.x = marker.loc.x;
+					p->loc.y = marker.loc.y;					
+					p->empty = false;
+				//	p->id = nextPhotoDigit;
+					p->url = photoCam.lastUrl;
+					p->imageCaptured = true;
+					p->savePoint(XML);
+					
+					photoCam.state = photoCam.READY;
+
+				}
+				break;
+			case MAIN_CAPTURE_INTERRUPTED:
+				if(photoCam.getState() == photoCam.CAPTURE_COMPLETE){
+					photoCam.state = photoCam.READY;
+					main_capture_state = MAIN_CAPTURE_READY;
+					imageCaptured = true;
+					blinkWhite = 255;
 				}
 				break;
 			default:
