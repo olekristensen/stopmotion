@@ -40,6 +40,7 @@ void testApp::setup(){
 	capture = kofxGui_Button_Off;
 	camDriver = kofxGui_Button_Off;
 	mouseDriver = kofxGui_Button_On;
+	scaler = 0;
 	
 	gui	= ofxGui::Instance(this);
 	
@@ -50,6 +51,8 @@ void testApp::setup(){
 	panel1->addButton(kParameter_Mousedriver, "Mouse driver", OFXGUI_BUTTON_HEIGHT, OFXGUI_BUTTON_HEIGHT, mouseDriver, kofxGui_Button_Switch);
 	panel1->addButton(kParameter_Camdriver, "Camera driver", OFXGUI_BUTTON_HEIGHT, OFXGUI_BUTTON_HEIGHT, camDriver, kofxGui_Button_Switch);
 	panel1->addSlider(kParameter_Threshold, "Threshold", 110, OFXGUI_SLIDER_HEIGHT, 0.0f, 300.0f, tracker.threshold, kofxGui_Display_Float2, 0);
+	panel1->addSlider(kParameter_Scale, "Scale", 110, OFXGUI_SLIDER_HEIGHT, -100.0f, 100.0f, scaler, kofxGui_Display_Float2, 0);
+
 	gui->forceUpdate(true);	
 	gui->activate(true);
 	
@@ -217,6 +220,7 @@ void testApp::update(){
 					p->url = "images/" + photoCam.filenameOfLastPicture();
 					p->imageCaptured = true;
 					p->savePoint(XML);
+					int test = ofGetElapsedTimeMillis() - takingPhoto;
 					takingPhoto = 0;
 					
 					photoCam.setState(photoCam.READY);
@@ -231,6 +235,13 @@ void testApp::update(){
 				break;
 			default:
 				break;
+		}
+		if(main_capture_state != MAIN_CAPTURE_READY){
+			marker.captureState = marker.CAPTURE_CAPTURING;
+			marker.percent = ((float)ofGetElapsedTimeMillis() - (float)takingPhoto)/4000.0;
+		} else {
+			marker.captureState = marker.CAPTURE_IDLE;
+			marker.percent = 0;
 		}
 	}
 	
@@ -293,18 +304,12 @@ void testApp::draw(){
 	
 	ofSetupScreen();
 	ofEnableAlphaBlending();
-	
 	glPushMatrix();
-	glTranslated(ofGetWidth(), 0, 0);
-	glRotated(90, 0, 0, 1);
-	
+	glTranslatef(0, 0, scaler);
 	for(int i=0;i<numImages;i++){
-		
 		ofSetColor(255,255,255,imageAlpha[i]);
-		
-		images[i].draw(0,0, ofGetHeight(), ofGetWidth());
-	}	
-	glPopMatrix();
+		images[i].draw(0,0, ofGetWidth(), ofGetWidth()*ASPECTRATIO);
+	}
 	
 	
 	if(showTracker){
@@ -355,6 +360,7 @@ void testApp::draw(){
 	//For calibration
 	videoCamera.draw(marker.loc);	
 	
+	glPopMatrix();
 	
 	gui->draw();
 	
@@ -567,7 +573,13 @@ void testApp::handleGui(int parameterId, int task, void* data, int length){
 				tracker.threshold = *(float*)data;
 			XML.setValue("TRACKER:THRESHOLD", tracker.threshold);
 			XML.saveFile("images.xml");
-			break;		
+			break;	
+		case kParameter_Scale:
+			if(task == kofxGui_Set_Float)
+				scaler = *(float*)data;
+			XML.setValue("SCALER", scaler);
+			XML.saveFile("images.xml");
+			break;	
 	}
 	
 }

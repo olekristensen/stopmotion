@@ -79,7 +79,7 @@ void gPhotoCam::start(){
 		exit(1);
 	}
 	memset (buf, 0x0, 10000);	
-	write(infp, ("lcd " + ofToDataPath("images") + "\n").c_str(), ("lcd " + ofToDataPath("images") + "\n").length());
+	write(infp, ("lcd " + ofToDataPath("images/scaler") + "\n").c_str(), ("lcd " + ofToDataPath("images") + "\n").length());
 	write(infp, ("capture-image\n"), 14);
 	ofSleepMillis(30*100);
 	read(outfp, buf, 10000);
