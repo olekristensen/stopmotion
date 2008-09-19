@@ -218,8 +218,9 @@ void testApp::update(){
 			default:
 				break;
 		}
+		 */	
 	}
-*/	
+
 	if(blinkWhite > 0){
 		blinkWhite -= 10;
 	}
