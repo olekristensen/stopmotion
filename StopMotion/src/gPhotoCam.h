@@ -26,6 +26,8 @@ public:
 	
 	gPhotoCam();
 	
+	string getState();
+	
 	void start();
 	void stop();
 	
@@ -34,6 +36,7 @@ public:
 private:
 	int infp, outfp;
 	char buf[1024];
+	string filename;
 };
 #endif
 
