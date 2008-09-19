@@ -131,6 +131,11 @@ class testApp : public ofSimpleApp, public ofxGuiListener	{
 	
 	ofxVideoCamera videoCamera;
 	bool captureCornerPoint;
+	
+	gPhotoCam photoCam;
+	
+	enum { MAIN_CAPTURE_READY, MAIN_CAPTURE_WAIT_CAPTURE, MAIN_CAPTURE_WAIT_DOWNLOAD, MAIN_CAPTURE_INTERRUPTED };
+	int main_capture_state;
 
 };
 

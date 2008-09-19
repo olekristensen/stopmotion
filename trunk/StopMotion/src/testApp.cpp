@@ -9,7 +9,7 @@ bool newImage = false;
 
 //--------------------------------------------------------------
 void testApp::setup(){	 
-	ConnectCameras();
+	//ConnectCameras();
 
 	//Load tracker
 	tracker.setup();
@@ -54,7 +54,7 @@ void testApp::setup(){
 	gui->activate(true);
 	
 	
-
+	photoCam.start();
 	
 	//Null init
 	takingPhoto = 0;
@@ -76,7 +76,7 @@ void testApp::update(){
 	//If capture is enabled
 	if(capture){
 		//If we in progress of taking a image, check if we have waited till end of delay
-		if(takingPhoto != 0){
+		/*if(takingPhoto != 0){
 			string n;
 			if(nextPhotoDigit< 10)
 				n = "0000"+ofToString(nextPhotoDigit, 0);
@@ -164,7 +164,27 @@ void testApp::update(){
 				
 				takingPhoto = ofGetElapsedTimeMillis();
 			}
-		} 
+		} */
+		
+		switch (main_capture_state) {
+			case MAIN_CAPTURE_READY:
+				//CHeck if we should start capture a image
+				if(grid.findClosestPoint(marker.loc, GRIDPOINT_EMPTY) != NULL){ //Check if we even got any points
+					if(marker.loc.distance(grid.findClosestPoint(marker.loc, GRIDPOINT_EMPTY)->orig) < CAPTURERADIUS){
+						cout<<"Capture image"<<endl;
+						photoCam.takePicture();
+						//capturePhoto();
+		
+						//Clean up the timeouter
+						imageFileTimeout = 0;
+						
+						takingPhoto = ofGetElapsedTimeMillis();
+					}
+				}
+				break;
+			default:
+				break;
+		}
 	}
 	
 	if(blinkWhite > 0){
@@ -333,6 +353,9 @@ void testApp::loadImg(float xin, float yin){
 
 //--------------------------------------------------------------
 void testApp::keyPressed  (int key){ 
+	if(key =='h'){
+		photoCam.takePicture("");	
+	}
 	if(key == 'f'){
 		ofToggleFullscreen();
 	}
@@ -343,7 +366,7 @@ void testApp::keyPressed  (int key){
 		
 	}
 	else if(key == 'p'){
-	OSErr					err = noErr;
+/*	OSErr					err = noErr;
 	char					*buf = NULL;
     PTPPassThroughPB 		*passThroughPB;
 	ICAObjectSendMessagePB	msgPB;
@@ -427,7 +450,7 @@ void testApp::keyPressed  (int key){
 	else {
 		system("osascript -e 'tell application \"RemoteCapture DC\" to activate' -e 'tell application \"System Events\" to tell process \"RemoteCapture DC\"' -e 'keystroke \"r\" using command down' -e 'end tell' ");
 	}*/
-		}}}
+		}
 }
 
 //--------------------------------------------------------------
