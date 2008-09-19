@@ -9,7 +9,14 @@
 
 #ifndef _G_PHOTO_CAM_H
 #define _G_PHOTO_CAM_H
-#include "gphoto2.h"
+#include <sys/types.h>
+#include <fcntl.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <unistd.h>
+
+#define READ 0
+#define WRITE 1
 
 class gPhotoCam : public ofxThread {
 public:
@@ -25,9 +32,8 @@ public:
 	void threadedFunction();
 	
 private:
-	
-	Camera *gpCam;
-	GPContext *gpContext;
+	int infp, outfp;
+	char buf[1024];
 };
 #endif
 
