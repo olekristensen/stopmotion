@@ -1,0 +1,24 @@
+<IMAG>
+</IMAG>
+<SCALER>0.000000</SCALER>
+<TRACKER>
+    <THRESHOLD>218</THRESHOLD>
+</TRACKER>
+<CALIBRATION>
+    <NE>
+        <X>0.879167</X>
+        <Y>0.616667</Y>
+    </NE>
+    <SE>
+        <X>0.750000</X>
+        <Y>0.252083</Y>
+    </SE>
+    <SW>
+        <X>0.225000</X>
+        <Y>0.177083</Y>
+    </SW>
+    <NW>
+        <X>0.104167</X>
+        <Y>0.608333</Y>
+    </NW>
+</CALIBRATION>
