@@ -21,7 +21,7 @@ imageStore::imageStore(){
 
 int imageStore::getImageCount(){
 	dirList.reset();
-	dirList.setVerbose(true);
+	dirList.setVerbose(false);
 	dirList.allowExt(ext);
 	return dirList.listDir(folderPath);
 }
@@ -44,7 +44,7 @@ string imageStore::replaceImage(ofImage *image, string _filename){
 string imageStore::getFilenameFromPos(int _pos){
 	int fileCount;
 	dirList.reset();
-	dirList.setVerbose(true);
+	dirList.setVerbose(false);
 	dirList.allowExt(ext);
 	fileCount = dirList.listDir(folderPath);
 	if(_pos <= fileCount){
@@ -56,7 +56,7 @@ string imageStore::getFilenameFromPos(int _pos){
 
 bool imageStore::imageExists(string _filename){
 	dirList.reset();
-	dirList.setVerbose(true);
+	dirList.setVerbose(false);
 	dirList.allowExt(ext);
 	int fileCount = dirList.listDir(folderPath);
 	for(int i = 0; i < fileCount; i++){

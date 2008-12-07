@@ -21,7 +21,7 @@ void ofxTracker::setup(){
 	loc.y = 0;
 	pointMoved = false;
 	
-	font.loadFont("verdana.ttf", 10); 
+	font.loadFont("Candara Bold.ttf", 12); 
 	
 }
 void ofxTracker::update(){
@@ -47,7 +47,7 @@ void ofxTracker::update(){
 			ofPoint location = contourFinder.blobs[0].centroid;
 			if(loc.x != location.x || loc.y != location.y){
 				loc.y = 240-location.y;
-				loc.x = 340-location.x;
+				loc.x = 320-location.x;
 				pointMoved = true;
 			} else {
 				pointMoved = false;
@@ -61,17 +61,17 @@ void ofxTracker::draw(){
 	ofDisableAlphaBlending();
 
 	//glTranslated(-10, -10, 0);
-	colorImg.draw(0,0, ofGetHeight(), ofGetWidth());
+	colorImg.draw(0,0, ofGetWidth(), ofGetHeight());
 	//contourFinder.draw(0,0);
 	//glRotated(-90, 0, 0, 1);
 	//glTranslated(-ofGetWidth(), 0, 0);
 	//ofEllipse(loc.x, loc.y, 10, 10);
 	ofSetColor(255, 255, 255, 255);
-	font.drawString(ofToString((float)loc.x/240, 1)+ " - "+ofToString(loc.y)+" - "+ofToString((1-(float)loc.y/320),1), ofGetWidth()-240, 310);
+	font.drawString(ofToString((float)loc.x/320, 1)+ " - "+ofToString(loc.y)+" - "+ofToString((1.0-(float)loc.y/240),1) ,ofGetWidth()-200, ofGetHeight()-15);
 	ofEnableAlphaBlending();
 
 }
 
 ofxPoint2f ofxTracker::getCurrentLocation(ofxVideoCamera cam){
-	return ofxPoint2f(cam.getTransformedPoint(ofxPoint2f(1-(float)loc.x/240, (1-(float)loc.y/320)*ASPECTRATIO)));
+	return ofxPoint2f(cam.getTransformedPoint(ofxPoint2f(1.0-((float)loc.x/320.0), ASPECTRATIO*(1.0-((float)loc.y/(240.0))))));
 }

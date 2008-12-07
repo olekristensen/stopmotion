@@ -15,6 +15,7 @@ public:
 	
 	float size;
 	float sizeV;
+	float diameter;
 	float capturePercent;
 	bool imageCaptured;
 };

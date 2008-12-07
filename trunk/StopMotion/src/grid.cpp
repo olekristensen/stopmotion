@@ -6,6 +6,7 @@ gridPoint::gridPoint(){
 	empty = true;
 	capturePercent = 0;
 	imageCaptured = true;
+	diameter = 5.0;
 }
 
 void gridPoint::savePoint(ofxXmlSettings &xmlFile){
@@ -64,6 +65,12 @@ void gridPoint::draw(ofxPoint2f tracker){
 	sizeV *= 0.9;
 	size += sizeV;
 	
+	if (diameter > 4.95 && diameter < 5.0 || diameter > 5.0 && diameter < 5.05) {
+		diameter = 5;
+	} else {
+		diameter += (5.0-diameter)*0.01; 
+	}
+	
 	if(size >0){
 //		int resolution = 200;
 //		ofSetCircleResolution(resolution);
@@ -104,9 +111,13 @@ void gridPoint::draw(ofxPoint2f tracker){
 	float dist = tracker.distance(orig);
 	ofEnableAlphaBlending();
 	if (dist < MAXSHOWDIST && empty  ){
-		ofFill();
-		ofSetColor(255, 255, 255, 100.0-(float)(dist/MAXSHOWDIST)*100.0);
-		ofCircle(orig.x*ofGetWidth(), orig.y*ofGetWidth(), 5);
+		if (dist/MAXSHOWDIST < 0.02){
+			ofSetColor(64, 64, 64, 100.0);
+			diameter = 10.0;
+		} else {
+			ofSetColor(255, 255, 255, 100.0-(float)(dist/MAXSHOWDIST)*100.0);
+		}
+		ofCircle(orig.x*ofGetWidth(), orig.y*ofGetWidth(), diameter);
 	}
 }
 
@@ -185,7 +196,7 @@ void ofxGrid::makeGrid(){
 				p.orig.x = p.loc.x = dist*i;
 				p.orig.y = p.loc.y = dist*u;
 				points.push_back(p);
-				cout<<"Add empty point x: "<<p.loc.x<<" y: "<< p.loc.y <<endl;
+				//cout<<"Add empty point x: "<<p.loc.x<<" y: "<< p.loc.y <<endl;
 			}
 		}
 	}

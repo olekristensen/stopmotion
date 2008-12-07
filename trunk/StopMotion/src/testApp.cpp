@@ -17,7 +17,7 @@ void testApp::setup(){
 	imageIndex = 0;
 	
 	//Setup imgStore
-	imgStore.folderPath = "/Volumes/data/images";
+	imgStore.folderPath = ofToDataPath("images");
 	imgStore.ext = "jpg";
 	lastImageCount = imgStore.getImageCount();
 	
@@ -32,7 +32,7 @@ void testApp::setup(){
 	} 
 	
 	//Setup font
-	font.loadFont("verdana.ttf", 10); 
+	font.loadFont("ghosttown.ttf", 16);
 	
 	//Setup GUI
 	showPoints = kofxGui_Button_Off;
@@ -57,7 +57,7 @@ void testApp::setup(){
 	gui->activate(true);
 	
 	
-	photoCam.start();
+	photoCam.start(&imgStore);
 	
 	//Null init
 	takingPhoto = 0;
@@ -68,6 +68,9 @@ void testApp::setup(){
 	imageFileTimeout = 0;
 	
 	main_capture_state = MAIN_CAPTURE_READY;
+	
+	ofToggleFullscreen();
+	ofSetWindowTitle("stopmotion");
 	
 }
 //--------------------------------------------------------------
@@ -174,9 +177,11 @@ void testApp::update(){
 		gridPoint* p = grid.findClosestPoint(marker.loc, GRIDPOINT_EMPTY);
 		switch (main_capture_state) {
 			case MAIN_CAPTURE_WAITINGBEFORECAPTURE:
+				//cout<<"MAIN_CAPTURE_WAITINGBEFORECAPTURE"<<endl;
 				if(ofGetElapsedTimeMillis() - takingPhoto > 2000){
 					photoCam.takePicture();
 					main_capture_state = MAIN_CAPTURE_WAIT_CAPTURE;
+					takingPhoto = ofGetElapsedTimeMillis();
 				} else if(marker.loc.distance(grid.findClosestPoint(marker.loc, GRIDPOINT_EMPTY)->orig) > CAPTURERADIUS){
 					//The marker is out of point
 					main_capture_state = MAIN_CAPTURE_INTERRUPTED;
@@ -184,11 +189,12 @@ void testApp::update(){
 				}
 				break;
 			case MAIN_CAPTURE_READY:
+				//cout<<"MAIN_CAPTURE_READY"<<endl;
 				//CHeck if we should start capture a image
 				if(photoCam.getState() == photoCam.READY){
 					if(grid.findClosestPoint(marker.loc, GRIDPOINT_EMPTY) != NULL){ //Check if we even got any points
 						if(marker.loc.distance(grid.findClosestPoint(marker.loc, GRIDPOINT_EMPTY)->orig) < CAPTURERADIUS){
-							cout<<"Capture image"<<endl;
+							cout<<"MAIN_CAPTURE_READY : Capture image"<<endl;
 							main_capture_state = MAIN_CAPTURE_WAITINGBEFORECAPTURE;
 							//capturePhoto();
 							
@@ -200,6 +206,7 @@ void testApp::update(){
 				}
 				break;
 			case MAIN_CAPTURE_WAIT_CAPTURE:
+				//cout<<"MAIN_CAPTURE_WAIT_CAPTURE"<<endl;
 				if(photoCam.getState() == photoCam.CAPTURE_COMPLETE){
 					photoCam.setState(photoCam.START_DOWNLOAD);
 					main_capture_state = MAIN_CAPTURE_WAIT_DOWNLOAD;
@@ -210,6 +217,7 @@ void testApp::update(){
 				}
 				break;
 			case MAIN_CAPTURE_WAIT_DOWNLOAD:
+				//cout<<"MAIN_CAPTURE_WAIT_DOWNLOAD"<<endl;
 				if(photoCam.getState() == photoCam.DOWNLOAD_COMPLETE){
 					main_capture_state = MAIN_CAPTURE_READY;
 					
@@ -217,7 +225,7 @@ void testApp::update(){
 					p->loc.y = marker.loc.y;					
 					p->empty = false;
 					p->id = grid.numberFillPoints()+1;
-					p->url = "images/" + photoCam.filenameOfLastPicture();
+					p->url = "images/" + imgStore.getFilenameFromPos(imgStore.getImageCount());
 					p->imageCaptured = true;
 					p->savePoint(XML);
 					int test = ofGetElapsedTimeMillis() - takingPhoto;
@@ -228,17 +236,16 @@ void testApp::update(){
 				}
 				break;
 			case MAIN_CAPTURE_INTERRUPTED:
-				if(photoCam.getState() == photoCam.CAPTURE_COMPLETE){
-					photoCam.setState(photoCam.INTERRUPTED);
-					main_capture_state = MAIN_CAPTURE_READY;
-				}
+				//cout<<"MAIN_CAPTURE_INTERRUPTED"<<endl;
+				photoCam.setState(photoCam.INTERRUPTED);
+				main_capture_state = MAIN_CAPTURE_READY;
 				break;
 			default:
 				break;
 		}
-		if(main_capture_state != MAIN_CAPTURE_READY){
+		if(main_capture_state != MAIN_CAPTURE_READY && main_capture_state != MAIN_CAPTURE_WAITINGBEFORECAPTURE){
 			marker.captureState = marker.CAPTURE_CAPTURING;
-			marker.percent = ((float)ofGetElapsedTimeMillis() - (float)takingPhoto)/4000.0;
+			marker.percent = ((float)ofGetElapsedTimeMillis() - (float)takingPhoto)/6000.0;
 		} else {
 			marker.captureState = marker.CAPTURE_IDLE;
 			marker.percent = 0;
@@ -272,7 +279,7 @@ void testApp::update(){
 	int totalAlpha = 0;
 	for(int i=0;i<numImages;i++){
 		if(i != imageIndex && imageAlpha[i] > 0) {
-			imageAlpha[i] -= 20; 
+			imageAlpha[i] -= 10; 
 			if(imageAlpha[i] < 0)
 				imageAlpha[i] = 0;
 			totalAlpha += pow(imageAlpha[i], GAMMA); 
@@ -303,12 +310,17 @@ void testApp::update(){
 void testApp::draw(){
 	
 	ofSetupScreen();
+	ofFill();
+	ofSetColor(128, 128, 128, 255);
+	ofRect(0,0,ofGetWidth(), ofGetHeight());
 	ofEnableAlphaBlending();
 	glPushMatrix();
 	glTranslatef(0, 0, scaler);
 	for(int i=0;i<numImages;i++){
-		ofSetColor(255,255,255,imageAlpha[i]);
-		images[i].draw(0,0, ofGetWidth(), ofGetWidth()*ASPECTRATIO);
+		if(imageAlpha[i] > 0) {
+			ofSetColor(255,255,255,imageAlpha[i]);
+			images[i].draw(0,0, ofGetWidth(), ofGetWidth()*ASPECTRATIO);
+		}
 	}
 	
 	
@@ -358,7 +370,7 @@ void testApp::draw(){
 	ofDisableAlphaBlending();
 	
 	//For calibration
-	videoCamera.draw(marker.loc);	
+	videoCamera.draw(marker.loc);
 	
 	glPopMatrix();
 	
@@ -371,6 +383,11 @@ void testApp::draw(){
 		ofSetColor(255, 255, 255, blinkWhite);
 		ofRect(0,0,ofGetWidth(), ofGetHeight());
 	}
+	
+	ofSetColor(64, 64, 64, 128);
+	font.drawString("Stopmotion by ole kristensen and jonas jongejan", 20, ofGetHeight()-20);
+	ofSetColor(255, 255, 255, 255);
+	font.drawString("Stopmotion", 20, ofGetHeight()-20);
 	
 }
 
@@ -407,16 +424,24 @@ void testApp::loadImg(float xin, float yin){
 //--------------------------------------------------------------
 void testApp::keyPressed  (int key){ 
 	if(key =='h'){
-		photoCam.takePicture();	
+		main_capture_state = MAIN_CAPTURE_WAITINGBEFORECAPTURE;
 	}
 	if(key == 'f'){
 		ofToggleFullscreen();
 	}
-	if(key == 'g') 
+/**	if (key == 't'){
+		capture = !capture;
+	}
+	if (key == 'm'){
+		mouseDriver = !mouseDriver;
+	}
+	if (key == 'c'){
+		camDriver = !camDriver;
+	}
+**/	if(key == 'g') 
 		gui->activate(!gui->mIsActive);
 	else if(key == 'c'){
 		captureCornerPoint = true;
-		
 	}
 	else if(key == 'p'){
 		/*	OSErr					err = noErr;

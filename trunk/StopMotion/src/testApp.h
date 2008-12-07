@@ -6,13 +6,13 @@
 
 #include "threadedObject.h"
 
+#define TARGET_OSX
 
 #define OF_ADDON_USING_OFXXMLSETTINGS
 #define OF_ADDON_USING_OFXVECTORMATH
 #define OF_ADDON_USING_OFXOPENCV
 
-
-#define ASPECTRATIO 2.0/3.0
+#define ASPECTRATIO 3.0/4.0
 #define GAMMA 1.801
 #define PHOTODELAY 6500
 #define PHOTORELEASEDELAY 4000
@@ -32,6 +32,7 @@
 #include "marker.h"
 #include "imageStore.h"
 #include "gPhotoCam.h"
+#include "canonRemoteCam.h"
 
 
 class testApp : public ofSimpleApp, public ofxGuiListener	{
@@ -133,7 +134,8 @@ class testApp : public ofSimpleApp, public ofxGuiListener	{
 	ofxVideoCamera videoCamera;
 	bool captureCornerPoint;
 	
-	gPhotoCam photoCam;
+	//gPhotoCam photoCam;
+	canonRemoteCam photoCam;
 	
 	enum { MAIN_CAPTURE_READY, MAIN_CAPTURE_WAITINGBEFORECAPTURE,  MAIN_CAPTURE_WAIT_CAPTURE, MAIN_CAPTURE_WAIT_DOWNLOAD, MAIN_CAPTURE_INTERRUPTED };
 	int main_capture_state;
